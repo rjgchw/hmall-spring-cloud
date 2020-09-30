@@ -1,19 +1,18 @@
 package org.rjgchw.hmall.order.web.rest;
 
-import org.rjgchw.hmall.order.RedisTestContainerExtension;
-import org.rjgchw.hmall.order.OrderApp;
-import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
-import org.rjgchw.hmall.order.domain.Authority;
-import org.rjgchw.hmall.order.domain.User;
-import org.rjgchw.hmall.order.repository.UserRepository;
-import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
-import org.rjgchw.hmall.order.security.AuthoritiesConstants;
-import org.rjgchw.hmall.order.service.dto.UserDTO;
-import org.rjgchw.hmall.order.service.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.rjgchw.hmall.order.OrderApp;
+import org.rjgchw.hmall.order.RedisTestContainerExtension;
+import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
+import org.rjgchw.hmall.order.domain.Authority;
+import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.repository.UserRepository;
+import org.rjgchw.hmall.order.security.AuthoritiesConstants;
+import org.rjgchw.hmall.order.service.dto.UserDTO;
+import org.rjgchw.hmall.order.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,10 +28,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -60,14 +57,6 @@ public class UserResourceIT {
 
     @Autowired
     private UserRepository userRepository;
-
-    /**
-     * This repository is mocked in the org.rjgchw.hmall.order.repository.search test package.
-     *
-     * @see org.rjgchw.hmall.order.repository.search.UserSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private UserSearchRepository mockUserSearchRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -140,7 +129,6 @@ public class UserResourceIT {
     public void getUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
-        mockUserSearchRepository.save(user);
 
         assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
 

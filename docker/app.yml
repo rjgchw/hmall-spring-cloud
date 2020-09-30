@@ -56,8 +56,6 @@ services:
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      - SPRING_DATA_JEST_URI=http://hmall-elasticsearch:9200
-      - SPRING_ELASTICSEARCH_REST_URIS=http://hmall-elasticsearch:9200
       - KAFKA_BOOTSTRAPSERVERS=hmall-kafka:9092
   hmall-mysql:
     extends:

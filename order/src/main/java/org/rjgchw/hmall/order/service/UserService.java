@@ -5,10 +5,8 @@ import org.rjgchw.hmall.order.domain.Authority;
 import org.rjgchw.hmall.order.domain.User;
 import org.rjgchw.hmall.order.repository.AuthorityRepository;
 import org.rjgchw.hmall.order.repository.UserRepository;
-import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
 import org.rjgchw.hmall.order.security.SecurityUtils;
 import org.rjgchw.hmall.order.service.dto.UserDTO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -36,15 +34,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final UserSearchRepository userSearchRepository;
-
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
-        this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
     }
@@ -69,7 +64,6 @@ public class UserService {
                 }
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
-                userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
             });

@@ -1,18 +1,16 @@
 package org.rjgchw.hmall.order.service;
 
-import org.rjgchw.hmall.order.RedisTestContainerExtension;
-import org.rjgchw.hmall.order.OrderApp;
-import org.rjgchw.hmall.order.config.Constants;
-import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
-import org.rjgchw.hmall.order.domain.User;
-import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
-import org.rjgchw.hmall.order.repository.UserRepository;
-import org.rjgchw.hmall.order.security.AuthoritiesConstants;
-import org.rjgchw.hmall.order.service.dto.UserDTO;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.rjgchw.hmall.order.OrderApp;
+import org.rjgchw.hmall.order.RedisTestContainerExtension;
+import org.rjgchw.hmall.order.config.Constants;
+import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
+import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.repository.UserRepository;
+import org.rjgchw.hmall.order.security.AuthoritiesConstants;
+import org.rjgchw.hmall.order.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -31,9 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 /**
  * Integration tests for {@link UserService}.
@@ -60,14 +55,6 @@ public class UserServiceIT {
 
     @Autowired
     private UserService userService;
-
-    /**
-     * This repository is mocked in the org.rjgchw.hmall.order.repository.search test package.
-     *
-     * @see org.rjgchw.hmall.order.repository.search.UserSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private UserSearchRepository mockUserSearchRepository;
 
     private User user;
 
