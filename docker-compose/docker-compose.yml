@@ -1,0 +1,106 @@
+version: '2'
+services:
+  gateway:
+    image: gateway
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - 'SPRING_PROFILES_ACTIVE=prod,swagger'
+#      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - 'EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka'
+      - 'SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config'
+      - 'SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/h_gateway?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true'
+      - 'JHIPSTER_CACHE_REDIS_SERVER=redis://redis:6379'
+      - JHIPSTER_CACHE_REDIS_CLUSTER=false
+      - 'SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster'
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=web_app
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=web_app
+      - JHIPSTER_SLEEP=40
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+    ports:
+      - '8080:8080'
+
+  order:
+    image: order
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - 'SPRING_PROFILES_ACTIVE=prod,swagger'
+#      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - 'EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka'
+      - 'SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config'
+      - 'SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/h_order?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true'
+      - 'JHIPSTER_CACHE_REDIS_SERVER=redis://redis:6379'
+      - JHIPSTER_CACHE_REDIS_CLUSTER=false
+      - 'SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster'
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+      - JHIPSTER_SLEEP=40
+      - 'KAFKA_BOOTSTRAPSERVERS=kafka:9092'
+      - JHIPSTER_REGISTRY_PASSWORD=admin
+
+#  product:
+#    image: product
+#    environment:
+#      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+#      - 'SPRING_PROFILES_ACTIVE=prod,swagger'
+#      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+#      - 'EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka'
+#      - 'SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config'
+#      - 'SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/h_product?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true'
+#      - 'JHIPSTER_CACHE_REDIS_SERVER=redis://redis:6379'
+#      - JHIPSTER_CACHE_REDIS_CLUSTER=false
+#      - 'SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster'
+#      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+#      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+#      - JHIPSTER_SLEEP=40
+#      - 'SPRING_DATA_JEST_URI=http://elasticsearch:9200'
+#      - 'SPRING_ELASTICSEARCH_REST_URIS=http://elasticsearch:9200'
+#      - 'KAFKA_BOOTSTRAPSERVERS=kafka:9092'
+#      - JHIPSTER_REGISTRY_PASSWORD=admin
+
+  mysql:
+    extends:
+      file: mysql.yml
+      service: mysql
+  redis:
+    extends:
+      file: redis.yml
+      service: redis
+  elasticsearch:
+    extends:
+      file: elasticsearch.yml
+      service: elasticsearch
+  zookeeper:
+    extends:
+      file: kafka.yml
+      service: zookeeper
+  kafka:
+    extends:
+      file: kafka.yml
+      service: kafka
+  jhipster-registry:
+    extends:
+      file: jhipster-registry.yml
+      service: jhipster-registry
+  keycloak:
+    extends:
+      file: keycloak.yml
+      service: keycloak
+
+#  prometheus:
+#    extends:
+#      file: prometheus.yml
+#      service: prometheus
+#
+#  alertmanager:
+#    extends:
+#      file: prometheus.yml
+#      service: alertmanager
+#
+#  grafana:
+#    extends:
+#      file: prometheus.yml
+#      service: grafana
+
+#volumes:
+#  prometheus_data: {}
+#  grafana_data: {}

@@ -1,6 +1,6 @@
 version: '2'
 services:
-  hmall-mysql:
+  mysql:
     image: mysql:8.0.20
     # volumes:
     #     - ~/volumes/jhipster/gateway/mysql/:/var/lib/mysql/

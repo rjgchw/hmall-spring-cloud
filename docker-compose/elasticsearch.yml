@@ -1,6 +1,6 @@
 version: '2'
 services:
-  hmall-elasticsearch:
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.8
     # volumes:
     #     - ~/volumes/jhipster/order/elasticsearch/:/usr/share/elasticsearch/data/
