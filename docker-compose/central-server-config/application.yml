@@ -16,7 +16,7 @@ jhipster:
     logs: # do not report metrics in the logs
       enabled: false
 
-management:
+managementjhipster-registry:
   metrics:
     export:
       prometheus:
@@ -24,4 +24,5 @@ management:
 eureka:
   client:
     service-url:
-      defaultZone: http://admin:${jhipster.registry.password}@jhipster-registry:8761/eureka/
+#      defaultZone: http://admin:${jhipster.registry.password}@jhipster-registry:8761/eureka/
+      defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
