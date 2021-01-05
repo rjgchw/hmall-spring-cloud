@@ -1,0 +1,10 @@
+version: '2'
+services:
+  sentinel:
+    image: sentinel-dashboard:1.8.0
+    container_name: sentinel-dashboard
+    environment:
+      JAVA_OPTS: "-Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject.name=sentinel-dashboard -Djava.security.egd=file:/dev/./urandom -Dcsp.sentinel.api.port=8719"
+    ports: #避免出现端口映射错误，建议采用字符串格式 8080端口为Dockerfile中EXPOSE端口
+      - "9999:8080"
+      - "8719:8719"

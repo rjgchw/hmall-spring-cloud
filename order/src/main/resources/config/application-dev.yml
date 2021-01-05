@@ -15,16 +15,9 @@
 
 logging:
   level:
-    ROOT: DEBUG
+    ROOT: INFO
     io.github.jhipster: DEBUG
     org.rjgchw.hmall.order: DEBUG
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
 spring:
   profiles:
@@ -33,6 +26,13 @@ spring:
       - swagger
       # Uncomment to activate TLS for the dev profile
       #- tls
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  sentinel:
+    transport:
+      dashboard: localhost:9999
   devtools:
     restart:
       enabled: true

@@ -14,31 +14,12 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-  client:
-    enabled: true
-    healthcheck:
-      enabled: true
-    fetch-registry: true
-    register-with-eureka: true
-    instance-info-replication-interval-seconds: 10
-    registry-fetch-interval-seconds: 10
-  instance:
-    appname: gateway
-    instanceId: gateway:${spring.application.instance-id:${random.value}}
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 10
-    status-page-url-path: ${management.endpoints.web.base-path}/info
-    health-check-url-path: ${management.endpoints.web.base-path}/health
-    metadata-map:
-      zone: primary # This is needed for the load balancer
-      profile: ${spring.profiles.active}
-      version: #project.version#
-      git-version: ${git.commit.id.describe:}
-      git-commit: ${git.commit.id.abbrev:}
-      git-branch: ${git.branch:}
 ribbon:
-  eureka:
+  ConnectTimeout: 5000
+  ReadTimeout: 5000
+
+feign:
+  sentinel:
     enabled: true
 # See http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
 zuul: # those values must be configured depending on the application specific needs
@@ -49,15 +30,6 @@ zuul: # those values must be configured depending on the application specific ne
   prefix: /services
   semaphore:
     max-semaphores: 500
-
-# See https://github.com/Netflix/Hystrix/wiki/Configuration
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 10000
 
 management:
   endpoints:
@@ -105,6 +77,11 @@ management:
 spring:
   application:
     name: gateway
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        group: ${spring.application.name}
   jmx:
     enabled: false
   data:

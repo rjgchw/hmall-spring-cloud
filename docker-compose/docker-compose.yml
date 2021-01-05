@@ -77,10 +77,14 @@ services:
     extends:
       file: kafka.yml
       service: kafka
-  jhipster-registry:
+  nacos:
     extends:
-      file: jhipster-registry.yml
-      service: jhipster-registry
+      file: nacos.yml
+      service: nacos
+  sentinel:
+    extends:
+      file: sentinel.yml
+      service: sentinel
   keycloak:
     extends:
       file: keycloak.yml
