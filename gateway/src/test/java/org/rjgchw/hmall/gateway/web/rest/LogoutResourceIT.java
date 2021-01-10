@@ -1,21 +1,17 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
 import org.rjgchw.hmall.gateway.GatewayApp;
-import org.rjgchw.hmall.gateway.RedisTestContainerExtension;
 import org.rjgchw.hmall.gateway.config.TestSecurityConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -24,48 +20,50 @@ import java.util.Map;
 
 import static org.rjgchw.hmall.gateway.web.rest.TestUtil.ID_TOKEN;
 import static org.rjgchw.hmall.gateway.web.rest.TestUtil.authenticationToken;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.*;
 
 /**
  * Integration tests for the {@link LogoutResource} REST controller.
  */
 @SpringBootTest(classes = {GatewayApp.class, TestSecurityConfiguration.class})
-@ExtendWith(RedisTestContainerExtension.class)
 public class LogoutResourceIT {
 
     @Autowired
-    private ClientRegistrationRepository registrations;
+    private ReactiveClientRegistrationRepository registrations;
 
     @Autowired
-    private WebApplicationContext context;
+    private ApplicationContext context;
 
-    private MockMvc restLogoutMockMvc;
+    private WebTestClient webTestClient;
 
     private OidcIdToken idToken;
 
     @BeforeEach
-    public void before() throws Exception {
+    public void before() {
         Map<String, Object> claims = new HashMap<>();
         claims.put("groups", Collections.singletonList("ROLE_USER"));
         claims.put("sub", 123);
         this.idToken = new OidcIdToken(ID_TOKEN, Instant.now(), Instant.now().plusSeconds(60), claims);
 
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken(idToken));
-        SecurityContextHolderAwareRequestFilter authInjector = new SecurityContextHolderAwareRequestFilter();
-        authInjector.afterPropertiesSet();
-
-        this.restLogoutMockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+        this.webTestClient = WebTestClient.bindToApplicationContext(this.context)
+            .apply(springSecurity())
+            .configureClient()
+            .build();
     }
 
     @Test
-    public void getLogoutInformation() throws Exception {
-        String logoutUrl = this.registrations.findByRegistrationId("oidc").getProviderDetails()
-            .getConfigurationMetadata().get("end_session_endpoint").toString();
-        restLogoutMockMvc.perform(post("/api/logout"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.logoutUrl").value(logoutUrl))
-            .andExpect(jsonPath("$.idToken").value(ID_TOKEN));
+    public void getLogoutInformation() {
+        String logoutUrl = this.registrations.findByRegistrationId("oidc")
+            .map(oidc -> oidc.getProviderDetails().getConfigurationMetadata()
+                .get("end_session_endpoint").toString()).block();
+
+        this.webTestClient.mutateWith(csrf())
+            .mutateWith(mockAuthentication(TestUtil.authenticationToken(idToken)))
+            .post().uri("/api/logout").exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON_VALUE)
+            .expectBody()
+            .jsonPath("$.logoutUrl").isEqualTo(logoutUrl.toString())
+            .jsonPath("$.idToken").isEqualTo(ID_TOKEN);
     }
 }

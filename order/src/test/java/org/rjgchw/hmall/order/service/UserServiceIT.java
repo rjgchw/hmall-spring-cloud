@@ -1,19 +1,17 @@
 package org.rjgchw.hmall.order.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.rjgchw.hmall.order.OrderApp;
-import org.rjgchw.hmall.order.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.config.Constants;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
 import org.rjgchw.hmall.order.domain.User;
 import org.rjgchw.hmall.order.repository.UserRepository;
 import org.rjgchw.hmall.order.security.AuthoritiesConstants;
 import org.rjgchw.hmall.order.service.dto.UserDTO;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,8 +19,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,8 +33,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for {@link UserService}.
  */
 @SpringBootTest(classes = {OrderApp.class, TestSecurityConfiguration.class})
-@ExtendWith(RedisTestContainerExtension.class)
-@Transactional
 public class UserServiceIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";
@@ -62,6 +59,8 @@ public class UserServiceIT {
 
     @BeforeEach
     public void init() {
+        userRepository.deleteAllUserAuthorities().block();
+        userRepository.deleteAll().block();
         user = new User();
         user.setLogin(DEFAULT_LOGIN);
         user.setActivated(true);
@@ -70,6 +69,7 @@ public class UserServiceIT {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+        user.setCreatedBy(Constants.SYSTEM_ACCOUNT);
 
         userDetails = new HashMap<>();
         userDetails.put("sub", DEFAULT_LOGIN);
@@ -80,25 +80,24 @@ public class UserServiceIT {
     }
 
     @Test
-    @Transactional
     public void assertThatAnonymousUserIsNotGet() {
         user.setId(Constants.ANONYMOUS_USER);
         user.setLogin(Constants.ANONYMOUS_USER);
-        if (!userRepository.findOneByLogin(Constants.ANONYMOUS_USER).isPresent()) {
-            userRepository.saveAndFlush(user);
+        if (!userRepository.findOneByLogin(Constants.ANONYMOUS_USER).blockOptional().isPresent()) {
+            userRepository.create(user).block();
         }
-        final PageRequest pageable = PageRequest.of(0, (int) userRepository.count());
-        final Page<UserDTO> allManagedUsers = userService.getAllManagedUsers(pageable);
-        assertThat(allManagedUsers.getContent().stream()
+        final PageRequest pageable = PageRequest.of(0, (int) userRepository.count().block().intValue());
+        final List<UserDTO> allManagedUsers = userService.getAllManagedUsers(pageable)
+            .collectList().block();
+        assertThat(allManagedUsers.stream()
             .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
             .isTrue();
     }
 
     @Test
-    @Transactional
     public void testDefaultUserDetails() {
         OAuth2AuthenticationToken authentication = createMockOAuth2AuthenticationToken(userDetails);
-        UserDTO userDTO = userService.getUserFromAuthentication(authentication);
+        UserDTO userDTO = userService.getUserFromAuthentication(authentication).block();
 
         assertThat(userDTO.getLogin()).isEqualTo(DEFAULT_LOGIN);
         assertThat(userDTO.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
@@ -111,57 +110,52 @@ public class UserServiceIT {
     }
 
     @Test
-    @Transactional
     public void testUserDetailsWithUsername() {
         userDetails.put("preferred_username", "TEST");
 
         OAuth2AuthenticationToken authentication = createMockOAuth2AuthenticationToken(userDetails);
-        UserDTO userDTO = userService.getUserFromAuthentication(authentication);
+        UserDTO userDTO = userService.getUserFromAuthentication(authentication).block();
 
         assertThat(userDTO.getLogin()).isEqualTo("test");
     }
 
     @Test
-    @Transactional
     public void testUserDetailsWithLangKey() {
         userDetails.put("langKey", DEFAULT_LANGKEY);
         userDetails.put("locale", "en-US");
 
         OAuth2AuthenticationToken authentication = createMockOAuth2AuthenticationToken(userDetails);
-        UserDTO userDTO = userService.getUserFromAuthentication(authentication);
+        UserDTO userDTO = userService.getUserFromAuthentication(authentication).block();
 
         assertThat(userDTO.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
     }
 
     @Test
-    @Transactional
     public void testUserDetailsWithLocale() {
         userDetails.put("locale", "it-IT");
 
         OAuth2AuthenticationToken authentication = createMockOAuth2AuthenticationToken(userDetails);
-        UserDTO userDTO = userService.getUserFromAuthentication(authentication);
+        UserDTO userDTO = userService.getUserFromAuthentication(authentication).block();
 
         assertThat(userDTO.getLangKey()).isEqualTo("it");
     }
 
     @Test
-    @Transactional
     public void testUserDetailsWithUSLocaleUnderscore() {
         userDetails.put("locale", "en_US");
 
         OAuth2AuthenticationToken authentication = createMockOAuth2AuthenticationToken(userDetails);
-        UserDTO userDTO = userService.getUserFromAuthentication(authentication);
+        UserDTO userDTO = userService.getUserFromAuthentication(authentication).block();
 
         assertThat(userDTO.getLangKey()).isEqualTo("en");
     }
 
     @Test
-    @Transactional
     public void testUserDetailsWithUSLocaleDash() {
         userDetails.put("locale", "en-US");
 
         OAuth2AuthenticationToken authentication = createMockOAuth2AuthenticationToken(userDetails);
-        UserDTO userDTO = userService.getUserFromAuthentication(authentication);
+        UserDTO userDTO = userService.getUserFromAuthentication(authentication).block();
 
         assertThat(userDTO.getLangKey()).isEqualTo("en");
     }

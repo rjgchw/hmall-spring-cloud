@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
+import org.rjgchw.hmall.gateway.security.SecurityUtils;
 import org.rjgchw.hmall.gateway.service.UserService;
 import org.rjgchw.hmall.gateway.service.dto.UserDTO;
 
@@ -9,7 +10,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
+import reactor.core.publisher.Mono;
 
 import java.security.Principal;
 
@@ -46,7 +47,7 @@ public class AccountResource {
      */
     @GetMapping("/account")
     @SuppressWarnings("unchecked")
-    public UserDTO getAccount(Principal principal) {
+    public Mono<UserDTO> getAccount(Principal principal) {
         if (principal instanceof AbstractAuthenticationToken) {
             return userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);
         } else {

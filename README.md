@@ -244,27 +244,18 @@ docker-compose -f src/main/docker/app.yml up -d
 
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
 
-## Continuous Integration (optional)
-
-To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
-
-[jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 6.10.3 archive]: https://www.jhipster.tech/documentation-archive/v6.10.3
-[doing microservices with jhipster]: https://www.jhipster.tech/documentation-archive/v6.10.3/microservices-architecture/
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v6.10.3/development/
-[service discovery and configuration with the jhipster-registry]: https://www.jhipster.tech/documentation-archive/v6.10.3/microservices-architecture/#jhipster-registry
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v6.10.3/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v6.10.3/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v6.10.3/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v6.10.3/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v6.10.3/setting-up-ci/
-[node.js]: https://nodejs.org/
-[yarn]: https://yarnpkg.org/
-[webpack]: https://webpack.github.io/
-[angular cli]: https://cli.angular.io/
-[browsersync]: https://www.browsersync.io/
-[jest]: https://facebook.github.io/jest/
-[jasmine]: https://jasmine.github.io/2.0/introduction.html
-[protractor]: https://angular.github.io/protractor/
-[leaflet]: https://leafletjs.com/
-[definitelytyped]: https://definitelytyped.org/
+## 限流配置
+在 `nacos` 中的 `dev` 命名空间中配置一下信息:
+```
+data-id = gateway-rule.json
+group=gateway
+[{
+    "resource": "/api/account",
+    "limitApp": "default",
+    "grade": 1,
+    "count": 1,
+    "strategy": 0,
+    "controlBehavior": 0,
+    "clusterMode": false
+}]
+```
