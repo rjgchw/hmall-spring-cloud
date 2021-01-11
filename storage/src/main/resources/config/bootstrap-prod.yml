@@ -1,0 +1,15 @@
+# ===================================================================
+# Spring Cloud Config bootstrap configuration for the "prod" profile
+# ===================================================================
+
+spring:
+  application:
+    name: storage
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        prefix: application
+        file-extension: yml
+        group: ${spring.application.name}
+        namespace: prod

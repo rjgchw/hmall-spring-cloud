@@ -22,7 +22,7 @@ import java.util.Map;
 @Repository
 public interface PersistenceAuditEventRepository extends R2dbcRepository<PersistentAuditEvent, Long>, PersistenceAuditEventRepositoryInternal {
 
-    @Query("INSERT INTO hh_persistent_audit_evt_data VALUES(:eventId, :name, :value)")
+    @Query("INSERT INTO h_persistent_audit_evt_data VALUES(:eventId, :name, :value)")
     Mono<Void> savePersistenceAuditEventData(Long eventId, String name, String value);
 }
 
@@ -83,7 +83,7 @@ class PersistenceAuditEventRepositoryInternalImpl implements PersistenceAuditEve
         // See https://github.com/r2dbc/r2dbc-h2/pull/139 https://github.com/mirromutth/r2dbc-mysql/issues/105
         LocalDateTime fromDateLocal = LocalDateTime.ofInstant(fromDate, ZoneOffset.UTC);
         LocalDateTime toDateLocal = LocalDateTime.ofInstant(toDate, ZoneOffset.UTC);
-        return databaseClient.execute("SELECT COUNT(DISTINCT event_id) FROM hh_persistent_audit_event " +
+        return databaseClient.execute("SELECT COUNT(DISTINCT event_id) FROM h_persistent_audit_event " +
             "WHERE event_date > :fromDate AND event_date < :toDate")
             .bind("fromDate", fromDateLocal)
             .bind("toDate", toDateLocal)
@@ -111,7 +111,7 @@ class PersistenceAuditEventRepositoryInternalImpl implements PersistenceAuditEve
     }
 
     private Mono<Map<String, String>> findAllEventData(Long id) {
-        return databaseClient.select().from("hh_persistent_audit_evt_data")
+        return databaseClient.select().from("h_persistent_audit_evt_data")
             .project("name", "value")
             .matching(Criteria.where("event_id").is(id))
             .map(row -> {

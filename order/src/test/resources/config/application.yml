@@ -28,7 +28,7 @@ spring:
       write-durations-as-timestamps: false
   liquibase:
     contexts: test
-    url: jdbc:h2:mem:order;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:h_order;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
   mail:
     host: localhost
   main:
@@ -36,7 +36,7 @@ spring:
   messages:
     basename: i18n/messages
   r2dbc:
-    url: r2dbc:h2:mem:///order?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: r2dbc:h2:mem:///h_order?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: r2dbc
     password:
   task:

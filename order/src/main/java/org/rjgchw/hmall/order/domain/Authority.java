@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * An authority (a security role) used by Spring Security.
  */
-@Table("hh_authority")
+@Table("h_authority")
 public class Authority implements Serializable, Persistable<String> {
 
     private static final long serialVersionUID = 1L;

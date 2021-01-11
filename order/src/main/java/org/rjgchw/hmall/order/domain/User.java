@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * A user.
  */
-@Table("hh_user")
+@Table("h_user")
 public class User extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

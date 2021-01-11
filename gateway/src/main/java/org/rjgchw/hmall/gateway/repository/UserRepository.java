@@ -23,16 +23,16 @@ import java.util.stream.Collectors;
 @Repository
 public interface UserRepository extends R2dbcRepository<User, String>, UserRepositoryInternal {
 
-    @Query("SELECT * FROM hh_user WHERE login = :login")
+    @Query("SELECT * FROM h_user WHERE login = :login")
     Mono<User> findOneByLogin(String login);
 
-    @Query("SELECT COUNT(DISTINCT id) FROM hh_user WHERE login != :anonymousUser")
+    @Query("SELECT COUNT(DISTINCT id) FROM h_user WHERE login != :anonymousUser")
     Mono<Long> countAllByLoginNot(String anonymousUser);
 
-    @Query("INSERT INTO hh_user_authority VALUES(:userId, :authority)")
+    @Query("INSERT INTO h_user_authority VALUES(:userId, :authority)")
     Mono<Void> saveUserAuthority(String userId, String authority);
 
-    @Query("DELETE FROM hh_user_authority")
+    @Query("DELETE FROM h_user_authority")
     Mono<Void> deleteAllUserAuthorities();
 }
 
@@ -60,7 +60,7 @@ class UserRepositoryInternalImpl implements UserRepositoryInternal {
     }
 
     private Mono<User> findOneWithAuthoritiesBy(String fieldName, Object fieldValue) {
-        return db.execute("SELECT * FROM hh_user u LEFT JOIN hh_user_authority ua ON u.id=ua.user_id WHERE u." + fieldName + " = :" + fieldName)
+        return db.execute("SELECT * FROM h_user u LEFT JOIN h_user_authority ua ON u.id=ua.user_id WHERE u." + fieldName + " = :" + fieldName)
             .bind(fieldName, fieldValue)
             .map((row, metadata) ->
                 Tuples.of(
