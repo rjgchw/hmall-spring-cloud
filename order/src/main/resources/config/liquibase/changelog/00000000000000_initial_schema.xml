@@ -107,6 +107,120 @@
                                  constraintName="fk_evt_pers_audit_evt_data"
                                  referencedColumnNames="event_id"
                                  referencedTableName="h_persistent_audit_event"/>
+
+        <createTable tableName="h_product_brand">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="h_product_brandPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime(6)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="datetime(6)"/>
+            <column name="big_pic" type="VARCHAR(512)"/>
+            <column name="brand_story" type="VARCHAR(512)"/>
+            <column name="first_letter" type="VARCHAR(1)"/>
+            <column name="is_factory" type="BIT"/>
+            <column name="is_show" type="BIT"/>
+            <column name="logo" type="VARCHAR(512)"/>
+            <column name="name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_comment_count" type="INT"/>
+            <column name="product_count" type="INT"/>
+            <column name="sort" type="INT"/>
+        </createTable>
+
+        <createTable tableName="h_order">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="h_orderPK"/>
+            </column>
+            <column name="member_username" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_sn" type="VARCHAR(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="source_type" type="VARCHAR(20)"/>
+            <column name="pay_type" type="VARCHAR(20)"/>
+            <column name="receiver_id" type="BIGINT"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="total_amount" type="DECIMAL(15, 2)"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime(6)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="datetime(6)"/>
+        </createTable>
+
+        <createTable tableName="h_order_item">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="h_order_itemPK"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+            </column>
+            <column name="order_sn" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_name" type="VARCHAR(50)"/>
+            <column name="product_price" type="DECIMAL(15, 2)"/>
+            <column name="product_quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="order_id"
+                                 baseTableName="h_order_item"
+                                 constraintName="fk_order_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="h_order"/>
+
+        <createTable tableName="h_product">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="h_productPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime(6)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="datetime(6)"/>
+            <column name="description" type="VARCHAR(256)"/>
+            <column name="img_url" type="VARCHAR(254)"/>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(15, 2)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="h_product_category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="h_product_categoryPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime(6)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="datetime(6)"/>
+            <column name="name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="h_product"
+                                 constraintName="FKdo0w3sf8locc28xirnngevf7i" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="h_product_category" validate="true"/>
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">
