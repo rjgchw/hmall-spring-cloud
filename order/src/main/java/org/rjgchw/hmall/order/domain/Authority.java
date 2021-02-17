@@ -13,7 +13,7 @@ import java.util.Objects;
  * An authority (a security role) used by Spring Security.
  */
 @Entity
-@Table(name = "hh_authority")
+@Table(name = "h_authority")
 public class Authority implements Serializable {
 
     private static final long serialVersionUID = 1L;
