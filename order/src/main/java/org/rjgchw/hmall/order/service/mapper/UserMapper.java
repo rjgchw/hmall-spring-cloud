@@ -1,7 +1,7 @@
 package org.rjgchw.hmall.order.service.mapper;
 
-import org.rjgchw.hmall.order.domain.Authority;
-import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.entity.Authority;
+import org.rjgchw.hmall.order.entity.User;
 import org.rjgchw.hmall.order.service.dto.UserDTO;
 
 import org.springframework.stereotype.Service;

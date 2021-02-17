@@ -1,8 +1,8 @@
 package org.rjgchw.hmall.order.service;
 
 import org.rjgchw.hmall.order.config.Constants;
-import org.rjgchw.hmall.order.domain.Authority;
-import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.entity.Authority;
+import org.rjgchw.hmall.order.entity.User;
 import org.rjgchw.hmall.order.repository.AuthorityRepository;
 import org.rjgchw.hmall.order.repository.UserRepository;
 import org.rjgchw.hmall.order.repository.search.UserSearchRepository;

@@ -6,10 +6,6 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.github.jhipster.config.cache.PrefixedKeyGenerator;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.context.annotation.*;
 import java.net.URI;
 import org.redisson.Redisson;
 import org.redisson.config.Config;
@@ -73,8 +69,7 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer(javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration) {
         return cm -> {
-            createCache(cm, org.rjgchw.hmall.storage.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
-            createCache(cm, org.rjgchw.hmall.storage.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
+//            createCache(cm, org.rjgchw.hmall.storage.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
             // jhipster-needle-redis-add-entry
         };
     }

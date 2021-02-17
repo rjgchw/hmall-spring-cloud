@@ -15,6 +15,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.rjgchw</groupId>
+                <artifactId>common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.github.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
                 <version>${jhipster-dependencies.version}</version>

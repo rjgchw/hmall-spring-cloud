@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.storage.config.audit;
 
-import org.rjgchw.hmall.storage.domain.PersistentAuditEvent;
+import org.rjgchw.hmall.storage.entity.PersistentAuditEvent;
 
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;

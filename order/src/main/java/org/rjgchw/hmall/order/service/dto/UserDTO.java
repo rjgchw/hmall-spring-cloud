@@ -2,8 +2,8 @@ package org.rjgchw.hmall.order.service.dto;
 
 import org.rjgchw.hmall.order.config.Constants;
 
-import org.rjgchw.hmall.order.domain.Authority;
-import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.entity.Authority;
+import org.rjgchw.hmall.order.entity.User;
 
 import javax.validation.constraints.*;
 import java.time.Instant;

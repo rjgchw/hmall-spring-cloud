@@ -14,6 +14,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.rjgchw</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.github.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
         </dependency>
@@ -291,7 +295,7 @@
                     <defaultSchemaName>storage</defaultSchemaName>
                     <username>root</username>
                     <password>6yhn^YHN</password>
-                    <referenceUrl>hibernate:spring:org.rjgchw.hmall.storage.domain?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                    <referenceUrl>hibernate:spring:org.rjgchw.hmall.storage.entity?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                 </configuration>
             </plugin>
             <plugin>

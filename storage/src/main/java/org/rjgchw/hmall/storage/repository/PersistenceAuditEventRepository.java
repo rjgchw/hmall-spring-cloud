@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.storage.repository;
 
-import org.rjgchw.hmall.storage.domain.PersistentAuditEvent;
+import org.rjgchw.hmall.storage.entity.PersistentAuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,13 +1,12 @@
 package org.rjgchw.hmall.order.web.rest;
 
 import org.rjgchw.hmall.order.config.Constants;
-import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.entity.User;
 import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
 import org.rjgchw.hmall.order.security.AuthoritiesConstants;
 import org.rjgchw.hmall.order.service.UserService;
 import org.rjgchw.hmall.order.service.dto.UserDTO;
 
-import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 

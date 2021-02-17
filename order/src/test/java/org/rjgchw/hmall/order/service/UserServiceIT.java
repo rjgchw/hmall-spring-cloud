@@ -4,7 +4,7 @@ import org.rjgchw.hmall.order.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.OrderApp;
 import org.rjgchw.hmall.order.config.Constants;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
-import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.entity.User;
 import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
 import org.rjgchw.hmall.order.repository.UserRepository;
 import org.rjgchw.hmall.order.security.AuthoritiesConstants;
@@ -31,8 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 /**

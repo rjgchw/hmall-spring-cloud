@@ -6,7 +6,7 @@ import org.rjgchw.hmall.storage.RedisTestContainerExtension;
 import org.rjgchw.hmall.storage.config.Constants;
 import org.rjgchw.hmall.storage.config.TestSecurityConfiguration;
 import org.rjgchw.hmall.storage.config.audit.AuditEventConverter;
-import org.rjgchw.hmall.storage.domain.PersistentAuditEvent;
+import org.rjgchw.hmall.storage.entity.PersistentAuditEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

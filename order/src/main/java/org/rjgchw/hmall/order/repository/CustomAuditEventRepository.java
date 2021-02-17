@@ -2,7 +2,7 @@ package org.rjgchw.hmall.order.repository;
 
 import org.rjgchw.hmall.order.config.Constants;
 import org.rjgchw.hmall.order.config.audit.AuditEventConverter;
-import org.rjgchw.hmall.order.domain.PersistentAuditEvent;
+import org.rjgchw.hmall.order.entity.PersistentAuditEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

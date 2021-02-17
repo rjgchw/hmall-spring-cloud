@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.order.repository;
 
-import org.rjgchw.hmall.order.domain.Authority;
+import org.rjgchw.hmall.order.entity.Authority;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.order.repository.search;
 
-import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.entity.User;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 

@@ -3,8 +3,8 @@ package org.rjgchw.hmall.order.web.rest;
 import org.rjgchw.hmall.order.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.OrderApp;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
-import org.rjgchw.hmall.order.domain.Authority;
-import org.rjgchw.hmall.order.domain.User;
+import org.rjgchw.hmall.order.entity.Authority;
+import org.rjgchw.hmall.order.entity.User;
 import org.rjgchw.hmall.order.repository.UserRepository;
 import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
 import org.rjgchw.hmall.order.security.AuthoritiesConstants;
@@ -31,7 +31,6 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
