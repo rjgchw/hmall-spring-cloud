@@ -1,3 +1,7 @@
+# 编译错误
+## idea 编译 mapstruct 错误
+1.3.1.Final
+If you're stuck with an older version, as a workaround you can add -Djps.track.ap.dependencies=false in File | Settings | Build, Execution, Deployment | Compiler | User-local build process VM options (overrides Shared options)
 # gateway
 
 This application was generated using JHipster 6.10.3, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.3](https://www.jhipster.tech/documentation-archive/v6.10.3).
