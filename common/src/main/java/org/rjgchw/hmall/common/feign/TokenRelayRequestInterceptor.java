@@ -1,9 +1,8 @@
-package org.rjgchw.hmall.order.client;
-
-import org.rjgchw.hmall.order.security.oauth2.AuthorizationHeaderUtil;
+package org.rjgchw.hmall.common.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.rjgchw.hmall.common.security.oauth2.AuthorizationHeaderUtil;
 
 import java.util.Optional;
 

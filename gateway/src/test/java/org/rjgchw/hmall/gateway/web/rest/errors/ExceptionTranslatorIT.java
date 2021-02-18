@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.gateway.web.rest.errors;
 
+import org.rjgchw.hmall.common.web.rest.error.ErrorConstants;
 import org.rjgchw.hmall.gateway.GatewayApp;
 import org.rjgchw.hmall.gateway.config.TestSecurityConfiguration;
 import org.junit.jupiter.api.Test;

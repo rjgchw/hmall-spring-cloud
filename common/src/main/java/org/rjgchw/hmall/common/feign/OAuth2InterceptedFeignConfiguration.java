@@ -1,11 +1,15 @@
-package org.rjgchw.hmall.order.client;
+package org.rjgchw.hmall.common.feign;
 
+import org.rjgchw.hmall.common.security.oauth2.AuthorizationHeaderUtil;
 import org.springframework.context.annotation.Bean;
 
 import feign.RequestInterceptor;
 
-import org.rjgchw.hmall.order.security.oauth2.AuthorizationHeaderUtil;
-
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-18 22:15
+ */
 public class OAuth2InterceptedFeignConfiguration {
 
     @Bean(name = "oauth2RequestInterceptor")

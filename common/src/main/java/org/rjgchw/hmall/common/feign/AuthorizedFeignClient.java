@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.storage.client;
+package org.rjgchw.hmall.common.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.FeignClientsConfiguration;
@@ -6,6 +6,11 @@ import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-18 17:10
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented

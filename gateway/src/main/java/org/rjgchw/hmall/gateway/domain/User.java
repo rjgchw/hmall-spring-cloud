@@ -1,9 +1,8 @@
 package org.rjgchw.hmall.gateway.domain;
 
-import org.rjgchw.hmall.gateway.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
+import org.rjgchw.hmall.common.config.Constants;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;

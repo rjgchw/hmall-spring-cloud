@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.storage.web.rest.errors;
+package org.rjgchw.hmall.common.web.rest.error;
 
 import java.io.Serializable;
 

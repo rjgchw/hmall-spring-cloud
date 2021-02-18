@@ -1,11 +1,11 @@
 package org.rjgchw.hmall.order.web.rest;
 
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.order.OrderApp;
 import org.rjgchw.hmall.order.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
 import org.rjgchw.hmall.order.entity.PersistentAuditEvent;
 import org.rjgchw.hmall.order.repository.PersistenceAuditEventRepository;
-import org.rjgchw.hmall.order.security.AuthoritiesConstants;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

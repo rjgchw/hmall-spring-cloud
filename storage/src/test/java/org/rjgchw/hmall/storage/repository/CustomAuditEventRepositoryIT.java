@@ -1,9 +1,9 @@
 package org.rjgchw.hmall.storage.repository;
 
+import org.rjgchw.hmall.common.config.Constants;
 import org.rjgchw.hmall.storage.StorageApp;
 
 import org.rjgchw.hmall.storage.RedisTestContainerExtension;
-import org.rjgchw.hmall.storage.config.Constants;
 import org.rjgchw.hmall.storage.config.TestSecurityConfiguration;
 import org.rjgchw.hmall.storage.config.audit.AuditEventConverter;
 import org.rjgchw.hmall.storage.entity.PersistentAuditEvent;

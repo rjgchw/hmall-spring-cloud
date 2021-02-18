@@ -15,6 +15,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.rjgchw</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.github.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
             <exclusions>

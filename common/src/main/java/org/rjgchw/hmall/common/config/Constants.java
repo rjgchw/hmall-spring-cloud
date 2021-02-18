@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.gateway.config;
+package org.rjgchw.hmall.common.config;
 
 /**
  * Application constants.

@@ -1,27 +1,27 @@
 package org.rjgchw.hmall.order.config;
 
-import org.rjgchw.hmall.order.security.*;
-
 import io.github.jhipster.config.JHipsterProperties;
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
+import org.rjgchw.hmall.common.security.SpringSecurityAuditorAware;
+import org.rjgchw.hmall.common.security.oauth2.AudienceValidator;
+import org.rjgchw.hmall.common.security.oauth2.AuthorizationHeaderUtil;
+import org.rjgchw.hmall.common.security.oauth2.JwtGrantedAuthorityConverter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.rjgchw.hmall.order.security.oauth2.AudienceValidator;
-import org.rjgchw.hmall.order.security.SecurityUtils;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import java.util.*;
-import org.rjgchw.hmall.order.security.oauth2.JwtGrantedAuthorityConverter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
@@ -98,5 +98,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         jwtDecoder.setJwtValidator(withAudience);
 
         return jwtDecoder;
+    }
+
+    @Bean
+    SpringSecurityAuditorAware springSecurityAuditorAware() {
+        return new SpringSecurityAuditorAware();
+    }
+
+    @Bean
+    AuthorizationHeaderUtil authorizationHeaderUtil(OAuth2AuthorizedClientService clientService, RestTemplateBuilder restTemplateBuilder) {
+        return new AuthorizationHeaderUtil(clientService, restTemplateBuilder);
     }
 }

@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.storage.web.rest.errors;
 
+import org.rjgchw.hmall.common.web.rest.error.ErrorConstants;
 import org.rjgchw.hmall.storage.RedisTestContainerExtension;
 import org.rjgchw.hmall.storage.StorageApp;
 import org.rjgchw.hmall.storage.config.TestSecurityConfiguration;

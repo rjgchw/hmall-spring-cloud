@@ -3,8 +3,8 @@ package org.rjgchw.hmall.order.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
+import org.rjgchw.hmall.common.config.Constants;
 import org.rjgchw.hmall.common.entity.AbstractAuditingEntity;
-import org.rjgchw.hmall.order.config.Constants;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;

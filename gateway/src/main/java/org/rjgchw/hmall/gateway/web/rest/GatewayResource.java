@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.gateway.web.rest.vm.RouteVM;
 
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import reactor.core.publisher.Flux;
 import org.springframework.http.*;
 import org.springframework.security.access.annotation.Secured;
-import org.rjgchw.hmall.gateway.security.AuthoritiesConstants;
 import org.springframework.web.bind.annotation.*;
 
 /**

@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.order.security.oauth2;
+package org.rjgchw.hmall.common.security.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

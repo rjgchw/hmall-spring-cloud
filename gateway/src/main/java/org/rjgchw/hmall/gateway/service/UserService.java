@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.gateway.service;
 
-import org.rjgchw.hmall.gateway.config.Constants;
+import org.rjgchw.hmall.common.config.Constants;
 import org.rjgchw.hmall.gateway.domain.Authority;
 import org.rjgchw.hmall.gateway.domain.User;
 import org.rjgchw.hmall.gateway.repository.AuthorityRepository;

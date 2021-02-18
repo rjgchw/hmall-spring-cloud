@@ -1,7 +1,6 @@
 package org.rjgchw.hmall.order.service.dto;
 
-import org.rjgchw.hmall.order.config.Constants;
-
+import org.rjgchw.hmall.common.config.Constants;
 import org.rjgchw.hmall.order.entity.Authority;
 import org.rjgchw.hmall.order.entity.User;
 

@@ -1,6 +1,7 @@
 package org.rjgchw.hmall.gateway.security;
 
 import org.junit.jupiter.api.Test;
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

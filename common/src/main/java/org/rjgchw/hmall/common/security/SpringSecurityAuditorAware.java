@@ -1,16 +1,13 @@
-package org.rjgchw.hmall.order.security;
+package org.rjgchw.hmall.common.security;
 
-import org.rjgchw.hmall.order.config.Constants;
+import org.rjgchw.hmall.common.config.Constants;
+import org.springframework.data.domain.AuditorAware;
 
 import java.util.Optional;
-
-import org.springframework.data.domain.AuditorAware;
-import org.springframework.stereotype.Component;
 
 /**
  * Implementation of {@link AuditorAware} based on Spring Security.
  */
-@Component
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
     @Override

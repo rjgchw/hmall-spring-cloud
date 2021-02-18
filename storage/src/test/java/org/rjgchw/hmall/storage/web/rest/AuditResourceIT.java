@@ -1,11 +1,11 @@
 package org.rjgchw.hmall.storage.web.rest;
 
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.storage.StorageApp;
 import org.rjgchw.hmall.storage.RedisTestContainerExtension;
 import org.rjgchw.hmall.storage.config.TestSecurityConfiguration;
 import org.rjgchw.hmall.storage.entity.PersistentAuditEvent;
 import org.rjgchw.hmall.storage.repository.PersistenceAuditEventRepository;
-import org.rjgchw.hmall.storage.security.AuthoritiesConstants;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.order.web.rest;
 
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.order.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.OrderApp;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
@@ -7,7 +8,6 @@ import org.rjgchw.hmall.order.entity.Authority;
 import org.rjgchw.hmall.order.entity.User;
 import org.rjgchw.hmall.order.repository.UserRepository;
 import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
-import org.rjgchw.hmall.order.security.AuthoritiesConstants;
 import org.rjgchw.hmall.order.service.dto.UserDTO;
 import org.rjgchw.hmall.order.service.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;

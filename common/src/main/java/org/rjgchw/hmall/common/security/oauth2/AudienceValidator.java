@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.order.security.oauth2;
+package org.rjgchw.hmall.common.security.oauth2;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,7 @@ public class AudienceValidator implements OAuth2TokenValidator<Jwt> {
         this.allowedAudience = allowedAudience;
     }
 
+    @Override
     public OAuth2TokenValidatorResult validate(Jwt jwt) {
         List<String> audience = jwt.getAudience();
         if (audience.stream().anyMatch(allowedAudience::contains)) {

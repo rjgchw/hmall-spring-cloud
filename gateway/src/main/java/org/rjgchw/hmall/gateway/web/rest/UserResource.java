@@ -1,7 +1,7 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
-import org.rjgchw.hmall.gateway.config.Constants;
-import org.rjgchw.hmall.gateway.security.AuthoritiesConstants;
+import org.rjgchw.hmall.common.config.Constants;
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.gateway.service.UserService;
 import org.rjgchw.hmall.gateway.service.dto.UserDTO;
 

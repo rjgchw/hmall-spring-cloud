@@ -30,7 +30,7 @@ import static org.zalando.problem.Status.UNPROCESSABLE_ENTITY;
  * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
  * @author huangwei
  */
-public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
+public class OldExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
 
     private static final String FIELD_ERRORS_KEY = "errors";
     private static final String MESSAGE_KEY = "message";

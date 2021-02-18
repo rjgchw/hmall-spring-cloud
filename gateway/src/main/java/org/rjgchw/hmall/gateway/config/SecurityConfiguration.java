@@ -1,9 +1,10 @@
 package org.rjgchw.hmall.gateway.config;
 
-import org.rjgchw.hmall.gateway.security.AuthoritiesConstants;
+import org.rjgchw.hmall.common.config.Constants;
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
+import org.rjgchw.hmall.common.security.oauth2.AudienceValidator;
+import org.rjgchw.hmall.common.security.oauth2.JwtGrantedAuthorityConverter;
 import org.rjgchw.hmall.gateway.security.SecurityUtils;
-import org.rjgchw.hmall.gateway.security.oauth2.AudienceValidator;
-import org.rjgchw.hmall.gateway.security.oauth2.JwtGrantedAuthorityConverter;
 import org.rjgchw.hmall.gateway.service.AuditEventService;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -36,7 +37,6 @@ import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;

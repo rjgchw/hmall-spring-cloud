@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.order.security;
+package org.rjgchw.hmall.common.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

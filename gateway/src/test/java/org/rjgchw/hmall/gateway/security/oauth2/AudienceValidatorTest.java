@@ -1,6 +1,7 @@
 package org.rjgchw.hmall.gateway.security.oauth2;
 
 import org.junit.jupiter.api.Test;
+import org.rjgchw.hmall.common.security.oauth2.AudienceValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.ArrayList;

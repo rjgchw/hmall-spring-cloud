@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.order.client;
 
+import org.rjgchw.hmall.common.feign.AuthorizedFeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 

@@ -1,13 +1,13 @@
 package org.rjgchw.hmall.order.service;
 
+import org.rjgchw.hmall.common.config.Constants;
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.order.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.OrderApp;
-import org.rjgchw.hmall.order.config.Constants;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
 import org.rjgchw.hmall.order.entity.User;
 import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
 import org.rjgchw.hmall.order.repository.UserRepository;
-import org.rjgchw.hmall.order.security.AuthoritiesConstants;
 import org.rjgchw.hmall.order.service.dto.UserDTO;
 
 import org.junit.jupiter.api.BeforeEach;

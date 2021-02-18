@@ -1,15 +1,13 @@
 package org.rjgchw.hmall.order.web.rest;
 
-import org.rjgchw.hmall.order.config.Constants;
-import org.rjgchw.hmall.order.entity.User;
-import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
-import org.rjgchw.hmall.order.security.AuthoritiesConstants;
-import org.rjgchw.hmall.order.service.UserService;
-import org.rjgchw.hmall.order.service.dto.UserDTO;
-
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
+import org.rjgchw.hmall.common.config.Constants;
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
+import org.rjgchw.hmall.order.entity.User;
+import org.rjgchw.hmall.order.repository.search.UserSearchRepository;
+import org.rjgchw.hmall.order.service.UserService;
+import org.rjgchw.hmall.order.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,14 +17,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing users.

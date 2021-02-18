@@ -1,12 +1,12 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
+import org.rjgchw.hmall.common.config.Constants;
+import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.gateway.GatewayApp;
-import org.rjgchw.hmall.gateway.config.Constants;
 import org.rjgchw.hmall.gateway.config.TestSecurityConfiguration;
 import org.rjgchw.hmall.gateway.domain.Authority;
 import org.rjgchw.hmall.gateway.domain.User;
 import org.rjgchw.hmall.gateway.repository.UserRepository;
-import org.rjgchw.hmall.gateway.security.AuthoritiesConstants;
 import org.rjgchw.hmall.gateway.service.dto.UserDTO;
 import org.rjgchw.hmall.gateway.service.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;

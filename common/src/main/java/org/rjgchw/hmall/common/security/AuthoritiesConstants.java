@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.storage.security;
+package org.rjgchw.hmall.common.security;
 
 /**
  * Constants for Spring Security authorities.
