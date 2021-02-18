@@ -22,7 +22,7 @@ public class StorageDTO {
 
 //    @Schema(description = "库存", example = "100")
     @Min(0)
-    private Integer stock;
+    private Integer storage;
 
     public Long getId() {
         return id;
@@ -40,12 +40,12 @@ public class StorageDTO {
         this.productId = productId;
     }
 
-    public Integer getStock() {
-        return stock;
+    public Integer getStorage() {
+        return storage;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
+    public void setStorage(Integer storage) {
+        this.storage = storage;
     }
 
     @Override
@@ -57,9 +57,9 @@ public class StorageDTO {
             return false;
         }
 
-        StorageDTO stockDTO = (StorageDTO) o;
+        StorageDTO storageDTO = (StorageDTO) o;
 
-        return id.equals(stockDTO.id);
+        return id.equals(storageDTO.id);
     }
 
     @Override

@@ -5,8 +5,8 @@ package org.rjgchw.hmall.order.service.error;
  * @author Huangw
  * @date 2020-04-05 21:03
  */
-public class LockStockFailException extends RuntimeException {
-    public LockStockFailException() {
+public class LockStorageFailException extends RuntimeException {
+    public LockStorageFailException() {
         super();
     }
 }

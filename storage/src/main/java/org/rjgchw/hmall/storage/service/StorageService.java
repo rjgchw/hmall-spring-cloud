@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  *
  * @author Huangw
@@ -31,13 +33,13 @@ public class StorageService {
      * @param productQuantity
      * @return 成功/失败
      */
-    public boolean lockStorage(Long productId, Integer productQuantity) {
+    public Optional<Boolean> lockStorage(Long productId, Integer productQuantity) {
         return storageRepository.findByProductId(productId)
             .map(x -> {
                 if(x.getStorage() < productQuantity) {
                     throw new StorageShortageException();
                 }
-                return storageRepository.lockProduct(productId, x.getStorage(), productQuantity) > 0;
+                return Optional.of(storageRepository.lockProduct(productId, x.getStorage(), productQuantity) > 0);
             })
             .orElseThrow(ProductDoesNotExistException::new);
     }

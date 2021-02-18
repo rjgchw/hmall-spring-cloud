@@ -27,11 +27,11 @@ public interface StorageRepository extends JpaRepository<Storage, Long>, JpaSpec
      * 锁库存
      *
      * @param productId       产品id
-     * @param sourceStock     产品原库存
+     * @param sourceStorage     产品原库存
      * @param productQuantity 产品锁定数量
      * @return 影响条数
      */
     @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE h_stock SET stock = stock - :productQuantity WHERE product_id = :productId and stock = :sourceStock", nativeQuery = true)
-    int lockProduct(@Param("productId") Long productId, @Param("sourceStock") Integer sourceStock, @Param("productQuantity") Integer productQuantity);
+    @Query(value = "UPDATE h_storage SET storage = storage - :productQuantity WHERE product_id = :productId and storage = :sourceStorage", nativeQuery = true)
+    int lockProduct(@Param("productId") Long productId, @Param("sourceStorage") Integer sourceStorage, @Param("productQuantity") Integer productQuantity);
 }

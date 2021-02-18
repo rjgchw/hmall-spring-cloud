@@ -221,6 +221,20 @@
                                  constraintName="FKdo0w3sf8locc28xirnngevf7i" deferrable="false"
                                  initiallyDeferred="false" referencedColumnNames="id"
                                  referencedTableName="h_product_category" validate="true"/>
+
+        <loadData
+            file="config/liquibase/data/product_category.csv"
+            separator=";"
+            tableName="h_product_category">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+
+        <loadData
+            file="config/liquibase/data/product.csv"
+            separator=";"
+            tableName="h_product">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">

@@ -1,6 +1,7 @@
 package org.rjgchw.hmall.order.service;
 
 import org.redisson.api.RedissonClient;
+import org.rjgchw.hmall.order.client.StorageFeignClient;
 import org.rjgchw.hmall.order.entity.Order;
 import org.rjgchw.hmall.order.entity.OrderItem;
 import org.rjgchw.hmall.order.repository.OrderRepository;
@@ -11,7 +12,7 @@ import org.rjgchw.hmall.order.service.enums.PayTypeEnum;
 import org.rjgchw.hmall.order.service.enums.SourceTypeEnum;
 import org.rjgchw.hmall.order.service.mapper.OrderItemMapper;
 import org.rjgchw.hmall.order.service.mapper.OrderMapper;
-import org.rjgchw.hmall.order.service.error.LockStockFailException;
+import org.rjgchw.hmall.order.service.error.LockStorageFailException;
 import org.rjgchw.hmall.order.service.error.ProductDoesNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,18 +42,20 @@ public class OrderService {
     private final ProductService productService;
     private final RedissonClient redissonClient;
     private final OrderItemMapper orderItemMapper;
+    private final StorageFeignClient storageFeignClient;
 
-    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, ProductService productService, RedissonClient redissonClient, OrderItemMapper orderItemMapper) {
+    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, ProductService productService, RedissonClient redissonClient, OrderItemMapper orderItemMapper, StorageFeignClient storageFeignClient) {
         this.orderMapper = orderMapper;
         this.orderRepository = orderRepository;
         this.productService = productService;
         this.redissonClient = redissonClient;
         this.orderItemMapper = orderItemMapper;
+        this.storageFeignClient = storageFeignClient;
     }
 
     public OrderDTO create(SourceTypeEnum sourceType, PayTypeEnum payType, Long receiverId, Set<OrderItemDTO> orderItems, String memberPhone) {
         // 锁定库存
-        lockStock(orderItems);
+        lockStorage(orderItems);
         Order order = new Order();
         order.setSourceType(sourceType);
         order.setPayType(payType);
@@ -82,16 +85,15 @@ public class OrderService {
      * 锁定商品库存
      * @param orderItems
      */
-    private void lockStock(Set<OrderItemDTO> orderItems) {
+    private void lockStorage(Set<OrderItemDTO> orderItems) {
         orderItems.forEach(item -> {
             if(!productService.getById(item.getProductId()).isPresent()) {
                 throw new ProductDoesNotExistException();
             }
-//            boolean lockResult = stockService.lockStock(item.getProductId(), item.getProductQuantity());
-            boolean lockResult = true;
+            boolean lockResult = storageFeignClient.deduct(item.getProductId(), item.getProductQuantity());
             if (!lockResult) {
                 // 锁定库存失败 可能存在资源竞争问题
-                throw new LockStockFailException();
+                throw new LockStorageFailException();
             }
         });
     }

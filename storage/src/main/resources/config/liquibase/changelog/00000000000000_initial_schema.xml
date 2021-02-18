@@ -54,6 +54,32 @@
                                  constraintName="fk_evt_pers_audit_evt_data"
                                  referencedColumnNames="event_id"
                                  referencedTableName="h_persistent_audit_event"/>
+
+
+        <createTable tableName="h_storage">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="h_storagePK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime(6)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="datetime(6)"/>
+            <column name="storage" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <loadData
+            file="config/liquibase/data/storage.csv"
+            separator=";"
+            tableName="h_storage">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">

@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.order.web.rest.errors;
 
+import org.rjgchw.hmall.common.web.rest.error.ErrorConstants;
 import org.rjgchw.hmall.order.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.OrderApp;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;

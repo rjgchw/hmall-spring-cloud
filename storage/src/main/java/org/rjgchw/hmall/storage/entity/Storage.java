@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * product stock.
+ * product storage.
  *
  * @author huangwei
  */
@@ -57,9 +57,9 @@ public class Storage extends AbstractAuditingEntity implements Serializable {
             return false;
         }
 
-        Storage stock = (Storage) o;
+        Storage storage = (Storage) o;
 
-        return id.equals(stock.id);
+        return id.equals(storage.id);
     }
 
     @Override

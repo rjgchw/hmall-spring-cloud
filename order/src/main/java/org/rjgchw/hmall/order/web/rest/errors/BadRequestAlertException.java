@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.order.web.rest.errors;
 
+import org.rjgchw.hmall.common.web.rest.error.ErrorConstants;
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
 
