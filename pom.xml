@@ -95,10 +95,6 @@
         <!-- jhipster-needle-maven-property -->
         <spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
         <springfox.version>3.0.0</springfox.version>
-        <r2dbc-h2.version>0.8.3.RELEASE</r2dbc-h2.version>
-        <r2dbc-mysql.version>0.8.1.RELEASE</r2dbc-mysql.version>
-        <spring-boot-starter-data-r2dbc.version>0.1.0.M3</spring-boot-starter-data-r2dbc.version>
-        <netty-common.version>4.1.50.Final</netty-common.version>
     </properties>
 
     <build>

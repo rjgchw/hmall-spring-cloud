@@ -4,6 +4,7 @@ import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.config.cache.PrefixedKeyGenerator;
 import org.redisson.api.RedissonClient;
 import org.redisson.jcache.configuration.RedissonConfiguration;
+import org.rjgchw.hmall.order.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.info.BuildProperties;
@@ -36,8 +37,7 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer(javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration) {
         return cm -> {
-            createCache(cm, org.rjgchw.hmall.order.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
-            createCache(cm, org.rjgchw.hmall.order.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
+            createCache(cm, ProductRepository.PRODUCT_BY_NAME, jcacheConfiguration);
             // jhipster-needle-redis-add-entry
         };
     }

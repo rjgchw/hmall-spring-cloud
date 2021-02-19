@@ -2,6 +2,9 @@ package org.rjgchw.hmall.order.entity;
 
 import org.rjgchw.hmall.common.entity.AbstractAuditingEntity;
 import org.rjgchw.hmall.order.service.enums.ProductStatusEnum;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,10 +16,12 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "h_product")
+@Document(indexName = "product")
 public class Product extends AbstractAuditingEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Field(type = FieldType.Keyword)
     private Long id;
 
     @Column(length = 50, unique = true, nullable = false)

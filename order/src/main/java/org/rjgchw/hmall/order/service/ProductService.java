@@ -4,14 +4,17 @@ import org.rjgchw.hmall.order.entity.Product;
 import org.rjgchw.hmall.order.entity.ProductCategory;
 import org.rjgchw.hmall.order.repository.ProductCategoryRepository;
 import org.rjgchw.hmall.order.repository.ProductRepository;
+import org.rjgchw.hmall.order.repository.search.ProductSearchRepository;
 import org.rjgchw.hmall.order.service.dto.ProductDTO;
 import org.rjgchw.hmall.order.service.error.ProductCategoryResourceException;
 import org.rjgchw.hmall.order.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -28,12 +31,18 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private final ProductSearchRepository productSearchRepository;
+
     private final ProductCategoryRepository productCategoryRepository;
 
-    public ProductService(ProductMapper productMapper, ProductRepository productRepository, ProductCategoryRepository productCategoryRepository) {
+    private final CacheManager cacheManager;
+
+    public ProductService(ProductMapper productMapper, ProductRepository productRepository, ProductSearchRepository productSearchRepository, ProductCategoryRepository productCategoryRepository, CacheManager cacheManager) {
         this.productMapper = productMapper;
         this.productRepository = productRepository;
+        this.productSearchRepository = productSearchRepository;
         this.productCategoryRepository = productCategoryRepository;
+        this.cacheManager = cacheManager;
     }
 
     /**
@@ -48,7 +57,8 @@ public class ProductService {
 
         Product product = productMapper.toEntity(productDTO);
         product.setCategory(productCategory);
-        productRepository.save(product);
+        product = productRepository.save(product);
+        productSearchRepository.save(product);
         log.debug("Created Information for Product: {}", product);
         return productMapper.toDto(product);
     }
@@ -69,6 +79,8 @@ public class ProductService {
             .map(product -> {
                 product.setName(productDTO.getName());
                 productRepository.save(product);
+                productSearchRepository.save(product);
+                this.clearUserCaches(product);
                 log.debug("Changed Information for Product : {}", product);
                 return product;
             }).map(productMapper::toDto);
@@ -82,4 +94,7 @@ public class ProductService {
         return productRepository.existsByCategoryId(categoryId);
     }
 
+    private void clearUserCaches(Product product) {
+        Objects.requireNonNull(cacheManager.getCache(ProductRepository.PRODUCT_BY_NAME)).evict(product.getName());
+    }
 }

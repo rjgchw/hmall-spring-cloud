@@ -48,17 +48,14 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-spring-webflux</artifactId>
-            <version>${springfox.version}</version>
         </dependency>
         <!-- Undertow post 请求会导致 DataBuffer 读取不到 body -->
         <dependency>
@@ -135,12 +132,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <!-- See https://github.com/netty/netty/pull/10020 . Remove when Spring Boot has caught up -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-common</artifactId>
-            <version>${netty-common.version}</version>
         </dependency>
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
