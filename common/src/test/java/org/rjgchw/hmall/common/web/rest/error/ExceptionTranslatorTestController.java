@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.order.web.rest.errors;
+package org.rjgchw.hmall.common.web.rest.error;
 
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class ExceptionTranslatorTestController {
     }
 
     @GetMapping("/access-denied")
-    public void accessdenied() {
+    public void accessDenied() {
         throw new AccessDeniedException("test access denied!");
     }
 
@@ -43,6 +43,11 @@ public class ExceptionTranslatorTestController {
     @GetMapping("/response-status")
     public void exceptionWithResponseStatus() {
         throw new TestResponseStatusException();
+    }
+
+    @GetMapping("/resource-not-found")
+    public void exceptionWithUnExistsResource() {
+        throw new ResourceNotFoundAlertException("resource not found");
     }
 
     @GetMapping("/internal-server-error")

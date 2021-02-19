@@ -4,10 +4,14 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.rjgchw.hmall.common.web.rest.error.BadRequestAlertException;
+import org.rjgchw.hmall.common.web.rest.error.ResourceNotFoundAlertException;
+import org.rjgchw.hmall.common.web.rest.error.UnprocessableRequestAlertException;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -17,7 +21,6 @@ import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 /**
@@ -54,7 +57,7 @@ public abstract class AbstractWebExceptionTranslator extends AbstractExceptionTr
      */
     @Override
     public ResponseEntity<Problem> process(@Nullable ResponseEntity<Problem> entity, NativeWebRequest request) {
-        return super.process0(entity, request.getNativeRequest(HttpServletRequest.class).getRequestURI());
+        return super.process0(entity);
     }
 
     @Override
@@ -62,24 +65,14 @@ public abstract class AbstractWebExceptionTranslator extends AbstractExceptionTr
         return create(ex, handleBindingResult(ex.getBindingResult()), request);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
-        return create(ex, request, HeaderUtil.createFailureAlert(getApplicationName(), true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
-        return create(ex, handleConcurrencyFailure(), request);
+    @Override
+    public ResponseEntity<Problem> handleAccessDenied(AccessDeniedException e, NativeWebRequest request) {
+        return create(e, handleAccessDenied(), request);
     }
 
     @Override
     public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
         return super.prepare0(throwable, status, type);
-    }
-
-    @Override
-    protected StatusType defaultConstraintViolationStatus0() {
-        return defaultConstraintViolationStatus();
     }
 
     @Override
@@ -90,5 +83,30 @@ public abstract class AbstractWebExceptionTranslator extends AbstractExceptionTr
     @Override
     protected ThrowableProblem toProblem0(final Throwable throwable) {
         return toProblem(throwable);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
+        return create(ex, request, HeaderUtil.createFailureAlert(getApplicationName(), true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
+        return create(ex, handleConcurrencyFailure(ex), request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleBadCredentialsException(BadCredentialsException ex, NativeWebRequest request) {
+        return create(ex, handleBadCredentialsException(ex), request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleUnprocessableRequestAlertException(UnprocessableRequestAlertException ex, NativeWebRequest request) {
+        return create(ex, handleUnprocessableRequestAlertException(ex), request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleNoSuchElementException(ResourceNotFoundAlertException ex, NativeWebRequest request) {
+        return create(ex, handleNoSuchElementException(ex), request);
     }
 }

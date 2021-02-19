@@ -1,22 +1,19 @@
 package org.rjgchw.hmall.common.web.rest.error.translator;
 
 import io.github.jhipster.config.JHipsterConstants;
-import org.rjgchw.hmall.common.web.rest.error.ErrorConstants;
-import org.rjgchw.hmall.common.web.rest.error.FieldErrorVM;
+import org.rjgchw.hmall.common.web.rest.error.*;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.zalando.problem.*;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
-import javax.annotation.Nullable;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,8 +25,6 @@ public abstract class AbstractExceptionTranslator {
 
     protected static final String FIELD_ERRORS_KEY = "errors";
     protected static final String MESSAGE_KEY = "message";
-    protected static final String PATH_KEY = "path";
-    protected static final String VIOLATIONS_KEY = "violations";
 
     protected final Environment env;
 
@@ -40,7 +35,7 @@ public abstract class AbstractExceptionTranslator {
     /**
      * Post-process the Problem payload to add the message key for the front-end if needed.
      */
-    protected ResponseEntity<Problem> process0(@Nullable ResponseEntity<Problem> entity, String pathKey) {
+    protected ResponseEntity<Problem> process0(ResponseEntity<Problem> entity) {
         if (entity == null) {
             return null;
         }
@@ -51,44 +46,40 @@ public abstract class AbstractExceptionTranslator {
         ProblemBuilder builder = Problem.builder()
             .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
             .withStatus(problem.getStatus())
-            .withTitle(problem.getTitle())
-            .with(PATH_KEY, pathKey);
+            .withTitle(problem.getTitle());
 
-        if (problem instanceof ConstraintViolationProblem) {
-            builder
-                .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
-                .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
-        } else {
-            builder
-                .withCause(((DefaultProblem) problem).getCause())
-                .withDetail(problem.getDetail())
-                .withInstance(problem.getInstance());
-            problem.getParameters().forEach(builder::with);
-            if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
-                builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
-            }
-        }
+        problem.getParameters().forEach(builder::with);
         return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
     }
 
     protected Problem handleBindingResult(BindingResult result) {
-        List<FieldErrorVM> fieldErrors = result.getFieldErrors().stream()
-            .map(f -> new FieldErrorVM(f.getObjectName().replaceFirst("DTO$", ""), f.getField(), f.getCode()))
+        List<FieldErrorVO> fieldErrors = result.getFieldErrors().stream()
+            .map(f -> new FieldErrorVO(
+                f.getObjectName().replaceFirst("DTO$", ""),
+                f.getField(),
+                ErrorCodeConverter.getErrorCode(f.getCode())))
             .collect(Collectors.toList());
 
         return Problem.builder()
             .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
-            .withTitle("Method argument not valid")
-            .withStatus(defaultConstraintViolationStatus0())
-            .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION)
+            .withTitle("Validation Failed")
+            .withStatus(Status.UNPROCESSABLE_ENTITY)
             .with(FIELD_ERRORS_KEY, fieldErrors)
             .build();
     }
 
-    protected Problem handleConcurrencyFailure() {
+    protected Problem handleConcurrencyFailure(ConcurrencyFailureException ex) {
         return Problem.builder()
             .withStatus(Status.CONFLICT)
-            .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
+            .withTitle("Concurrency Failure")
+            .with(MESSAGE_KEY, ex.getMessage() != null ? ex.getMessage() : "Concurrency Failure")
+            .build();
+    }
+
+    protected Problem handleAccessDenied() {
+        return Problem.builder()
+            .withStatus(Status.FORBIDDEN)
+            .withTitle("Access Forbidden")
             .build();
     }
 
@@ -144,11 +135,38 @@ public abstract class AbstractExceptionTranslator {
 
     protected abstract boolean containsPackageName(String message);
 
-    protected abstract StatusType defaultConstraintViolationStatus0();
+    protected StatusType defaultConstraintViolationStatus0() {
+        return Status.UNPROCESSABLE_ENTITY;
+    }
 
     protected abstract boolean isCausalChainsEnabled0();
 
     protected abstract ThrowableProblem toProblem0(final Throwable throwable);
 
     protected abstract String getApplicationName();
+
+    protected Problem handleBadCredentialsException(BadCredentialsException ex) {
+        return Problem.builder()
+            .withStatus(Status.UNAUTHORIZED)
+            .withTitle("Unauthorized")
+            .with(MESSAGE_KEY, ex.getMessage() != null ? ex.getMessage() : "Unauthorized")
+            .build();
+    }
+
+    protected Problem handleUnprocessableRequestAlertException(UnprocessableRequestAlertException ex) {
+        return Problem.builder()
+            .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
+            .withTitle(ex.getTitle())
+            .withStatus(defaultConstraintViolationStatus0())
+            .with(FIELD_ERRORS_KEY, Collections.singletonList(ex.getField()))
+            .build();
+    }
+
+    protected Problem handleNoSuchElementException(ResourceNotFoundAlertException ex) {
+        return Problem.builder()
+            .withType(ex.getType())
+            .withStatus(ex.getStatus())
+            .withTitle(ex.getTitle())
+            .build();
+    }
 }

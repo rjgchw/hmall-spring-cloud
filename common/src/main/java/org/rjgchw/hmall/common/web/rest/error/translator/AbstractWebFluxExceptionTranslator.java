@@ -2,9 +2,13 @@ package org.rjgchw.hmall.common.web.rest.error.translator;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import org.rjgchw.hmall.common.web.rest.error.BadRequestAlertException;
+import org.rjgchw.hmall.common.web.rest.error.ResourceNotFoundAlertException;
+import org.rjgchw.hmall.common.web.rest.error.UnprocessableRequestAlertException;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ServerWebExchange;
@@ -40,7 +44,7 @@ public abstract class AbstractWebFluxExceptionTranslator extends AbstractExcepti
         if (entity == null) {
             return Mono.empty();
         }
-        return Mono.just(super.process0(entity, request.getRequest().getPath().value()));
+        return Mono.just(super.process0(entity));
     }
 
     @Override
@@ -48,24 +52,14 @@ public abstract class AbstractWebFluxExceptionTranslator extends AbstractExcepti
         return create(ex, handleBindingResult(ex.getBindingResult()), request);
     }
 
-    @ExceptionHandler
-    public Mono<ResponseEntity<Problem>> handleBadRequestAlertException(BadRequestAlertException ex, ServerWebExchange request) {
-        return create(ex, request, HeaderUtil.createFailureAlert(getApplicationName(), false, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
-    }
-
-    @ExceptionHandler
-    public Mono<ResponseEntity<Problem>> handleConcurrencyFailure(ConcurrencyFailureException ex, ServerWebExchange request) {
-        return create(ex, handleConcurrencyFailure(), request);
+    @Override
+    public Mono<ResponseEntity<Problem>> handleAccessDenied(AccessDeniedException e, ServerWebExchange request) {
+        return create(e, handleAccessDenied(), request);
     }
 
     @Override
     public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
         return super.prepare0(throwable, status, type);
-    }
-
-    @Override
-    protected StatusType defaultConstraintViolationStatus0() {
-        return defaultConstraintViolationStatus();
     }
 
     @Override
@@ -76,5 +70,30 @@ public abstract class AbstractWebFluxExceptionTranslator extends AbstractExcepti
     @Override
     protected ThrowableProblem toProblem0(final Throwable throwable) {
         return toProblem(throwable);
+    }
+
+    @ExceptionHandler
+    public Mono<ResponseEntity<Problem>> handleBadRequestAlertException(BadRequestAlertException ex, ServerWebExchange request) {
+        return create(ex, request, HeaderUtil.createFailureAlert(getApplicationName(), false, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
+    }
+
+    @ExceptionHandler
+    public Mono<ResponseEntity<Problem>> handleConcurrencyFailure(ConcurrencyFailureException ex, ServerWebExchange request) {
+        return create(ex, handleConcurrencyFailure(ex), request);
+    }
+
+    @ExceptionHandler
+    public Mono<ResponseEntity<Problem>> handleBadCredentialsException(BadCredentialsException ex, ServerWebExchange request) {
+        return create(ex, handleBadCredentialsException(ex), request);
+    }
+
+    @ExceptionHandler
+    public Mono<ResponseEntity<Problem>> handleUnprocessableRequestAlertException(UnprocessableRequestAlertException ex, ServerWebExchange request) {
+        return create(ex, handleUnprocessableRequestAlertException(ex), request);
+    }
+
+    @ExceptionHandler
+    public Mono<ResponseEntity<Problem>> handleNoSuchElementException(ResourceNotFoundAlertException ex, ServerWebExchange request) {
+        return create(ex, handleNoSuchElementException(ex), request);
     }
 }
