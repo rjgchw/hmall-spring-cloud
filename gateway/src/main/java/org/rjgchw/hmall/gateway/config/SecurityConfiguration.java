@@ -5,7 +5,6 @@ import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.common.security.oauth2.AudienceValidator;
 import org.rjgchw.hmall.common.security.oauth2.JwtGrantedAuthorityConverter;
 import org.rjgchw.hmall.gateway.security.SecurityUtils;
-import org.rjgchw.hmall.gateway.service.AuditEventService;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import io.github.jhipster.web.filter.reactive.CookieCsrfFilter;
@@ -52,8 +51,6 @@ import static org.springframework.security.web.server.util.matcher.ServerWebExch
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration {
 
-    private final AuditEventService auditEventService;
-
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
@@ -61,8 +58,7 @@ public class SecurityConfiguration {
 
     private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(AuditEventService auditEventService, JHipsterProperties jHipsterProperties, SecurityProblemSupport problemSupport) {
-        this.auditEventService = auditEventService;
+    public SecurityConfiguration(JHipsterProperties jHipsterProperties, SecurityProblemSupport problemSupport) {
         this.jHipsterProperties = jHipsterProperties;
         this.problemSupport = problemSupport;
     }
@@ -166,7 +162,6 @@ public class SecurityConfiguration {
             .filter(principal -> principal instanceof OidcUser)
             .map(principal -> ((OidcUser) principal).getPreferredUsername())
             .filter(login -> !Constants.ANONYMOUS_USER.equals(login))
-            .flatMap(auditEventService::saveAuthenticationSuccess)
             .then();
     }
 }

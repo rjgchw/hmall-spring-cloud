@@ -1,7 +1,7 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
 import org.rjgchw.hmall.common.security.AuthoritiesConstants;
-import org.rjgchw.hmall.gateway.web.rest.vm.RouteVM;
+import org.rjgchw.hmall.gateway.web.rest.vo.RouteVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +41,11 @@ public class GatewayResource {
      */
     @GetMapping("/routes")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<List<RouteVM>> activeRoutes() {
+    public ResponseEntity<List<RouteVO>> activeRoutes() {
         Flux<Route> routes = routeLocator.getRoutes();
-        List<RouteVM> routeVMs = new ArrayList<>();
+        List<RouteVO> routeVMs = new ArrayList<>();
         routes.subscribe(route -> {
-            RouteVM routeVM = new RouteVM();
+            RouteVO routeVM = new RouteVO();
             // Manipulate strings to make Gateway routes look like Zuul's
             String predicate = route.getPredicate().toString();
             String path = predicate.substring(predicate.indexOf("[") + 1, predicate.indexOf("]"));

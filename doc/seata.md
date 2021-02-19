@@ -139,6 +139,11 @@ $ cd $SEATA_HOME
 $ cp lib/jdbc/mysql-connector-java-8.0.19.jar lib
 ```
 
+## 启动
+```shell
+$ sh bin/seata-server.sh
+```
+
 ## 配置 nacos-config.sh
 将该文件放到 `conf` 目录里
 ```shell
@@ -349,7 +354,7 @@ metrics.exporterPrometheusPort=9898
 
 ```
 
-保存完执行以下命令
+保存完执行以下命令, 将配置同步到 nacos 中
 ```shell
 $ cd $SEATA_HOME/conf
 $ sh nacos-config.sh -h localhost -p 8848 -g SEATA_GROUP -t seata

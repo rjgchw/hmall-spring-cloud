@@ -1,4 +1,4 @@
-package org.rjgchw.hmall.gateway.web.rest.vm;
+package org.rjgchw.hmall.gateway.web.rest.vo;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.cloud.client.ServiceInstance;
 /**
  * View Model that stores a route managed by the Gateway.
  */
-public class RouteVM {
+public class RouteVO {
 
     private String path;
 

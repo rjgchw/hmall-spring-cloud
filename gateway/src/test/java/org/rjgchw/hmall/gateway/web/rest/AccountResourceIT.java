@@ -1,17 +1,16 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.gateway.GatewayApp;
 import org.rjgchw.hmall.gateway.config.TestSecurityConfiguration;
-import org.rjgchw.hmall.gateway.service.UserService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.Instant;
@@ -20,11 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.rjgchw.hmall.gateway.web.rest.AccountResourceIT.TEST_USER_LOGIN;
-import org.springframework.security.test.context.support.WithMockUser;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.rjgchw.hmall.gateway.web.rest.TestUtil.ID_TOKEN;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.*;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockAuthentication;
 
 /**
  * Integration tests for the {@link AccountResource} REST controller.
