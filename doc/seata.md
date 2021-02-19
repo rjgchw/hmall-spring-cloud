@@ -353,4 +353,11 @@ metrics.exporterPrometheusPort=9898
 ```shell
 $ cd $SEATA_HOME/conf
 $ sh nacos-config.sh -h localhost -p 8848 -g SEATA_GROUP -t seata
+-h: nacos的hostname
+-p: nacos的端口
+-g: 配置添加到哪个group下
+-t: 配置添加到哪个namespace下
+-u: nacos的username
+-w: nacos的password
 ```
+

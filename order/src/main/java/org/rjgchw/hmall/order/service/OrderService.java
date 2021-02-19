@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.order.service;
 
+import io.seata.spring.annotation.GlobalTransactional;
 import org.redisson.api.RedissonClient;
 import org.rjgchw.hmall.order.client.StorageFeignClient;
 import org.rjgchw.hmall.order.entity.Order;
@@ -32,7 +33,6 @@ import java.util.stream.Collectors;
  * @date 2020-04-05 20:10
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class OrderService {
 
     private final Logger log = LoggerFactory.getLogger(OrderService.class);
@@ -53,9 +53,16 @@ public class OrderService {
         this.storageFeignClient = storageFeignClient;
     }
 
+    @GlobalTransactional(rollbackFor = Exception.class)
     public OrderDTO create(SourceTypeEnum sourceType, PayTypeEnum payType, Long receiverId, Set<OrderItemDTO> orderItems, String memberPhone) {
         // 锁定库存
         lockStorage(orderItems);
+        // 创建订单
+        return createOrder(sourceType, payType, receiverId, orderItems, memberPhone);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public OrderDTO createOrder(SourceTypeEnum sourceType, PayTypeEnum payType, Long receiverId, Set<OrderItemDTO> orderItems, String memberPhone) {
         Order order = new Order();
         order.setSourceType(sourceType);
         order.setPayType(payType);
