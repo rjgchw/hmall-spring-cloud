@@ -1,7 +1,7 @@
 package org.rjgchw.hmall.order.service;
 
 import org.rjgchw.hmall.common.config.Constants;
-import org.rjgchw.hmall.common.security.SecurityUtils;
+import org.rjgchw.hmall.common.security.SecurityWebUtils;
 import org.rjgchw.hmall.order.entity.Authority;
 import org.rjgchw.hmall.order.entity.User;
 import org.rjgchw.hmall.order.repository.AuthorityRepository;
@@ -59,7 +59,7 @@ public class UserService {
      * @param imageUrl  image URL of user.
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
-        SecurityUtils.getCurrentUserLogin()
+        SecurityWebUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
                 user.setFirstName(firstName);

@@ -16,9 +16,9 @@ import java.util.stream.Stream;
 /**
  * Utility class for Spring Security.
  */
-public final class SecurityUtils {
+public final class SecurityWebUtils {
 
-    private SecurityUtils() {
+    private SecurityWebUtils() {
     }
 
     /**

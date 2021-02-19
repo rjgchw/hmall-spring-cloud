@@ -1,27 +1,25 @@
-package org.rjgchw.hmall.gateway.security;
+package org.rjgchw.hmall.common.security;
 
 import org.junit.jupiter.api.Test;
-import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import reactor.util.context.Context;
 
-import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames.ID_TOKEN;
 
 /**
- * Test class for the {@link SecurityUtils} utility class.
+ * Test class for the {@link SecurityWebFluxUtils} utility class.
  */
-public class SecurityUtilsUnitTest {
+public class SecurityWebFluxUtilsUnitTest {
 
     @Test
-    public void testgetCurrentUserLogin() {
-        String login = SecurityUtils.getCurrentUserLogin()
+    public void should_get_current_user_if_login_with_username_and_password() {
+        String login = SecurityWebFluxUtils.getCurrentUserLogin()
             .subscriberContext(
                 ReactiveSecurityContextHolder.withAuthentication(
                     new UsernamePasswordAuthenticationToken("admin", "admin")
@@ -32,8 +30,8 @@ public class SecurityUtilsUnitTest {
     }
 
     @Test
-    public void testIsAuthenticated() {
-        Boolean isAuthenticated = SecurityUtils.isAuthenticated()
+    public void should_authenticated_if_login_normally() {
+        Boolean isAuthenticated = SecurityWebFluxUtils.isAuthenticated()
             .subscriberContext(
                 ReactiveSecurityContextHolder.withAuthentication(
                     new UsernamePasswordAuthenticationToken("admin", "admin")
@@ -44,10 +42,10 @@ public class SecurityUtilsUnitTest {
     }
 
     @Test
-    public void testAnonymousIsNotAuthenticated() {
+    public void should_not_be_authenticated_if_login_anonymous() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ANONYMOUS));
-        Boolean isAuthenticated = SecurityUtils.isAuthenticated()
+        Boolean isAuthenticated = SecurityWebFluxUtils.isAuthenticated()
             .subscriberContext(
                 ReactiveSecurityContextHolder.withAuthentication(
                     new UsernamePasswordAuthenticationToken("admin", "admin", authorities)
@@ -58,18 +56,26 @@ public class SecurityUtilsUnitTest {
     }
 
     @Test
-    public void testIsCurrentUserInRole() {
+    public void should_current_user_in_role_if_login_with_user() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
         Context context = ReactiveSecurityContextHolder.withAuthentication(
             new UsernamePasswordAuthenticationToken("admin", "admin", authorities)
         );
-        Boolean isCurrentUserInRole = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.USER)
+        Boolean isCurrentUserInRole = SecurityWebFluxUtils.isCurrentUserInRole(AuthoritiesConstants.USER)
             .subscriberContext(context)
             .block();
         assertThat(isCurrentUserInRole).isTrue();
+    }
 
-        isCurrentUserInRole = SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)
+    @Test
+    public void should_current_user_not_in_role_if_login_with_admin() {
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
+        Context context = ReactiveSecurityContextHolder.withAuthentication(
+            new UsernamePasswordAuthenticationToken("admin", "admin", authorities)
+        );
+        Boolean isCurrentUserInRole = SecurityWebFluxUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)
             .subscriberContext(context)
             .block();
         assertThat(isCurrentUserInRole).isFalse();

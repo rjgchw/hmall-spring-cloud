@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.rjgchw.hmall.gateway.security.SecurityUtils;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.rjgchw.hmall.common.security.SecurityWebFluxUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -17,13 +17,6 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Collection;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -129,22 +122,6 @@ public final class TestUtil {
         assertThat(domainObject1.hashCode()).isEqualTo(domainObject2.hashCode());
     }
 
-    /**
-     * Makes a an executes a query to the EntityManager finding all stored objects.
-     * @param <T> The type of objects to be searched
-     * @param em The instance of the EntityManager
-     * @param clss The class type to be searched
-     * @return A list of all found objects
-     */
-    public static <T> List<T> findAll(EntityManager em, Class<T> clss) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(clss);
-        Root<T> rootEntry = cq.from(clss);
-        CriteriaQuery<T> all = cq.select(rootEntry);
-        TypedQuery<T> allQuery = em.createQuery(all);
-        return allQuery.getResultList();
-    }
-
     final static String ID_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9" +
         ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsIm" +
         "p0aSI6ImQzNWRmMTRkLTA5ZjYtNDhmZi04YTkzLTdjNmYwMzM5MzE1OSIsImlhdCI6MTU0M" +
@@ -152,7 +129,7 @@ public final class TestUtil {
         "oqqUrg";
 
     public static OAuth2AuthenticationToken authenticationToken(OidcIdToken idToken) {
-        Collection<GrantedAuthority> authorities = SecurityUtils.extractAuthorityFromClaims(idToken.getClaims());
+        Collection<GrantedAuthority> authorities = SecurityWebFluxUtils.extractAuthorityFromClaims(idToken.getClaims());
         OidcUser user = new DefaultOidcUser(authorities, idToken);
         return new OAuth2AuthenticationToken(user, authorities, "oidc");
     }

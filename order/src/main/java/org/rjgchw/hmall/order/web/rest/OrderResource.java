@@ -4,7 +4,7 @@ import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.rjgchw.hmall.common.security.SecurityUtils;
+import org.rjgchw.hmall.common.security.SecurityWebUtils;
 import org.rjgchw.hmall.common.util.UriUtil;
 import org.rjgchw.hmall.common.web.rest.error.ResourceNotFoundAlertException;
 import org.rjgchw.hmall.order.service.OrderQueryService;
@@ -61,7 +61,7 @@ public class OrderResource {
     @PostMapping("/orders")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody @Valid OrderVO orderDTO) {
         log.debug("REST request to create order {}:", orderDTO);
-        return SecurityUtils.getCurrentUserLogin().map(memberPhone -> {
+        return SecurityWebUtils.getCurrentUserLogin().map(memberPhone -> {
             OrderDTO newOrder = orderService.create(orderDTO.getSourceType(),
                 orderDTO.getPayType(),
                 orderDTO.getReceiverId(),

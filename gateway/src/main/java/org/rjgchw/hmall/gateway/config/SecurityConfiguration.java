@@ -2,9 +2,9 @@ package org.rjgchw.hmall.gateway.config;
 
 import org.rjgchw.hmall.common.config.Constants;
 import org.rjgchw.hmall.common.security.AuthoritiesConstants;
+import org.rjgchw.hmall.common.security.SecurityWebFluxUtils;
 import org.rjgchw.hmall.common.security.oauth2.AudienceValidator;
 import org.rjgchw.hmall.common.security.oauth2.JwtGrantedAuthorityConverter;
-import org.rjgchw.hmall.gateway.security.SecurityUtils;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import io.github.jhipster.web.filter.reactive.CookieCsrfFilter;
@@ -132,7 +132,7 @@ public class SecurityConfiguration {
                 user.getAuthorities().forEach(authority -> {
                     if (authority instanceof OidcUserAuthority) {
                         OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
-                        mappedAuthorities.addAll(SecurityUtils.extractAuthorityFromClaims(oidcUserAuthority.getUserInfo().getClaims()));
+                        mappedAuthorities.addAll(SecurityWebFluxUtils.extractAuthorityFromClaims(oidcUserAuthority.getUserInfo().getClaims()));
                     }
                 });
 

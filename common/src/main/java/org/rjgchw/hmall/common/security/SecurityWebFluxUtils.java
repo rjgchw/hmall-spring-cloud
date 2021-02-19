@@ -1,6 +1,5 @@
-package org.rjgchw.hmall.gateway.security;
+package org.rjgchw.hmall.common.security;
 
-import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,15 +10,18 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Utility class for Spring Security.
  */
-public final class SecurityUtils {
+public final class SecurityWebFluxUtils {
 
-    private SecurityUtils() {
+    private SecurityWebFluxUtils() {
     }
 
     /**
