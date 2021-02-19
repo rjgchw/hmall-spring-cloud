@@ -42,21 +42,6 @@ spring:
       enabled: false
     livereload:
       enabled: false
-  # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
-  liquibase:
-    contexts: prod
-    url: jdbc:mysql://localhost:3306/h_gateway?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-  mail:
-    host: localhost
-    port: 25
-    username:
-    password:
-  r2dbc:
-    url: r2dbc:mysql://localhost:3306/h_gateway?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
-    password: 6yhn^YHN
-  thymeleaf:
-    cache: true
   sleuth:
     sampler:
       probability: 1 # report 100% of traces
@@ -103,8 +88,6 @@ jhipster:
   http:
     cache: # Used by the CachingHttpHeadersFilter
       timeToLiveInDays: 1461
-  mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://my-server-url-to-change # Modify according to your server's URL
   metrics:
     logs: # Reports metrics in the logs
       enabled: false

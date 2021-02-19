@@ -1,26 +1,17 @@
-package org.rjgchw.hmall.common.web.rest.error;
+package org.rjgchw.hmall.common.web.rest.error.translator;
 
 import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.web.util.HeaderUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.rjgchw.hmall.common.web.rest.error.ErrorConstants;
+import org.rjgchw.hmall.common.web.rest.error.FieldErrorVM;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.NativeWebRequest;
 import org.zalando.problem.*;
-import org.zalando.problem.spring.web.advice.ProblemHandling;
-import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,17 +24,14 @@ import java.util.stream.Collectors;
  * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
  * @author huangwei
  */
-public abstract class AbstractExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
+public abstract class AbstractExceptionTranslator {
 
-    private static final String FIELD_ERRORS_KEY = "fieldErrors";
-    private static final String MESSAGE_KEY = "message";
-    private static final String PATH_KEY = "path";
-    private static final String VIOLATIONS_KEY = "violations";
+    protected static final String FIELD_ERRORS_KEY = "errors";
+    protected static final String MESSAGE_KEY = "message";
+    protected static final String PATH_KEY = "path";
+    protected static final String VIOLATIONS_KEY = "violations";
 
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
-
-    private final Environment env;
+    protected final Environment env;
 
     public AbstractExceptionTranslator(Environment env) {
         this.env = env;
@@ -52,10 +40,9 @@ public abstract class AbstractExceptionTranslator implements ProblemHandling, Se
     /**
      * Post-process the Problem payload to add the message key for the front-end if needed.
      */
-    @Override
-    public ResponseEntity<Problem> process(@Nullable ResponseEntity<Problem> entity, NativeWebRequest request) {
+    protected ResponseEntity<Problem> process0(@Nullable ResponseEntity<Problem> entity, String pathKey) {
         if (entity == null) {
-            return entity;
+            return null;
         }
         Problem problem = entity.getBody();
         if (!(problem instanceof ConstraintViolationProblem || problem instanceof DefaultProblem)) {
@@ -65,7 +52,7 @@ public abstract class AbstractExceptionTranslator implements ProblemHandling, Se
             .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
             .withStatus(problem.getStatus())
             .withTitle(problem.getTitle())
-            .with(PATH_KEY, request.getNativeRequest(HttpServletRequest.class).getRequestURI());
+            .with(PATH_KEY, pathKey);
 
         if (problem instanceof ConstraintViolationProblem) {
             builder
@@ -84,40 +71,28 @@ public abstract class AbstractExceptionTranslator implements ProblemHandling, Se
         return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
     }
 
-    @Override
-    public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
-        BindingResult result = ex.getBindingResult();
+    protected Problem handleBindingResult(BindingResult result) {
         List<FieldErrorVM> fieldErrors = result.getFieldErrors().stream()
             .map(f -> new FieldErrorVM(f.getObjectName().replaceFirst("DTO$", ""), f.getField(), f.getCode()))
             .collect(Collectors.toList());
 
-        Problem problem = Problem.builder()
+        return Problem.builder()
             .withType(ErrorConstants.CONSTRAINT_VIOLATION_TYPE)
             .withTitle("Method argument not valid")
-            .withStatus(defaultConstraintViolationStatus())
+            .withStatus(defaultConstraintViolationStatus0())
             .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION)
             .with(FIELD_ERRORS_KEY, fieldErrors)
             .build();
-        return create(ex, problem, request);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
-        return create(ex, request, HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
-        Problem problem = Problem.builder()
+    protected Problem handleConcurrencyFailure() {
+        return Problem.builder()
             .withStatus(Status.CONFLICT)
             .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
             .build();
-        return create(ex, problem, request);
     }
 
-    @Override
-    public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
-
+    protected ProblemBuilder prepare0(final Throwable throwable, final StatusType status, final URI type) {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
 
         if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
@@ -128,8 +103,8 @@ public abstract class AbstractExceptionTranslator implements ProblemHandling, Se
                     .withStatus(status)
                     .withDetail("Unable to convert http message")
                     .withCause(Optional.ofNullable(throwable.getCause())
-                        .filter(cause -> isCausalChainsEnabled())
-                        .map(this::toProblem)
+                        .filter(cause -> isCausalChainsEnabled0())
+                        .map(this::toProblem0)
                         .orElse(null));
             }
             if (throwable instanceof DataAccessException) {
@@ -139,8 +114,8 @@ public abstract class AbstractExceptionTranslator implements ProblemHandling, Se
                     .withStatus(status)
                     .withDetail("Failure during data access")
                     .withCause(Optional.ofNullable(throwable.getCause())
-                        .filter(cause -> isCausalChainsEnabled())
-                        .map(this::toProblem)
+                        .filter(cause -> isCausalChainsEnabled0())
+                        .map(this::toProblem0)
                         .orElse(null));
             }
             if (containsPackageName(throwable.getMessage())) {
@@ -150,8 +125,8 @@ public abstract class AbstractExceptionTranslator implements ProblemHandling, Se
                     .withStatus(status)
                     .withDetail("Unexpected runtime exception")
                     .withCause(Optional.ofNullable(throwable.getCause())
-                        .filter(cause -> isCausalChainsEnabled())
-                        .map(this::toProblem)
+                        .filter(cause -> isCausalChainsEnabled0())
+                        .map(this::toProblem0)
                         .orElse(null));
             }
         }
@@ -162,14 +137,18 @@ public abstract class AbstractExceptionTranslator implements ProblemHandling, Se
             .withStatus(status)
             .withDetail(throwable.getMessage())
             .withCause(Optional.ofNullable(throwable.getCause())
-                .filter(cause -> isCausalChainsEnabled())
-                .map(this::toProblem)
+                .filter(cause -> isCausalChainsEnabled0())
+                .map(this::toProblem0)
                 .orElse(null));
     }
 
-    private boolean containsPackageName(String message) {
+    protected abstract boolean containsPackageName(String message);
 
-        // This list is for sure not complete
-        return StringUtils.containsAny(message, "org.", "java.", "net.", "javax.", "com.", "io.", "de.", "org.rjgchw.hmall.order");
-    }
+    protected abstract StatusType defaultConstraintViolationStatus0();
+
+    protected abstract boolean isCausalChainsEnabled0();
+
+    protected abstract ThrowableProblem toProblem0(final Throwable throwable);
+
+    protected abstract String getApplicationName();
 }
