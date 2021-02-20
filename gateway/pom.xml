@@ -19,7 +19,7 @@
             <artifactId>common</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.jhipster</groupId>
+            <groupId>tech.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
             <exclusions>
                 <exclusion>
@@ -32,7 +32,6 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
@@ -47,28 +46,15 @@
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
+            <artifactId>springfox-oas</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-spring-webflux</artifactId>
-        </dependency>
-        <!-- Undertow post 请求会导致 DataBuffer 读取不到 body -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -91,10 +77,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -131,6 +113,11 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor.tools</groupId>
+            <artifactId>blockhound-junit-platform</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -208,10 +195,6 @@
             <artifactId>spring-cloud-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cloud-connectors</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
         </dependency>
@@ -280,12 +263,6 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
-                    <to>
-                        <image>gateway:latest</image>
-                    </to>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -297,9 +274,9 @@
 
     <profiles>
         <profile>
-            <id>swagger</id>
+            <id>api-docs</id>
             <properties>
-                <profile.swagger>,swagger</profile.swagger>
+                <profile.api-docs>,api-docs</profile.api-docs>
             </properties>
         </profile>
         <profile>
@@ -358,7 +335,7 @@
             </build>
             <properties>
                 <!-- default Spring profiles -->
-                <spring.profiles.active>prod${profile.swagger}${profile.tls}</spring.profiles.active>
+                <spring.profiles.active>prod${profile.api-docs}${profile.tls}</spring.profiles.active>
             </properties>
         </profile>
         <profile>

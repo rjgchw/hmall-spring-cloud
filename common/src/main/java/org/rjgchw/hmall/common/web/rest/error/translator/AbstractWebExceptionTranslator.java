@@ -2,7 +2,6 @@ package org.rjgchw.hmall.common.web.rest.error.translator;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import io.github.jhipster.web.util.HeaderUtil;
 import org.rjgchw.hmall.common.web.rest.error.BadRequestAlertException;
 import org.rjgchw.hmall.common.web.rest.error.ResourceNotFoundAlertException;
 import org.rjgchw.hmall.common.web.rest.error.UnprocessableRequestAlertException;
@@ -18,6 +17,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.zalando.problem.*;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
+import tech.jhipster.web.util.HeaderUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

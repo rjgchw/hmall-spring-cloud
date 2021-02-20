@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.order.service;
 
-import io.github.jhipster.service.QueryService;
+import tech.jhipster.service.QueryService;
 import org.rjgchw.hmall.order.service.dto.ProductCategoryCriteria;
 import org.rjgchw.hmall.order.entity.ProductCategory;
 import org.rjgchw.hmall.order.entity.ProductCategory_;

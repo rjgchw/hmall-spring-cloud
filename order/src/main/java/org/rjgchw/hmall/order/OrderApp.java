@@ -2,8 +2,8 @@ package org.rjgchw.hmall.order;
 
 import org.rjgchw.hmall.order.config.ApplicationProperties;
 
-import io.github.jhipster.config.DefaultProfileUtil;
-import io.github.jhipster.config.JHipsterConstants;
+import tech.jhipster.config.DefaultProfileUtil;
+import tech.jhipster.config.JHipsterConstants;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

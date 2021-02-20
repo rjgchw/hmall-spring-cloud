@@ -1,7 +1,7 @@
 package org.rjgchw.hmall.order.config;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.config.cache.PrefixedKeyGenerator;
+import tech.jhipster.config.JHipsterProperties;
+import tech.jhipster.config.cache.PrefixedKeyGenerator;
 import org.redisson.api.RedissonClient;
 import org.redisson.jcache.configuration.RedissonConfiguration;
 import org.rjgchw.hmall.order.repository.ProductRepository;
@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableCaching
 public class CacheConfiguration {
+
     private GitProperties gitProperties;
     private BuildProperties buildProperties;
 
@@ -42,9 +43,15 @@ public class CacheConfiguration {
         };
     }
 
-    private void createCache(javax.cache.CacheManager cm, String cacheName, javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration) {
+    private void createCache(
+        javax.cache.CacheManager cm,
+        String cacheName,
+        javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration
+    ) {
         javax.cache.Cache<Object, Object> cache = cm.getCache(cacheName);
-        if (cache == null) {
+        if (cache != null) {
+            cache.clear();
+        } else {
             cm.createCache(cacheName, jcacheConfiguration);
         }
     }

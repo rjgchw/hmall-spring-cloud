@@ -19,7 +19,7 @@
 
 package org.rjgchw.hmall.order.service.dto;
 
-import io.github.jhipster.service.filter.Filter;
+import tech.jhipster.service.filter.Filter;
 import org.rjgchw.hmall.order.service.enums.OrderStatusEnum;
 
 import java.util.Objects;

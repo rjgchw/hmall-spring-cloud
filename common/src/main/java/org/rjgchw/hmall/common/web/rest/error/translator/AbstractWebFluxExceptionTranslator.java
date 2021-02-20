@@ -1,6 +1,5 @@
 package org.rjgchw.hmall.common.web.rest.error.translator;
 
-import io.github.jhipster.web.util.HeaderUtil;
 import org.rjgchw.hmall.common.web.rest.error.BadRequestAlertException;
 import org.rjgchw.hmall.common.web.rest.error.ResourceNotFoundAlertException;
 import org.rjgchw.hmall.common.web.rest.error.UnprocessableRequestAlertException;
@@ -19,6 +18,7 @@ import org.zalando.problem.ThrowableProblem;
 import org.zalando.problem.spring.webflux.advice.ProblemHandling;
 import org.zalando.problem.spring.webflux.advice.security.SecurityAdviceTrait;
 import reactor.core.publisher.Mono;
+import tech.jhipster.web.util.HeaderUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

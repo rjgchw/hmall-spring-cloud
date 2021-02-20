@@ -1,24 +1,19 @@
 package org.rjgchw.hmall.gateway.config;
 
-import org.rjgchw.hmall.common.config.Constants;
 import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.common.security.SecurityWebFluxUtils;
 import org.rjgchw.hmall.common.security.oauth2.AudienceValidator;
 import org.rjgchw.hmall.common.security.oauth2.JwtGrantedAuthorityConverter;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import io.github.jhipster.web.filter.reactive.CookieCsrfFilter;
 import org.springframework.beans.factory.annotation.Value;
-import io.github.jhipster.config.JHipsterProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -29,17 +24,17 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
-import org.springframework.security.web.server.WebFilterExchange;
-import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
-import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
-import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;
 import reactor.core.publisher.Mono;
+import tech.jhipster.config.JHipsterProperties;
+import tech.jhipster.web.filter.reactive.CookieCsrfFilter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -68,7 +63,7 @@ public class SecurityConfiguration {
         // @formatter:off
         http
             .securityMatcher(new NegatedServerWebExchangeMatcher(new OrServerWebExchangeMatcher(
-                pathMatchers("/app/**", "/i18n/**", "/content/**", "/swagger-ui/**", "/test/**", "/webjars/**"),
+                pathMatchers("/app/**", "/i18n/**", "/content/**", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs", "/v3/api-docs", "/test/**"),
                 pathMatchers(HttpMethod.OPTIONS, "/**")
             )))
             .csrf()
@@ -81,25 +76,28 @@ public class SecurityConfiguration {
                 .authenticationEntryPoint(problemSupport)
         .and()
             .headers()
-                .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
+                .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com; font-src 'self' data:")
             .and()
                 .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
             .and()
-                .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
+                .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; fullscreen 'self'; payment 'none'")
             .and()
                 .frameOptions().disable()
         .and()
             .authorizeExchange()
+            .pathMatchers("/swagger-resources").permitAll()
+            .pathMatchers("/services/**/v3/api-docs").permitAll()
             .pathMatchers("/api/auth-info").permitAll()
+            .pathMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .pathMatchers("/api/**").authenticated()
-            .pathMatchers("/services/**", "/swagger-resources/**", "/v2/api-docs").authenticated()
+            .pathMatchers("/services/**").authenticated()
             .pathMatchers("/management/health").permitAll()
+            .pathMatchers("/management/health/**").permitAll()
             .pathMatchers("/management/info").permitAll()
             .pathMatchers("/management/prometheus").permitAll()
             .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
 
         http.oauth2Login()
-            .authenticationSuccessHandler(this::onAuthenticationSuccess)
             .and()
             .oauth2ResourceServer()
                 .jwt()
@@ -124,20 +122,30 @@ public class SecurityConfiguration {
     public ReactiveOAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         final OidcReactiveOAuth2UserService delegate = new OidcReactiveOAuth2UserService();
 
-        return (userRequest) -> {
+        return userRequest -> {
             // Delegate to the default implementation for loading a user
-            return delegate.loadUser(userRequest).map(user -> {
-                Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+            return delegate
+                .loadUser(userRequest)
+                .map(
+                    user -> {
+                        Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
-                user.getAuthorities().forEach(authority -> {
-                    if (authority instanceof OidcUserAuthority) {
-                        OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
-                        mappedAuthorities.addAll(SecurityWebFluxUtils.extractAuthorityFromClaims(oidcUserAuthority.getUserInfo().getClaims()));
+                        user
+                            .getAuthorities()
+                            .forEach(
+                                authority -> {
+                                    if (authority instanceof OidcUserAuthority) {
+                                        OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
+                                        mappedAuthorities.addAll(
+                                            SecurityWebFluxUtils.extractAuthorityFromClaims(oidcUserAuthority.getUserInfo().getClaims())
+                                        );
+                                    }
+                                }
+                            );
+
+                        return new DefaultOidcUser(mappedAuthorities, user.getIdToken(), user.getUserInfo());
                     }
-                });
-
-                return new DefaultOidcUser(mappedAuthorities, user.getIdToken(), user.getUserInfo());
-            });
+                );
         };
     }
 
@@ -152,16 +160,5 @@ public class SecurityConfiguration {
         jwtDecoder.setJwtValidator(withAudience);
 
         return jwtDecoder;
-    }
-
-    private ServerAuthenticationSuccessHandler redirectServerAuthenticationSuccessHandler = new RedirectServerAuthenticationSuccessHandler();
-
-    private Mono<Void> onAuthenticationSuccess(WebFilterExchange exchange, Authentication authentication) {
-        return redirectServerAuthenticationSuccessHandler.onAuthenticationSuccess(exchange, authentication)
-            .thenReturn(authentication.getPrincipal())
-            .filter(principal -> principal instanceof OidcUser)
-            .map(principal -> ((OidcUser) principal).getPreferredUsername())
-            .filter(login -> !Constants.ANONYMOUS_USER.equals(login))
-            .then();
     }
 }

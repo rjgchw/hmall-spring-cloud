@@ -1,9 +1,9 @@
 package org.rjgchw.hmall.order.web.rest;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import tech.jhipster.config.JHipsterProperties;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 import org.rjgchw.hmall.common.security.SecurityWebUtils;
 import org.rjgchw.hmall.common.util.UriUtil;
 import org.rjgchw.hmall.common.web.rest.error.ResourceNotFoundAlertException;

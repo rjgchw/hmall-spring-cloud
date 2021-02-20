@@ -1,6 +1,5 @@
-package org.rjgchw.hmall.order.config;
+package org.rjgchw.hmall.storage.config;
 
-import tech.jhipster.config.JHipsterProperties;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.ClusterServersConfig;
@@ -8,6 +7,7 @@ import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tech.jhipster.config.JHipsterProperties;
 
 import java.net.URI;
 

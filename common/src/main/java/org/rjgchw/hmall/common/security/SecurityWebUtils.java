@@ -38,7 +38,7 @@ public final class SecurityWebUtils {
             UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
             return springSecurityUser.getUsername();
         } else if (authentication instanceof JwtAuthenticationToken) {
-            return (String) ((JwtAuthenticationToken)authentication).getToken().getClaims().get("preferred_username");
+            return (String) ((JwtAuthenticationToken) authentication).getToken().getClaims().get("preferred_username");
         } else if (authentication.getPrincipal() instanceof DefaultOidcUser) {
             Map<String, Object> attributes = ((DefaultOidcUser) authentication.getPrincipal()).getAttributes();
             if (attributes.containsKey("preferred_username")) {
@@ -50,7 +50,6 @@ public final class SecurityWebUtils {
         return null;
     }
 
-
     /**
      * Check if a user is authenticated.
      *
@@ -58,8 +57,7 @@ public final class SecurityWebUtils {
      */
     public static boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null &&
-            getAuthorities(authentication).noneMatch(AuthoritiesConstants.ANONYMOUS::equals);
+        return authentication != null && getAuthorities(authentication).noneMatch(AuthoritiesConstants.ANONYMOUS::equals);
     }
 
     /**
@@ -72,16 +70,14 @@ public final class SecurityWebUtils {
      */
     public static boolean isCurrentUserInRole(String authority) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null &&
-            getAuthorities(authentication).anyMatch(authority::equals);
+        return authentication != null && getAuthorities(authentication).anyMatch(authority::equals);
     }
 
     private static Stream<String> getAuthorities(Authentication authentication) {
-        Collection<? extends GrantedAuthority> authorities = authentication instanceof JwtAuthenticationToken ?
-            extractAuthorityFromClaims(((JwtAuthenticationToken) authentication).getToken().getClaims())
+        Collection<? extends GrantedAuthority> authorities = authentication instanceof JwtAuthenticationToken
+            ? extractAuthorityFromClaims(((JwtAuthenticationToken) authentication).getToken().getClaims())
             : authentication.getAuthorities();
-        return authorities.stream()
-            .map(GrantedAuthority::getAuthority);
+        return authorities.stream().map(GrantedAuthority::getAuthority);
     }
 
     public static List<GrantedAuthority> extractAuthorityFromClaims(Map<String, Object> claims) {
@@ -90,14 +86,10 @@ public final class SecurityWebUtils {
 
     @SuppressWarnings("unchecked")
     private static Collection<String> getRolesFromClaims(Map<String, Object> claims) {
-        return (Collection<String>) claims.getOrDefault("groups",
-            claims.getOrDefault("roles", new ArrayList<>()));
+        return (Collection<String>) claims.getOrDefault("groups", claims.getOrDefault("roles", new ArrayList<>()));
     }
 
     private static List<GrantedAuthority> mapRolesToGrantedAuthorities(Collection<String> roles) {
-        return roles.stream()
-            .filter(role -> role.startsWith("ROLE_"))
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
+        return roles.stream().filter(role -> role.startsWith("ROLE_")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 }

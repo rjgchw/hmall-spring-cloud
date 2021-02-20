@@ -1,6 +1,5 @@
 package org.rjgchw.hmall.common.web.rest.error.translator;
 
-import io.github.jhipster.config.JHipsterConstants;
 import org.rjgchw.hmall.common.web.rest.error.*;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.ConcurrencyFailureException;
@@ -11,6 +10,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.zalando.problem.*;
 import org.zalando.problem.violations.ConstraintViolationProblem;
+import tech.jhipster.config.JHipsterConstants;
 
 import java.net.URI;
 import java.util.*;

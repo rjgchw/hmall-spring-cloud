@@ -1,7 +1,7 @@
 package org.rjgchw.hmall.order.web.rest;
 
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 import org.rjgchw.hmall.common.config.Constants;
 import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.order.entity.User;

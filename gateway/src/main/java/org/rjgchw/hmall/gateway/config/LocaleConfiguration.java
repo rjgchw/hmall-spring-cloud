@@ -79,8 +79,7 @@ public class LocaleConfiguration {
 
         @Override
         public void setLocaleContext(@Nonnull ServerWebExchange exchange, LocaleContext localeContext) {
-            Assert.notNull(exchange.getResponse()
-                , "ServerHttpResponse is required for AngularCookieLocaleContextResolver");
+            Assert.notNull(exchange.getResponse(), "ServerHttpResponse is required for AngularCookieLocaleContextResolver");
 
             Locale locale = null;
             TimeZone timeZone = null;
@@ -89,14 +88,16 @@ public class LocaleConfiguration {
                 if (localeContext instanceof TimeZoneAwareLocaleContext) {
                     timeZone = ((TimeZoneAwareLocaleContext) localeContext).getTimeZone();
                 }
-                addCookie(exchange.getResponse(),
-                    QUOTE + (locale != null ? locale.toString() : "-") + (timeZone != null ? ' ' + timeZone.getID() : "") + QUOTE);
-            }
-            else {
+                addCookie(
+                    exchange.getResponse(),
+                    QUOTE + (locale != null ? locale.toString() : "-") + (timeZone != null ? ' ' + timeZone.getID() : "") + QUOTE
+                );
+            } else {
                 removeCookie(exchange.getResponse());
             }
-            exchange.getAttributes().put(LOCALE_REQUEST_ATTRIBUTE_NAME,
-                (locale != null ? locale : LocaleContextHolder.getLocale(exchange.getLocaleContext())));
+            exchange
+                .getAttributes()
+                .put(LOCALE_REQUEST_ATTRIBUTE_NAME, (locale != null ? locale : LocaleContextHolder.getLocale(exchange.getLocaleContext())));
             if (timeZone != null) {
                 exchange.getAttributes().put(TIME_ZONE_REQUEST_ATTRIBUTE_NAME, timeZone);
             } else {
@@ -106,9 +107,7 @@ public class LocaleConfiguration {
 
         private void addCookie(@Nonnull ServerHttpResponse response, String cookieValue) {
             Assert.notNull(response, "ServerHttpResponse must not be null");
-            ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, cookieValue)
-                .path(COOKIE_PATH)
-                .build();
+            ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, cookieValue).path(COOKIE_PATH).build();
             response.addCookie(cookie);
             if (logger.isDebugEnabled()) {
                 logger.debug("Added cookie with name [" + COOKIE_NAME + "] and value [" + cookieValue + "]");
@@ -117,10 +116,7 @@ public class LocaleConfiguration {
 
         private void removeCookie(@Nonnull ServerHttpResponse response) {
             Assert.notNull(response, "ServerHttpResponse must not be null");
-            ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, "")
-                .path(COOKIE_PATH)
-                .maxAge(Duration.ZERO)
-                .build();
+            ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, "").path(COOKIE_PATH).maxAge(Duration.ZERO).build();
             response.addCookie(cookie);
             if (logger.isDebugEnabled()) {
                 logger.debug("Removed cookie with name [" + COOKIE_NAME + "]");
@@ -151,12 +147,19 @@ public class LocaleConfiguration {
                         timeZone = StringUtils.parseTimeZoneString(timeZonePart);
                     }
                     if (logger.isTraceEnabled()) {
-                        logger.trace("Parsed cookie value [" + cookie.getValue() + "] into locale '" + locale +
-                            "'" + (timeZone != null ? " and time zone '" + timeZone.getID() + "'" : ""));
+                        logger.trace(
+                            "Parsed cookie value [" +
+                            cookie.getValue() +
+                            "] into locale '" +
+                            locale +
+                            "'" +
+                            (timeZone != null ? " and time zone '" + timeZone.getID() + "'" : "")
+                        );
                     }
                 }
-                exchange.getAttributes().put(LOCALE_REQUEST_ATTRIBUTE_NAME,
-                    locale != null ? locale : exchange.getLocaleContext().getLocale());
+                exchange
+                    .getAttributes()
+                    .put(LOCALE_REQUEST_ATTRIBUTE_NAME, locale != null ? locale : exchange.getLocaleContext().getLocale());
                 if (timeZone != null) {
                     exchange.getAttributes().put(TIME_ZONE_REQUEST_ATTRIBUTE_NAME, timeZone);
                 } else {

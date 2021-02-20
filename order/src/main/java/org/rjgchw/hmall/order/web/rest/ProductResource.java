@@ -1,9 +1,18 @@
 package org.rjgchw.hmall.order.web.rest;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
+import tech.jhipster.config.JHipsterProperties;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 import org.rjgchw.hmall.common.util.UriUtil;
 import org.rjgchw.hmall.order.entity.Product;
 import org.rjgchw.hmall.order.repository.ProductRepository;
@@ -35,7 +44,7 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
  * @author Huangw
  * @date 2020-04-01 17:55
  */
-//@Tag(name = "Product")
+@Tag(name = "Product Tag")
 @RestController
 @RequestMapping("/api")
 public class ProductResource {
@@ -55,16 +64,16 @@ public class ProductResource {
         this.productSearchRepository = productSearchRepository;
     }
 
-//    @Operation(
-//        description = "创建商品",
-//        security = @SecurityRequirement(name = "jwt"),
-//        responses = {
-//            @ApiResponse(responseCode = "201",
-//                content = @Content(schema = @Schema(implementation = ProductDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
-//                description = "成功"
-//            )
-//        }
-//    )
+    @Operation(
+        description = "创建商品",
+        security = @SecurityRequirement(name = "jwt"),
+        responses = {
+            @ApiResponse(responseCode = "201",
+                content = @Content(schema = @Schema(implementation = ProductDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
+                description = "成功"
+            )
+        }
+    )
     @PostMapping("/products")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO productDTO) {
         log.debug("REST request to create product {}:", productDTO);
@@ -79,16 +88,16 @@ public class ProductResource {
             .body(newProduct);
     }
 
-//    @Operation(
-//        description = "删除商品",
-//        security = @SecurityRequirement(name = "jwt"),
-//        responses = {
-//            @ApiResponse(responseCode = "204", description = "成功")
-//        }
-//    )
+    @Operation(
+        description = "删除商品",
+        security = @SecurityRequirement(name = "jwt"),
+        responses = {
+            @ApiResponse(responseCode = "204", description = "成功")
+        }
+    )
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Void> deleteProduct(
-//        @Parameter(description = "商品id", required = true)
+        @Parameter(description = "商品id", required = true)
         @PathVariable Long id) {
         log.debug("REST request to delete product: {}", id);
 
@@ -102,35 +111,35 @@ public class ProductResource {
                     String.valueOf(id))).build();
     }
 
-//    @Operation(
-//        description = "获取商品信息",
-//        security = @SecurityRequirement(name = "jwt"),
-//        responses = {
-//            @ApiResponse(responseCode = "200",
-//                content = @Content(schema = @Schema(implementation = ProductDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
-//                description = "成功"
-//            )
-//        }
-//    )
+    @Operation(
+        description = "获取商品信息",
+        security = @SecurityRequirement(name = "jwt"),
+        responses = {
+            @ApiResponse(responseCode = "200",
+                content = @Content(schema = @Schema(implementation = ProductDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
+                description = "成功"
+            )
+        }
+    )
     @GetMapping("/products/{id}")
     public ResponseEntity<ProductDTO> getProduct(
-//        @Parameter(description = "商品id", required = true)
+        @Parameter(description = "商品id", required = true)
         @PathVariable Long id) {
         log.debug("REST request to get product id: {}", id);
 
         return ResponseUtil.wrapOrNotFound(productService.getById(id));
     }
 
-//    @Operation(
-//        description = "获取商品列表",
-//        security = @SecurityRequirement(name = "jwt"),
-//        responses = {
-//            @ApiResponse(responseCode = "200",
-//                content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)), mediaType = MediaType.APPLICATION_JSON_VALUE),
-//                description = "成功"
-//            )
-//        }
-//    )
+    @Operation(
+        description = "获取商品列表",
+        security = @SecurityRequirement(name = "jwt"),
+        responses = {
+            @ApiResponse(responseCode = "200",
+                content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)), mediaType = MediaType.APPLICATION_JSON_VALUE),
+                description = "成功"
+            )
+        }
+    )
     @GetMapping("/products")
     public ResponseEntity<List<ProductDTO>> getProducts (ProductCriteria criteria, Pageable pageable) {
         log.debug("REST request to get product: {}", pageable);
@@ -140,19 +149,19 @@ public class ProductResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-//    @Operation(
-//        description = "修改商品",
-//        security = @SecurityRequirement(name = "jwt"),
-//        responses = {
-//            @ApiResponse(responseCode = "200",
-//                content = @Content(schema = @Schema(implementation = ProductDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
-//                description = "成功"
-//            )
-//        }
-//    )
+    @Operation(
+        description = "修改商品",
+        security = @SecurityRequirement(name = "jwt"),
+        responses = {
+            @ApiResponse(responseCode = "200",
+                content = @Content(schema = @Schema(implementation = ProductDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
+                description = "成功"
+            )
+        }
+    )
     @PutMapping("/products/{id}")
     public ResponseEntity<ProductDTO> updateProduct(
-//        @Parameter(description = "商品id", required = true)
+        @Parameter(description = "商品id", required = true)
         @PathVariable Long id,
                                                               @RequestBody @Valid ProductDTO productDTO) {
         log.debug("REST request to update product id: {}, body : {}", id, productDTO);

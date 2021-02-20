@@ -1,63 +1,32 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
-import org.rjgchw.hmall.common.security.AuthoritiesConstants;
-import org.rjgchw.hmall.gateway.web.rest.vo.RouteVO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+import springfox.documentation.swagger.web.SwaggerResource;
+import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.route.Route;
-import org.springframework.cloud.gateway.route.RouteLocator;
-import reactor.core.publisher.Flux;
-import org.springframework.http.*;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing Gateway configuration.
  */
 @RestController
-@RequestMapping("/api/gateway")
 public class GatewayResource {
 
-    private final RouteLocator routeLocator;
+    private final SwaggerResourcesProvider swaggerResourcesProvider;
 
-    private final DiscoveryClient discoveryClient;
-
-    @Value("${spring.application.name}")
-    private String appName;
-
-    public GatewayResource(RouteLocator routeLocator, DiscoveryClient discoveryClient) {
-        this.routeLocator = routeLocator;
-        this.discoveryClient = discoveryClient;
+    public GatewayResource(SwaggerResourcesProvider swaggerResourcesProvider) {
+        this.swaggerResourcesProvider = swaggerResourcesProvider;
     }
 
     /**
-     * {@code GET  /routes} : get the active routes.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the list of routes.
+     * Swagger资源配置，微服务中这各个服务的api-docs信息
      */
-    @GetMapping("/routes")
-    @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<List<RouteVO>> activeRoutes() {
-        Flux<Route> routes = routeLocator.getRoutes();
-        List<RouteVO> routeVMs = new ArrayList<>();
-        routes.subscribe(route -> {
-            RouteVO routeVM = new RouteVO();
-            // Manipulate strings to make Gateway routes look like Zuul's
-            String predicate = route.getPredicate().toString();
-            String path = predicate.substring(predicate.indexOf("[") + 1, predicate.indexOf("]"));
-            routeVM.setPath(path);
-            String serviceId = route.getId().substring(route.getId().indexOf("_") + 1).toLowerCase();
-            routeVM.setServiceId(serviceId);
-            // Exclude gateway app from routes
-            if (!serviceId.equalsIgnoreCase(appName)) {
-                routeVM.setServiceInstances(discoveryClient.getInstances(serviceId));
-                routeVMs.add(routeVM);
-            }
-        });
-        return ResponseEntity.ok(routeVMs);
+    @GetMapping("/swagger-resources")
+    public Mono<ResponseEntity<List<SwaggerResource>>> swaggerResources() {
+        return Mono.just((new ResponseEntity<>(swaggerResourcesProvider.get(), HttpStatus.OK)));
     }
 }

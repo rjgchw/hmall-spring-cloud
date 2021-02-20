@@ -20,7 +20,7 @@
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>io.github.jhipster</groupId>
+                <groupId>tech.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
                 <version>${jhipster-dependencies.version}</version>
                 <type>pom</type>
@@ -53,12 +53,11 @@
                 <version>${archunit-junit5.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!-- log4j2-mock needed to create embedded elasticsearch instance with SLF4J -->
             <dependency>
-                <groupId>de.dentrassi.elasticsearch</groupId>
-                <artifactId>log4j2-mock</artifactId>
-                <version>${log4j2-mock.version}</version>
-                <scope>runtime</scope>
+                <groupId>io.projectreactor.tools</groupId>
+                <artifactId>blockhound-junit-platform</artifactId>
+                <version>${blockhound-junit-platform.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.order.service;
 
-import io.github.jhipster.service.QueryService;
+import tech.jhipster.service.QueryService;
 import org.rjgchw.hmall.order.entity.Order;
 import org.rjgchw.hmall.order.entity.Order_;
 import org.rjgchw.hmall.order.repository.OrderRepository;

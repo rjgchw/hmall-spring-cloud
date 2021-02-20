@@ -1,7 +1,7 @@
 package org.rjgchw.hmall.order.service.dto;
 
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
+import tech.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.StringFilter;
 
 /**
  * @author Huangw

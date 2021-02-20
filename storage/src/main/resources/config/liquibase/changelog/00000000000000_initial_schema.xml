@@ -13,49 +13,6 @@
         The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
     -->
     <changeSet id="00000000000001" author="jhipster">
-
-        <createTable tableName="h_persistent_audit_event">
-            <column name="event_id" type="bigint" autoIncrement="${autoIncrement}">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="principal" type="varchar(50)">
-                <constraints nullable="false" />
-            </column>
-            <column name="event_date" type="timestamp"/>
-            <column name="event_type" type="varchar(255)"/>
-        </createTable>
-
-        <createTable tableName="h_persistent_audit_evt_data">
-            <column name="event_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="varchar(150)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="value" type="varchar(255)"/>
-        </createTable>
-        <addPrimaryKey columnNames="event_id, name" tableName="h_persistent_audit_evt_data"/>
-
-        <createIndex indexName="idx_persistent_audit_event"
-                     tableName="h_persistent_audit_event"
-                     unique="false">
-            <column name="principal" type="varchar(50)"/>
-            <column name="event_date" type="timestamp"/>
-        </createIndex>
-
-        <createIndex indexName="idx_persistent_audit_evt_data"
-                     tableName="h_persistent_audit_evt_data"
-                     unique="false">
-            <column name="event_id" type="bigint"/>
-        </createIndex>
-
-        <addForeignKeyConstraint baseColumnNames="event_id"
-                                 baseTableName="h_persistent_audit_evt_data"
-                                 constraintName="fk_evt_pers_audit_evt_data"
-                                 referencedColumnNames="event_id"
-                                 referencedTableName="h_persistent_audit_event"/>
-
-
         <createTable tableName="h_storage">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="h_storagePK"/>
@@ -82,7 +39,30 @@
         </loadData>
     </changeSet>
 
-    <changeSet author="jhipster" id="00000000000002" context="test">
+    <changeSet author="jhipster" id="00000000000002">
+        <createTable tableName="undo_log">
+            <column autoIncrement="${autoIncrement}" name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="undo_logPK"/>
+            </column>
+            <column name="branch_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="xid" type="varchar(100)"/>
+            <column name="context" type="varchar(128)"/>
+            <column name="rollback_info" type="blob"/>
+            <column name="log_status" type="int"/>
+            <column name="log_created" type="datetime"/>
+            <column name="log_modified" type="datetime"/>
+            <column name="ext" type="varchar(100)"/>
+        </createTable>
+
+        <createIndex tableName="undo_log" indexName="ux_undo_log">
+            <column name="xid" />
+            <column name="branch_id" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="jhipster" id="10000000000001" context="test">
         <createTable tableName="h_date_time_wrapper">
             <column autoIncrement="${autoIncrement}" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="h_date_time_wrapperPK"/>

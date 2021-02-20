@@ -28,7 +28,8 @@ management:
     web:
       base-path: /management
       exposure:
-        include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump']
+        include:
+          ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump', 'caches', 'liquibase']
   endpoint:
     health:
       show-details: when_authorized
@@ -39,6 +40,13 @@ management:
     git:
       mode: full
   health:
+    group:
+      liveness:
+        include: livenessState
+      readiness:
+        include: readinessState,datasource
+    probes:
+      enabled: true
     mail:
       enabled: false # When using the MailService, configure an SMTP server and set this to true
   metrics:
@@ -67,6 +75,8 @@ management:
             enabled: true
 
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration
   application:
     name: storage
   cloud:
@@ -175,15 +185,15 @@ jhipster:
     name: 'storageApp'
   # By default CORS is disabled. Uncomment to enable.
   # cors:
-  #     allowed-origins: "*"
-  #     allowed-methods: "*"
-  #     allowed-headers: "*"
-  #     exposed-headers: "Authorization,Link,X-Total-Count"
-  #     allow-credentials: true
-  #     max-age: 1800
+  #   allowed-origins: "*"
+  #   allowed-methods: "*"
+  #   allowed-headers: "*"
+  #   exposed-headers: "Authorization,Link,X-Total-Count"
+  #   allow-credentials: true
+  #   max-age: 1800
   mail:
     from: storage@localhost
-  swagger:
+  api-docs:
     default-include-pattern: /api/.*
     title: storage API
     description: storage API documentation
