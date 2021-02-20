@@ -84,6 +84,9 @@ spring:
           oidc:
             issuer-uri: http://DO_NOT_CALL:9080/auth/realms/hmall
 
+seata:
+  enabled: false
+
 server:
   port: 10344
   address: localhost

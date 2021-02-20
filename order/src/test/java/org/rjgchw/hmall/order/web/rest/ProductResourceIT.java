@@ -46,7 +46,7 @@ public class ProductResourceIT {
     private CacheManager cacheManager;
 
     @Autowired
-    private MockMvc restProductMockMvc;
+    private MockMvc restMockMvc;
 
     private Product product;
 
@@ -98,7 +98,7 @@ public class ProductResourceIT {
         productDTO.setCategoryId(productCategory.getId());
 
         ProductDTO productRsp = JsonUtil.nonDefaultMapper().fromJson(
-            restProductMockMvc.perform(
+            restMockMvc.perform(
                 post("/api/products")
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -128,7 +128,7 @@ public class ProductResourceIT {
         productDTO.setImgUrl("http://image.com/abc.png");
         productDTO.setCategoryId(product.getCategory().getId());
 
-        restProductMockMvc.perform(
+        restMockMvc.perform(
             post("/api/products")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +141,7 @@ public class ProductResourceIT {
     public void should_find_one_if_input_a_id() throws Exception {
         productRepository.saveAndFlush(product);
 
-        restProductMockMvc.perform(
+        restMockMvc.perform(
             get("/api/products/{id}", product.getId())
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -154,7 +154,7 @@ public class ProductResourceIT {
     @Test
     @Transactional
     public void should_find_nothing_if_input_a_non_existing_id() throws Exception {
-        restProductMockMvc.perform(get("/api/products/{id}", "-1"))
+        restMockMvc.perform(get("/api/products/{id}", "-1"))
             .andExpect(status().isNotFound());
     }
 
@@ -177,7 +177,7 @@ public class ProductResourceIT {
     }
 
     private void defaultProductShouldNotBeFound(String filter) throws Exception {
-        restProductMockMvc.perform(
+        restMockMvc.perform(
             get("/api/products?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -186,7 +186,7 @@ public class ProductResourceIT {
     }
 
     private void defaultProductShouldBeFound(String filter) throws Exception {
-        restProductMockMvc.perform(
+        restMockMvc.perform(
             get("/api/products?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -199,7 +199,7 @@ public class ProductResourceIT {
     public void should_find_all_if_not_input() throws Exception {
         productRepository.saveAndFlush(product);
 
-        restProductMockMvc.perform(get("/api/products?sort=id,desc"))
+        restMockMvc.perform(get("/api/products?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
@@ -216,7 +216,7 @@ public class ProductResourceIT {
         updatedProduct.setCategoryId(product.getCategory().getId());
         updatedProduct.setStatus(ProductStatusEnum.UP);
 
-        restProductMockMvc.perform(
+        restMockMvc.perform(
             put("/api/products/{id}", product.getId())
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -248,7 +248,7 @@ public class ProductResourceIT {
         updatedProduct.setCategoryId(product.getCategory().getId());
 
         // update product
-        restProductMockMvc.perform(
+        restMockMvc.perform(
             put("/api/products/{id}", product.getId())
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -263,7 +263,7 @@ public class ProductResourceIT {
 
         int databaseSizeBeforeDelete = productRepository.findAll().size();
 
-        restProductMockMvc.perform(
+        restMockMvc.perform(
             delete("/api/products/{id}", product.getId())
                 .with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
@@ -280,7 +280,7 @@ public class ProductResourceIT {
 
         int databaseSizeBeforeDelete = productRepository.findAll().size();
 
-        restProductMockMvc.perform(
+        restMockMvc.perform(
             delete("/api/products/{id}", product.getId())
                 .with(csrf())
                 .accept(MediaType.APPLICATION_JSON)

@@ -125,7 +125,7 @@ public class OrderResourceIT {
                 post("/api/orders")
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(orderVO)))
+                    .content(JsonUtil.nonDefaultMapper().toJson(orderVO)))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString(),
             OrderDTO.class);
