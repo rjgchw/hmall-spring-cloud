@@ -7,7 +7,4 @@ import io.cucumber.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(plugin = "pretty", features = "src/test/features")
-
-public class CucumberIT  {
-
-}
+class CucumberIT {}

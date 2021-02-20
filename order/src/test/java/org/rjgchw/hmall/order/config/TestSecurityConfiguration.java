@@ -24,6 +24,7 @@ import static org.mockito.Mockito.mock;
  */
 @TestConfiguration
 public class TestSecurityConfiguration {
+
     private final ClientRegistration clientRegistration;
 
     public TestSecurityConfiguration() {
@@ -39,7 +40,8 @@ public class TestSecurityConfiguration {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("end_session_endpoint", "https://jhipster.org/logout");
 
-        return ClientRegistration.withRegistrationId("oidc")
+        return ClientRegistration
+            .withRegistrationId("oidc")
             .redirectUriTemplate("{baseUrl}/{action}/oauth2/code/{registrationId}")
             .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
