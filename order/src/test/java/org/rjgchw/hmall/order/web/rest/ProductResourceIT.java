@@ -85,7 +85,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_valid_if_input_normally() throws Exception {
+    public void should_create_success_if_input_normally() throws Exception {
 
         ProductCategory productCategory = saveAndFlushProductCategory();
 
@@ -116,7 +116,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_invalid_if_input_existing_name() throws Exception {
+    public void should_create_failure_if_input_a_existing_name() throws Exception {
 
         productRepository.saveAndFlush(product);
 
@@ -138,7 +138,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_return_one_if_input_right_id() throws Exception {
+    public void should_find_one_if_input_a_id() throws Exception {
         productRepository.saveAndFlush(product);
 
         restProductMockMvc.perform(
@@ -153,14 +153,14 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_return_one_if_input_non_existing_id() throws Exception {
+    public void should_find_nothing_if_input_a_non_existing_id() throws Exception {
         restProductMockMvc.perform(get("/api/products/{id}", "-1"))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void should_return_something_if_input_a_name() throws Exception {
+    public void should_find_something_if_input_a_name() throws Exception {
         productRepository.saveAndFlush(product);
 
         defaultProductShouldBeFound("name.equals=" + DEFAULT_NAME);
@@ -169,7 +169,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_return_something_if_input_a_category_id() throws Exception {
+    public void should_find_something_if_input_a_category_id() throws Exception {
         productRepository.saveAndFlush(product);
 
         defaultProductShouldBeFound("categoryId.equals=" + product.getCategory().getId());
@@ -196,7 +196,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_return_all_if_input_nothing() throws Exception {
+    public void should_find_all_if_not_input() throws Exception {
         productRepository.saveAndFlush(product);
 
         restProductMockMvc.perform(get("/api/products?sort=id,desc"))
@@ -207,7 +207,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_update_success_if_input_valid_value() throws Exception {
+    public void should_update_success_if_input_a_name() throws Exception {
         productRepository.saveAndFlush(product);
 
         String updatedName = "UpdatedName";
@@ -230,7 +230,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_update_failure_if_input_existing_name() throws Exception {
+    public void should_update_failure_if_input_a_existing_name() throws Exception {
 
         productRepository.saveAndFlush(product);
 
@@ -258,7 +258,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_delete_success_if_input_valid_id() throws Exception {
+    public void should_delete_success_if_input_a_id() throws Exception {
         productRepository.saveAndFlush(product);
 
         int databaseSizeBeforeDelete = productRepository.findAll().size();
@@ -275,7 +275,7 @@ public class ProductResourceIT {
 
     @Test
     @Transactional
-    public void should_delete_nothing_if_input_non_existing_id() throws Exception {
+    public void should_delete_nothing_if_input_a_non_existing_id() throws Exception {
         productRepository.saveAndFlush(product);
 
         int databaseSizeBeforeDelete = productRepository.findAll().size();

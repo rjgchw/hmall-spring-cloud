@@ -1,5 +1,7 @@
 package org.rjgchw.hmall.order.service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -9,10 +11,10 @@ import javax.validation.constraints.Size;
  */
 public class ProductCategoryDTO {
 
-//    @Schema(description = "商品类别id", example = "1")
+    @Schema(description = "商品类别id", example = "1")
     private Long id;
 
-//    @Schema(description = "商品类别名称", required = true, example = "食品")
+    @Schema(description = "商品类别名称", required = true, example = "食品")
     @NotNull
     @Size(max = 64)
     private String name;

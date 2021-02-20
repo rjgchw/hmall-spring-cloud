@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.common.util.JsonUtil;
-import org.rjgchw.hmall.order.OrderApp;
+import org.rjgchw.hmall.order.IntegrationTest;
 import org.rjgchw.hmall.order.entity.Product;
 import org.rjgchw.hmall.order.entity.ProductCategory;
 import org.rjgchw.hmall.order.repository.ProductCategoryRepository;
@@ -12,7 +12,6 @@ import org.rjgchw.hmall.order.repository.ProductRepository;
 import org.rjgchw.hmall.order.service.dto.ProductCategoryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,10 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -36,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
-@SpringBootTest(classes = OrderApp.class)
+@IntegrationTest
 public class ProductCategoryResourceIT {
 
     private static final String DEFAULT_NAME = "FOOTBALL";
@@ -66,7 +62,7 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void create_with_valid_value() throws Exception {
+    public void should_create_success_if_input_normally() throws Exception {
 
         ProductCategoryDTO productCategoryDTO = new ProductCategoryDTO();
         productCategoryDTO.setName(DEFAULT_NAME);
@@ -88,7 +84,7 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void create_with_a_existing_name_is_invalid() throws Exception {
+    public void should_create_failure_if_input_a_existing_name() throws Exception {
         productCategoryRepository.saveAndFlush(productCategory);
 
         ProductCategoryDTO productCategoryReq = new ProductCategoryDTO();
@@ -104,7 +100,7 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void find_one_with_valid_value() throws Exception {
+    public void should_find_one_if_input_a_id() throws Exception {
         productCategoryRepository.saveAndFlush(productCategory);
 
         restMockMvc.perform(
@@ -117,14 +113,14 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void find_one_with_a_non_existing_id() throws Exception {
+    public void should_find_nothing_if_input_a_non_existing_id() throws Exception {
         restMockMvc.perform(get("/api/product-categories/{id}", "-1"))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void find_with_a_name_equals_to_something() throws Exception {
+    public void should_find_something_if_input_a_name() throws Exception {
         productCategoryRepository.saveAndFlush(productCategory);
 
         defaultProductCategoryShouldBeFound("name.equals=" + DEFAULT_NAME);
@@ -151,7 +147,7 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void find_all_with_valid_value() throws Exception {
+    public void should_find_all_if_not_input() throws Exception {
         productCategoryRepository.saveAndFlush(productCategory);
 
         restMockMvc.perform(get("/api/product-categories?sort=id,desc"))
@@ -162,7 +158,7 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void update_with_valid_value() throws Exception {
+    public void should_update_success_if_input_a_name() throws Exception {
         productCategoryRepository.saveAndFlush(productCategory);
 
         String updatedName = "UpdatedName";
@@ -183,7 +179,7 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void update_with_a_existing_name_is_invalid() throws Exception {
+    public void should_update_failure_if_input_a_existing_name() throws Exception {
 
         productCategoryRepository.saveAndFlush(productCategory);
 
@@ -209,7 +205,7 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void delete_with_deletable_id_is_valid() throws Exception {
+    public void should_delete_success_if_input_a_id() throws Exception {
         productCategoryRepository.saveAndFlush(productCategory);
 
         int databaseSizeBeforeDelete = productCategoryRepository.findAll().size();
@@ -226,24 +222,7 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void delete_with_a_non_exist_id_is_valid() throws Exception {
-        productCategoryRepository.saveAndFlush(productCategory);
-
-        int databaseSizeBeforeDelete = productCategoryRepository.findAll().size();
-
-        restMockMvc.perform(
-            delete("/api/product-categories/{id}", productCategory.getId())
-                .with(csrf())
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNoContent());
-
-        List<ProductCategory> productCategoryList = productCategoryRepository.findAll();
-        assertThat(productCategoryList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void delete_with_un_deletable_id_is_invalid() throws Exception {
+    public void should_delete_nothing_if_input_a_non_existing_id() throws Exception {
         productCategory = productCategoryRepository.saveAndFlush(productCategory);
         Product product = ProductResourceIT.createEntity(productCategory);
         productRepository.saveAndFlush(product);
