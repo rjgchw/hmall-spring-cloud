@@ -19,9 +19,11 @@ import java.util.List;
  */
 @Component
 @Primary
-public class SwaggerConfiguration implements SwaggerResourcesProvider {
+public class SwaggerProvider implements SwaggerResourcesProvider {
 
-    private final Logger log = LoggerFactory.getLogger(SwaggerConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(SwaggerProvider.class);
+
+    public static final String API_URI = "/v3/api-docs";
 
     private final RouteLocator routeLocator;
     private final DiscoveryClient discoveryClient;
@@ -29,7 +31,7 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
     @Value("${spring.application.name}")
     private String appName;
 
-    public SwaggerConfiguration(RouteLocator routeLocator, DiscoveryClient discoveryClient) {
+    public SwaggerProvider(RouteLocator routeLocator, DiscoveryClient discoveryClient) {
         this.routeLocator = routeLocator;
         this.discoveryClient = discoveryClient;
     }
@@ -46,7 +48,7 @@ public class SwaggerConfiguration implements SwaggerResourcesProvider {
             if (!serviceId.equalsIgnoreCase(appName)) {
                 SwaggerResource resource = new SwaggerResource();
                 resource.setName(serviceId);
-                resource.setLocation(path.replace("**", "v3/api-docs"));
+                resource.setLocation(path.replace("/**", API_URI));
                 resource.setSwaggerVersion("3.0");
                 resources.add(resource);
             }
