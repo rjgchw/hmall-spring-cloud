@@ -1,6 +1,8 @@
 package org.rjgchw.hmall.order.service.dto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -11,18 +13,18 @@ import java.math.BigDecimal;
  */
 public class OrderItemDTO {
 
-//    @Schema(description = "id", example = "1")
+    @Schema(description = "id", example = "1")
     private Long id;
 
-//    @Schema(description = "产品 id", example = "1")
+    @Schema(description = "产品 id", example = "1")
     @NotNull
     @Min(0)
     private Long productId;
 
-//    @Schema(description = "产品单价", example = "3999.00")
+    @Schema(description = "产品单价", example = "3999.00")
     private BigDecimal productPrice;
 
-//    @Schema(description = "产品数量", example = "1")
+    @Schema(description = "产品数量", example = "1")
     private Integer productQuantity;
 
     @Override

@@ -41,6 +41,6 @@ public class StorageService {
                 }
                 return Optional.of(storageRepository.lockProduct(productId, x.getStorage(), productQuantity) > 0);
             })
-            .orElseThrow(ProductDoesNotExistException::new);
+            .orElseThrow(() -> new ProductDoesNotExistException(productId + " not exists"));
     }
 }

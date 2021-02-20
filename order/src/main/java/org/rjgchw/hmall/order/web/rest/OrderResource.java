@@ -1,5 +1,14 @@
 package org.rjgchw.hmall.order.web.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -32,7 +41,7 @@ import java.util.List;
  * @author Huangw
  * @date 2020-03-08 16:52
  */
-//@Tag(name = "Order")
+@Tag(name = "Order")
 @RestController
 @RequestMapping("/api")
 public class OrderResource {
@@ -48,16 +57,16 @@ public class OrderResource {
         this.jHipsterProperties = jHipsterProperties;
     }
 
-//    @Operation(
-//        description = "创建订单",
-//        security = @SecurityRequirement(name = "jwt"),
-//        responses = {
-//            @ApiResponse(responseCode = "201",
-//                content = @Content(schema = @Schema(implementation = OrderVO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
-//                description = "成功"
-//            )
-//        }
-//    )
+    @Operation(
+        description = "创建订单",
+        security = @SecurityRequirement(name = "jwt"),
+        responses = {
+            @ApiResponse(responseCode = "201",
+                content = @Content(schema = @Schema(implementation = OrderVO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
+                description = "成功"
+            )
+        }
+    )
     @PostMapping("/orders")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody @Valid OrderVO orderDTO) {
         log.debug("REST request to create order {}:", orderDTO);
@@ -75,35 +84,35 @@ public class OrderResource {
         }).orElseThrow(() -> new ResourceNotFoundAlertException("Member not found"));
     }
 
-//    @Operation(
-//        description = "获取订单信息",
-//        security = @SecurityRequirement(name = "jwt"),
-//        responses = {
-//            @ApiResponse(responseCode = "200",
-//                content = @Content(schema = @Schema(implementation = OrderDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
-//                description = "成功"
-//            )
-//        }
-//    )
+    @Operation(
+        description = "获取订单信息",
+        security = @SecurityRequirement(name = "jwt"),
+        responses = {
+            @ApiResponse(responseCode = "200",
+                content = @Content(schema = @Schema(implementation = OrderDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE),
+                description = "成功"
+            )
+        }
+    )
     @GetMapping("/orders/{id}")
     public ResponseEntity<OrderDTO> getOrder(
-//        @Parameter(description = "订单id", required = true)
+        @Parameter(description = "订单id", required = true)
         @PathVariable Long id) {
         log.debug("REST request to get product brand id: {}", id);
 
         return ResponseUtil.wrapOrNotFound(orderService.getById(id));
     }
 
-//    @Operation(
-//        description = "获取订单列表",
-//        security = @SecurityRequirement(name = "jwt"),
-//        responses = {
-//            @ApiResponse(responseCode = "200",
-//                content = @Content(array = @ArraySchema(schema = @Schema(implementation = OrderDTO.class)), mediaType = MediaType.APPLICATION_JSON_VALUE),
-//                description = "成功"
-//            )
-//        }
-//    )
+    @Operation(
+        description = "获取订单列表",
+        security = @SecurityRequirement(name = "jwt"),
+        responses = {
+            @ApiResponse(responseCode = "200",
+                content = @Content(array = @ArraySchema(schema = @Schema(implementation = OrderDTO.class)), mediaType = MediaType.APPLICATION_JSON_VALUE),
+                description = "成功"
+            )
+        }
+    )
     @GetMapping("/orders")
     public ResponseEntity<List<OrderDTO>> getOrders (OrderCriteria criteria, Pageable pageable) {
         log.debug("REST request to get product brand: {}", pageable);

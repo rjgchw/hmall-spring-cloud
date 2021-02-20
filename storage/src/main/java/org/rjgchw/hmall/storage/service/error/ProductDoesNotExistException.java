@@ -6,7 +6,7 @@ package org.rjgchw.hmall.storage.service.error;
  * @date 2021-02-17 11:33
  */
 public class ProductDoesNotExistException extends RuntimeException {
-    public ProductDoesNotExistException() {
-        super();
+    public ProductDoesNotExistException(String message) {
+        super(message);
     }
 }

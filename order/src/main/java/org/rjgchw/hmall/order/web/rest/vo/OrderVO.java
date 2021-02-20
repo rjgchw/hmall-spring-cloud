@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.order.web.rest.vo;
 
-//import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.rjgchw.hmall.order.service.dto.OrderItemDTO;
 import org.rjgchw.hmall.order.service.enums.PayTypeEnum;
 import org.rjgchw.hmall.order.service.enums.SourceTypeEnum;
@@ -15,19 +15,19 @@ import java.util.Set;
  */
 public class OrderVO {
 
-//    @Schema(description = "订单来源", example = "PC")
+    @Schema(description = "订单来源", example = "PC")
     @NotNull
     private SourceTypeEnum sourceType;
 
-//    @Schema(description = "支付方式", example = "ALIPAY")
+    @Schema(description = "支付方式", example = "ALIPAY")
     @NotNull
     private PayTypeEnum payType;
 
-//    @Schema(description = "收货人 id", example = "1")
+    @Schema(description = "收货人 id", example = "1")
     @NotNull
     private Long receiverId;
 
-//    @Schema(description = "商品列表")
+    @Schema(description = "商品列表")
     @NotNull
     @Valid
     private Set<OrderItemDTO> items;

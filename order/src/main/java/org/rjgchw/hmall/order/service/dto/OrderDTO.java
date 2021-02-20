@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.order.service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.rjgchw.hmall.order.service.enums.OrderStatusEnum;
 import org.rjgchw.hmall.order.service.enums.PayTypeEnum;
 import org.rjgchw.hmall.order.service.enums.SourceTypeEnum;
@@ -13,28 +14,28 @@ import java.math.BigDecimal;
  */
 public class OrderDTO {
 
-//    @Schema(description = "订单 id", example = "1")
+    @Schema(description = "订单 id", example = "1")
     private Long id;
 
-//    @Schema(description = "订单编号", example = "202003040101000001")
+    @Schema(description = "订单编号", example = "202003040101000001")
     private String orderSn;
 
-//    @Schema(description = "会员", example = "user")
+    @Schema(description = "会员", example = "user")
     private String memberUsername;
 
-//    @Schema(description = "订单总金额", example = "3000.23")
+    @Schema(description = "订单总金额", example = "3000.23")
     private BigDecimal totalAmount;
 
-//    @Schema(description = "收货人 id", example = "1")
+    @Schema(description = "收货人 id", example = "1")
     private Long receiverId;
 
-//    @Schema(description = "订单来源", example = "PC")
+    @Schema(description = "订单来源", example = "PC")
     private SourceTypeEnum sourceType;
 
-//    @Schema(description = "支付方式", example = "ALIPAY")
+    @Schema(description = "支付方式", example = "ALIPAY")
     private PayTypeEnum payType;
 
-//    @Schema(description = "订单状态", example = "CONFIRMED")
+    @Schema(description = "订单状态", example = "CONFIRMED")
     private OrderStatusEnum status;
 
     @Override
