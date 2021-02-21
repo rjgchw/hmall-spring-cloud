@@ -3,9 +3,11 @@ package org.rjgchw.hmall.storage.web.rest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.rjgchw.hmall.common.security.AuthoritiesConstants;
+import org.rjgchw.hmall.common.util.JsonUtil;
 import org.rjgchw.hmall.storage.IntegrationTest;
 import org.rjgchw.hmall.storage.entity.Storage;
 import org.rjgchw.hmall.storage.repository.StorageRepository;
+import org.rjgchw.hmall.storage.web.rest.vo.StorageDeductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
@@ -56,12 +58,14 @@ public class StorageResourceIT {
     public void should_deduct_success_if_input_normally() throws Exception {
         storageRepository.saveAndFlush(storage);
 
+        StorageDeductVO storageDeductVO = new StorageDeductVO();
+        storageDeductVO.setProductId(storage.getProductId());
+        storageDeductVO.setProductQuantity(1);
         restMockMvc.perform(
             post("/api/storages/deduct")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("productId", storage.getProductId() + "")
-                .param("productQuantity", 1 + ""))
+                .content(JsonUtil.nonDefaultMapper().toJson(storageDeductVO)))
             .andExpect(status().isOk());
 
         storageRepository.findById(storage.getId()).ifPresent(x -> {
@@ -73,12 +77,15 @@ public class StorageResourceIT {
     @Transactional
     public void should_deduct_failure_if_input_a_non_existing_product_id() throws Exception {
 
+        StorageDeductVO storageDeductVO = new StorageDeductVO();
+        storageDeductVO.setProductId(storage.getProductId());
+        storageDeductVO.setProductQuantity(1);
+
         restMockMvc.perform(
             post("/api/storages/deduct")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("productId", DEFAULT_PRODUCT_ID + "")
-                .param("productQuantity", 1 + ""))
+                .content(JsonUtil.nonDefaultMapper().toJson(storageDeductVO)))
             .andExpect(status().isUnprocessableEntity());
     }
 }

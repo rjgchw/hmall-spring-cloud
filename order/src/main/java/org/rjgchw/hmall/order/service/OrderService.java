@@ -3,6 +3,7 @@ package org.rjgchw.hmall.order.service;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.redisson.api.RedissonClient;
 import org.rjgchw.hmall.order.client.StorageFeignClient;
+import org.rjgchw.hmall.order.client.dto.StorageDeductDTO;
 import org.rjgchw.hmall.order.entity.Order;
 import org.rjgchw.hmall.order.entity.OrderItem;
 import org.rjgchw.hmall.order.repository.OrderRepository;
@@ -97,8 +98,10 @@ public class OrderService {
             if(!productService.getById(item.getProductId()).isPresent()) {
                 throw new ProductDoesNotExistException();
             }
-            boolean lockResult = storageFeignClient.deduct(item.getProductId(), item.getProductQuantity());
-            if (!lockResult) {
+            // 扣库存
+            try {
+                storageFeignClient.deduct(new StorageDeductDTO(item.getProductId(), item.getProductQuantity()));
+            } catch (Exception e) {
                 // 锁定库存失败 可能存在资源竞争问题
                 throw new LockStorageFailException();
             }

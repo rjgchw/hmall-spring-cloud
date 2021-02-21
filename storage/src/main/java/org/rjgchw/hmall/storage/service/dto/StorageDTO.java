@@ -1,6 +1,6 @@
 package org.rjgchw.hmall.storage.service.dto;
 
-//import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -12,15 +12,15 @@ import javax.validation.constraints.NotNull;
  */
 public class StorageDTO {
 
-//    @Schema(example = "1")
+    @Schema(example = "1")
     private Long id;
 
-//    @Schema(description = "商品id", required = true, example = "1")
+    @Schema(description = "商品id", required = true, example = "1")
     @NotNull
     @Min(0)
     private Long productId;
 
-//    @Schema(description = "库存", example = "100")
+    @Schema(description = "库存", example = "100")
     @Min(0)
     private Integer storage;
 

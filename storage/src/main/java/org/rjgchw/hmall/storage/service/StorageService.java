@@ -1,6 +1,7 @@
 package org.rjgchw.hmall.storage.service;
 
 import org.rjgchw.hmall.storage.repository.StorageRepository;
+import org.rjgchw.hmall.storage.service.error.LockStorageFailException;
 import org.rjgchw.hmall.storage.service.error.ProductDoesNotExistException;
 import org.rjgchw.hmall.storage.service.error.StorageShortageException;
 import org.slf4j.Logger;
@@ -33,13 +34,16 @@ public class StorageService {
      * @param productQuantity
      * @return 成功/失败
      */
-    public Optional<Boolean> lockStorage(Long productId, Integer productQuantity) {
-        return storageRepository.findByProductId(productId)
+    public void lockStorage(Long productId, Integer productQuantity) {
+        storageRepository.findByProductId(productId)
             .map(x -> {
                 if(x.getStorage() < productQuantity) {
                     throw new StorageShortageException();
                 }
-                return Optional.of(storageRepository.lockProduct(productId, x.getStorage(), productQuantity) > 0);
+                if (storageRepository.lockProduct(productId, x.getStorage(), productQuantity) == 0) {
+                    throw new LockStorageFailException("lock storage failure, productId=" + productId);
+                }
+                return x;
             })
             .orElseThrow(() -> new ProductDoesNotExistException(productId + " not exists"));
     }

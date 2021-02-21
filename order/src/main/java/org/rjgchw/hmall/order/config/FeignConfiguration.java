@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @EnableFeignClients(basePackages = "org.rjgchw.hmall.order")
-//@Import(FeignClientsConfiguration.class)
 public class FeignConfiguration {
 
     /**
