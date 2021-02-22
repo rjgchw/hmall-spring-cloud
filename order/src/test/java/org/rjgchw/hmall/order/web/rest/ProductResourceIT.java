@@ -86,7 +86,6 @@ public class ProductResourceIT {
     @Test
     @Transactional
     public void should_create_success_if_input_normally() throws Exception {
-
         ProductCategory productCategory = saveAndFlushProductCategory();
 
         ProductDTO productDTO = new ProductDTO();

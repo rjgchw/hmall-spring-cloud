@@ -1,7 +1,7 @@
 package org.rjgchw.hmall.storage.config.timezone;
 
+import org.rjgchw.hmall.common.test.container.RedisTestContainerExtension;
 import org.rjgchw.hmall.storage.StorageApp;
-import org.rjgchw.hmall.storage.RedisTestContainerExtension;
 import org.rjgchw.hmall.storage.config.TestSecurityConfiguration;
 import org.rjgchw.hmall.storage.repository.timezone.DateTimeWrapper;
 import org.rjgchw.hmall.storage.repository.timezone.DateTimeWrapperRepository;

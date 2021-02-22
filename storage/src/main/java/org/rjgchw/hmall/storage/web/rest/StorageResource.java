@@ -1,6 +1,7 @@
 package org.rjgchw.hmall.storage.web.rest;
 
 import org.rjgchw.hmall.storage.service.StorageService;
+import org.rjgchw.hmall.storage.service.dto.StorageDeductDTO;
 import org.rjgchw.hmall.storage.web.rest.vo.StorageDeductVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,16 @@ public class StorageResource {
     }
 
     @PostMapping("/api/storages/deduct")
-    public ResponseEntity<Void> deduct(@RequestBody StorageDeductVO storageDeductVO) {
+    public ResponseEntity<StorageDeductDTO> deduct(@RequestBody StorageDeductVO storageDeductVO) {
         storageService.lockStorage(storageDeductVO.getProductId(), storageDeductVO.getProductQuantity());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(
+            storageService
+                .lockStorage(storageDeductVO.getProductId(), storageDeductVO.getProductQuantity())
+                .orElse(
+                    new StorageDeductDTO(
+                        storageDeductVO.getProductId(),
+                        storageDeductVO.getProductQuantity(),
+                        false)),
+            HttpStatus.OK);
     }
 }

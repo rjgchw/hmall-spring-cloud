@@ -9,4 +9,7 @@ public class LockStorageFailException extends RuntimeException {
     public LockStorageFailException() {
         super();
     }
+    public LockStorageFailException(Throwable t) {
+        super(t);
+    }
 }

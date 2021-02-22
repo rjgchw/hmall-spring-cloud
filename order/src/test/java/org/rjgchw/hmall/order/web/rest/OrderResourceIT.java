@@ -1,10 +1,12 @@
 package org.rjgchw.hmall.order.web.rest;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.rjgchw.hmall.common.util.JsonUtil;
 import org.rjgchw.hmall.order.IntegrationTest;
+import org.rjgchw.hmall.order.config.TestFeignConfiguration;
 import org.rjgchw.hmall.order.entity.Order;
 import org.rjgchw.hmall.order.entity.OrderItem;
 import org.rjgchw.hmall.order.entity.Product;
@@ -17,11 +19,14 @@ import org.rjgchw.hmall.order.service.dto.OrderItemDTO;
 import org.rjgchw.hmall.order.service.enums.OrderStatusEnum;
 import org.rjgchw.hmall.order.service.enums.PayTypeEnum;
 import org.rjgchw.hmall.order.service.enums.SourceTypeEnum;
+import org.rjgchw.hmall.order.web.rest.mock.StorageMocks;
 import org.rjgchw.hmall.order.web.rest.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +50,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @AutoConfigureMockMvc
 @WithMockUser(username = OrderResourceIT.DEFAULT_USERNAME)
+@ContextConfiguration(classes = { TestFeignConfiguration.class })
 @IntegrationTest
+@ExtendWith(SpringExtension.class)
 public class OrderResourceIT {
 
     private static final Long DEFAULT_RECEIVER_ID = 1L;
@@ -54,6 +61,9 @@ public class OrderResourceIT {
 
     private static final String DEFAULT_ORDER_SN = "202003030101000001";
     public static final String DEFAULT_USERNAME = "11111111111";
+
+    @Autowired
+    private WireMockServer mockServer;
 
     @Autowired
     private MockMvc restMockMvc;
@@ -106,6 +116,8 @@ public class OrderResourceIT {
     @Transactional
     public void should_create_success_if_input_normally() throws Exception {
 
+        StorageMocks.setupMockDeductResponse(mockServer);
+
         ProductCategory productCategory = productCategoryRepository.saveAndFlush(ProductCategoryResourceIT.createEntity());
         Product product = productRepository.saveAndFlush(ProductResourceIT.createEntity(productCategory));
 
@@ -117,7 +129,7 @@ public class OrderResourceIT {
         OrderItemDTO orderItem = new OrderItemDTO();
         orderItem.setProductId(product.getId());
         orderItem.setProductPrice(BigDecimal.valueOf(100));
-        orderItem.setProductQuantity(10);
+        orderItem.setProductQuantity(1);
         orderVO.setItems(Stream.of(orderItem).collect(Collectors.toSet()));
 
         OrderDTO orderRsp = JsonUtil.nonDefaultMapper().fromJson(

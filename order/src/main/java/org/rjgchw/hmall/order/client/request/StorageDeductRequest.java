@@ -1,19 +1,19 @@
-package org.rjgchw.hmall.order.client.dto;
+package org.rjgchw.hmall.order.client.request;
 
 import java.io.Serializable;
 
 /**
- * 库存扣减 DTO
+ * 库存扣减 Request
  * @author Huangw
  * @date 2021-02-17 11:30
  */
-public class StorageDeductDTO implements Serializable {
+public class StorageDeductRequest implements Serializable {
 
     private Long productId;
 
     private Integer productQuantity;
 
-    public StorageDeductDTO(Long productId, Integer productQuantity) {
+    public StorageDeductRequest(Long productId, Integer productQuantity) {
         this.productId = productId;
         this.productQuantity = productQuantity;
     }

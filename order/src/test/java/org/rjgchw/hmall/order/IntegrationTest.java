@@ -1,6 +1,7 @@
 package org.rjgchw.hmall.order;
 
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.rjgchw.hmall.common.test.container.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 

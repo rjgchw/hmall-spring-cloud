@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -36,15 +37,13 @@ class OrderKafkaResourceIT {
     @BeforeAll
     static void startServer() {
         if (!started) {
-            startTestcontainer();
+            startTestContainer();
             started = true;
         }
     }
 
-    private static void startTestcontainer() {
-        // TODO: withNetwork will need to be removed soon
-        // See discussion at https://github.com/jhipster/generator-jhipster/issues/11544#issuecomment-609065206
-        kafkaContainer = new KafkaContainer("5.5.0").withNetwork(null);
+    private static void startTestContainer() {
+        kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka").withTag("5.5.0")).withNetwork(null);
         kafkaContainer.start();
     }
 

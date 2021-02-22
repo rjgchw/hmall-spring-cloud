@@ -18,6 +18,9 @@ ribbon:
   ConnectTimeout: 5000
   ReadTimeout: 5000
 
+ribbon-service:
+  storage: storage
+
 feign:
   sentinel:
     enabled: true
@@ -81,7 +84,6 @@ spring:
   cloud:
     nacos:
       discovery:
-        enabled: true
         # 需要跟其他服务 group 相同
         group: hmall
   jmx:
