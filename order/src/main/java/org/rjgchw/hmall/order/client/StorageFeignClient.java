@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author Huangw
  * @date 2021-02-18 16:46
  */
-@AuthorizedFeignClient(name = "${ribbon-service.storage}")
+@AuthorizedFeignClient(name = "${service.ribbon.storage}")
 public interface StorageFeignClient {
 
     /**

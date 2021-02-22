@@ -22,6 +22,8 @@ public class StorageDeductVO implements Serializable {
     @Min(0)
     private Integer productQuantity;
 
+    public StorageDeductVO(){}
+
     public Long getProductId() {
         return productId;
     }

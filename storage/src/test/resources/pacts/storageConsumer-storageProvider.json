@@ -1,0 +1,40 @@
+{
+  "provider": {
+    "name": "storageProvider"
+  },
+  "consumer": {
+    "name": "storageConsumer"
+  },
+  "interactions": [
+    {
+      "description": "deduct storage from provider",
+      "request": {
+        "method": "POST",
+        "path": "/api/storages/deduct",
+        "body": {
+          "productId": 1,
+          "productQuantity": 1
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        }
+      },
+      "providerStates": [
+        {
+          "name": "deduct storage from provider"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    },
+    "pact-jvm": {
+      "version": "4.0.10"
+    }
+  }
+}

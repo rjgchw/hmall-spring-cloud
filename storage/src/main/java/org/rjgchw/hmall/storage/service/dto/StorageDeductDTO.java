@@ -15,6 +15,8 @@ public class StorageDeductDTO implements Serializable {
 
     private Boolean result;
 
+    public StorageDeductDTO(){}
+
     public StorageDeductDTO(Long productId, Integer productQuantity, Boolean result) {
         this.productId = productId;
         this.productQuantity = productQuantity;

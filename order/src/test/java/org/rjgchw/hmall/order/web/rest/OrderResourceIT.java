@@ -52,7 +52,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(username = OrderResourceIT.DEFAULT_USERNAME)
 @ContextConfiguration(classes = { TestFeignConfiguration.class })
 @IntegrationTest
-@ExtendWith(SpringExtension.class)
 public class OrderResourceIT {
 
     private static final Long DEFAULT_RECEIVER_ID = 1L;

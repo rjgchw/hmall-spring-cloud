@@ -28,7 +28,7 @@ public class TestFeignConfiguration {
 
     @Bean
     public ServerList<Server> ribbonServerList() {
-        TestPropertyValues.of("ribbon-service.storage=localhost:" + mockBooksServer.port());
+        TestPropertyValues.of("service.ribbon.storage=localhost:" + mockBooksServer.port());
         return new StaticServerList<>(
             new Server("localhost", mockBooksServer.port()));
     }

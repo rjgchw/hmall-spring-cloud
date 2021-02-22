@@ -90,6 +90,9 @@
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
         <spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
+        <wiremock.version>2.27.2</wiremock.version>
+        <pact-consumer.version>4.0.10</pact-consumer.version>
+        <pact-provider.version>4.1.17</pact-provider.version>
     </properties>
 
     <build>

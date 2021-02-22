@@ -69,7 +69,7 @@ public class StorageResourceIT {
             .andExpect(status().isOk());
 
         storageRepository.findById(storage.getId()).ifPresent(x -> {
-            assertThat(x.getStorage()).isEqualTo(DEFAULT_STORAGE - 1);
+            assertThat(x.getStorage()).isEqualTo(storage.getStorage() - storageDeductVO.getProductQuantity());
         });
     }
 

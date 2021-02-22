@@ -18,8 +18,9 @@ ribbon:
   ConnectTimeout: 5000
   ReadTimeout: 5000
 
-ribbon-service:
-  storage: storage
+service:
+  ribbon:
+    storage: storage
 
 feign:
   sentinel:
@@ -145,23 +146,10 @@ spring:
 
 seata:
   enabled: true
-  application-id: ${spring.application.name}
   tx-service-group: hmall_tx_group
   service:
     vgroup-mapping:
       hmall_tx_group: default
-  config:
-    type: nacos
-    nacos:
-      namespace: seata
-      server-addr: localhost:8848
-      group: SEATA_GROUP
-  registry:
-    type: nacos
-    nacos:
-      namespace: seata
-      server-addr: localhost:8848
-      group: SEATA_GROUP
 
 server:
   servlet:

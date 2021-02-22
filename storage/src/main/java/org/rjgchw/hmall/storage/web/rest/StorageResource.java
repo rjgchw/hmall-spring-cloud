@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.storage.web.rest;
 
+import org.rjgchw.hmall.common.security.SecurityWebUtils;
 import org.rjgchw.hmall.storage.service.StorageService;
 import org.rjgchw.hmall.storage.service.dto.StorageDeductDTO;
 import org.rjgchw.hmall.storage.web.rest.vo.StorageDeductVO;
@@ -25,7 +26,7 @@ public class StorageResource {
 
     @PostMapping("/api/storages/deduct")
     public ResponseEntity<StorageDeductDTO> deduct(@RequestBody StorageDeductVO storageDeductVO) {
-        storageService.lockStorage(storageDeductVO.getProductId(), storageDeductVO.getProductQuantity());
+        SecurityWebUtils.getCurrentUserLogin().ifPresent(System.out::println);
         return new ResponseEntity<>(
             storageService
                 .lockStorage(storageDeductVO.getProductId(), storageDeductVO.getProductQuantity())

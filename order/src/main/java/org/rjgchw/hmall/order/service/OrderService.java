@@ -59,8 +59,9 @@ public class OrderService {
     public OrderDTO create(SourceTypeEnum sourceType, PayTypeEnum payType, Long receiverId, Set<OrderItemDTO> orderItems, String memberPhone) {
         // 锁定库存
         lockStorage(orderItems);
+        throw new RuntimeException();
         // 创建订单
-        return createOrder(sourceType, payType, receiverId, orderItems, memberPhone);
+//        return createOrder(sourceType, payType, receiverId, orderItems, memberPhone);
     }
 
     @Transactional(rollbackFor = Exception.class)

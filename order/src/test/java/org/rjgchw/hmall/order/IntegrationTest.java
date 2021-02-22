@@ -4,6 +4,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.rjgchw.hmall.common.test.container.RedisTestContainerExtension;
 import org.rjgchw.hmall.order.config.TestSecurityConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,7 +16,8 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(classes = { OrderApp.class, TestSecurityConfiguration.class })
+@SpringBootTest(classes = { OrderApp.class })
+@ContextConfiguration(classes = {TestSecurityConfiguration.class})
 @ExtendWith(RedisTestContainerExtension.class)
 public @interface IntegrationTest {
 }
