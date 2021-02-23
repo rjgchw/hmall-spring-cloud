@@ -7,7 +7,7 @@
     <property name="charset" value="UTF-8"/>
     <property name="severity" value="warning"/>
     <!-- Configure checker to run on files with these extensions -->
-    <property name="fileExtensions" value="java, properties, xml"/>
+    <property name="fileExtensions" value="java"/>
 
     <!-- Allow suppression with comments
        // CHECKSTYLE:OFF

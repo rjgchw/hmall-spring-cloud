@@ -7,7 +7,8 @@ import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
 
 /**
- * 请求内容体格式错误
+ * 请求内容体格式错误.
+ *
  * @author Huangw
  * @date 2019-11-19 23:06
  */
@@ -23,8 +24,25 @@ public class BadRequestAlertException extends AbstractThrowableProblem {
         this(ErrorConstants.DEFAULT_TYPE, defaultMessage, entityName, errorKey);
     }
 
-    public BadRequestAlertException(URI type, String defaultMessage, String entityName, String errorKey) {
-        super(type, defaultMessage, Status.BAD_REQUEST, null, null, null, getAlertParameters(entityName, errorKey));
+    /**
+     * 构造函数.
+     *
+     * @param type           类型
+     * @param defaultMessage 默认消息
+     * @param entityName     实体名称
+     * @param errorKey       错误的 key
+     */
+    public BadRequestAlertException(
+        URI type, String defaultMessage, String entityName, String errorKey) {
+        super(
+            type,
+            defaultMessage,
+            Status.BAD_REQUEST,
+            null,
+            null,
+            null,
+            getAlertParameters(entityName, errorKey)
+        );
         this.entityName = entityName;
         this.errorKey = errorKey;
     }

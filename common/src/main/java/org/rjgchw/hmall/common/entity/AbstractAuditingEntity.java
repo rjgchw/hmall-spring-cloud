@@ -13,6 +13,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
+ * 审计抽象类.
+ *
  * @author Huangw
  * @date 2021-02-23 17:31
  */
