@@ -6,14 +6,13 @@ import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvide
 import au.com.dius.pact.provider.junitsupport.Consumer;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
-import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
-import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
+import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import org.apache.http.HttpRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.rjgchw.hmall.storage.IntegrationTest;
+import org.rjgchw.hmall.storage.ContractTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 /**
@@ -22,22 +21,14 @@ import org.springframework.boot.web.server.LocalServerPort;
  */
 @Provider("storageProvider")
 @Consumer("storageConsumer")
-@PactBroker(
-    host = "localhost",
-    port = "8282",
-    consumerVersionSelectors = {
-        @VersionSelector(tag = "dev"),
-        @VersionSelector(tag = "master"),
-        @VersionSelector(tag = "test")
-    }
-)
-@IntegrationTest
-//@PactFolder("pacts")
+@ContractTest
+@PactFolder("src/test/resources/pacts")
 public class PactStorageProviderTest {
 
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
     void pactVerificationTestTemplate(PactVerificationContext context, HttpRequest request) {
+        request.addHeader("Authorization", "bearer admin");
         context.verifyInteraction();
     }
 

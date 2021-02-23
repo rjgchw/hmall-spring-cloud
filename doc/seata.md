@@ -1,3 +1,4 @@
+# seata 使用 nacos 进行配置
 ## 修改 file.conf
 ```
 ## transaction log store, only used in seata-server
