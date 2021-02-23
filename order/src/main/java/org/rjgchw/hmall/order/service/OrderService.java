@@ -13,10 +13,10 @@ import org.rjgchw.hmall.order.service.dto.OrderItemDTO;
 import org.rjgchw.hmall.order.service.enums.OrderStatusEnum;
 import org.rjgchw.hmall.order.service.enums.PayTypeEnum;
 import org.rjgchw.hmall.order.service.enums.SourceTypeEnum;
-import org.rjgchw.hmall.order.service.mapper.OrderItemMapper;
-import org.rjgchw.hmall.order.service.mapper.OrderMapper;
 import org.rjgchw.hmall.order.service.error.LockStorageFailException;
 import org.rjgchw.hmall.order.service.error.ProductDoesNotExistException;
+import org.rjgchw.hmall.order.service.mapper.OrderItemMapper;
+import org.rjgchw.hmall.order.service.mapper.OrderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -59,9 +59,8 @@ public class OrderService {
     public OrderDTO create(SourceTypeEnum sourceType, PayTypeEnum payType, Long receiverId, Set<OrderItemDTO> orderItems, String memberPhone) {
         // 锁定库存
         lockStorage(orderItems);
-        throw new RuntimeException();
         // 创建订单
-//        return createOrder(sourceType, payType, receiverId, orderItems, memberPhone);
+        return createOrder(sourceType, payType, receiverId, orderItems, memberPhone);
     }
 
     @Transactional(rollbackFor = Exception.class)

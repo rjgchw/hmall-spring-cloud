@@ -6,18 +6,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-    monitor: 'my-project'
-
-# Alertmanager configuration
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets:
-            - alertmanager:9093
-
-# Load and evaluate rules in this file every 'evaluation_interval' seconds.
-rule_files:
-  - alert_rules.yml
+    monitor: 'jhipster'
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
@@ -28,11 +17,14 @@ scrape_configs:
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
 
-    # scheme defaults to 'http'.
+    # scheme defaults to 'http' enable https in case your application is server via https
+    #scheme: https
+    # basic auth is not needed by default. See https://www.jhipster.tech/monitoring/#configuring-metrics-forwarding for details
+    #basic_auth:
+    # username: admin
+    # password: admin
     metrics_path: /management/prometheus
     static_configs:
       - targets:
-          - gateway:8080
-          - order:8081
-          - product:8081
-          - user:8084
+          # On MacOS, replace localhost by host.docker.internal
+          - localhost:8089

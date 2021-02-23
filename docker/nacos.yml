@@ -1,4 +1,4 @@
-version: '2'
+version: '3.8'
 services:
   nacos:
     image: nacos/nacos-server:latest
@@ -10,7 +10,7 @@ services:
 #      - ./standalone-logs/:/home/nacos/logs
 #      - ./init.d/custom.properties:/home/nacos/init.d/custom.properties
     ports:
-      - "8848:8848"
+      - 127.0.0.1:8848:8848
 #  prometheus:
 #    container_name: prometheus
 #    image: prom/prometheus:latest
