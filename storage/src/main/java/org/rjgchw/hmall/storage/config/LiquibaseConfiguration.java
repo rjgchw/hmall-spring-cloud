@@ -18,6 +18,11 @@ import org.springframework.core.env.Profiles;
 import javax.sql.DataSource;
 import java.util.concurrent.Executor;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:16
+ */
 @Configuration
 public class LiquibaseConfiguration {
 
@@ -37,8 +42,6 @@ public class LiquibaseConfiguration {
         ObjectProvider<DataSource> dataSource,
         DataSourceProperties dataSourceProperties
     ) {
-        // If you don't want Liquibase to start asynchronously, substitute by this:
-        // SpringLiquibase liquibase = SpringLiquibaseUtil.createSpringLiquibase(liquibaseDataSource.getIfAvailable(), liquibaseProperties, dataSource.getIfUnique(), dataSourceProperties);
         SpringLiquibase liquibase = SpringLiquibaseUtil.createAsyncSpringLiquibase(
             this.env,
             executor,

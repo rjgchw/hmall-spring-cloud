@@ -14,6 +14,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:00
+ */
 @Configuration
 public class ElasticsearchConfiguration extends ElasticsearchConfigurationSupport {
 

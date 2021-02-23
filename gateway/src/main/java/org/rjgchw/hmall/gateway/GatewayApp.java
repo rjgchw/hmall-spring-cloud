@@ -20,6 +20,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:35
+ */
 @SpringBootApplication
 @EnableConfigurationProperties({ ApplicationProperties.class })
 public class GatewayApp {

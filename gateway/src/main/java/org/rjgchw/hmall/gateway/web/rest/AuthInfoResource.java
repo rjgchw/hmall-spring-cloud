@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Resource to return information about OIDC properties
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:32
  */
 @RestController
 @RequestMapping("/api")
@@ -19,15 +21,20 @@ public class AuthInfoResource {
 
 
     @GetMapping("/auth-info")
-    public AuthInfoVM getAuthInfo() {
-        return new AuthInfoVM(issuer, clientId);
+    public AuthInfoVO getAuthInfo() {
+        return new AuthInfoVO(issuer, clientId);
     }
 
-    class AuthInfoVM {
+    /**
+     *
+     * @author Huangw
+     * @date 2021-02-23 17:15
+     */
+    class AuthInfoVO {
         private String issuer;
         private String clientId;
 
-        AuthInfoVM(String issuer, String clientId) {
+        AuthInfoVO(String issuer, String clientId) {
             this.issuer = issuer;
             this.clientId = clientId;
         }
@@ -46,6 +53,14 @@ public class AuthInfoResource {
 
         public void setClientId(String clientId) {
             this.clientId = clientId;
+        }
+
+        @Override
+        public String toString() {
+            return "AuthInfoVO{" +
+                "issuer='" + issuer + '\'' +
+                ", clientId='" + clientId + '\'' +
+                '}';
         }
     }
 }

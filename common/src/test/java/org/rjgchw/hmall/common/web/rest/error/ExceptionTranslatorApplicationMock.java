@@ -17,7 +17,8 @@ import org.zalando.problem.violations.ConstraintViolationProblemModule;
 public class ExceptionTranslatorApplicationMock {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(ExceptionTranslatorApplicationMock.class).web(WebApplicationType.SERVLET).run(args);
+        new SpringApplicationBuilder(ExceptionTranslatorApplicationMock.class)
+            .web(WebApplicationType.SERVLET).run(args);
     }
 
     /**

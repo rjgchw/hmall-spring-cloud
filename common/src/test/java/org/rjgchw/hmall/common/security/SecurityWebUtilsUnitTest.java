@@ -1,5 +1,14 @@
 package org.rjgchw.hmall.common.security;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames.ID_TOKEN;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,12 +20,6 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-import java.time.Instant;
-import java.util.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames.ID_TOKEN;
-
 /**
  * Test class for the {@link SecurityWebUtils} utility class.
  */
@@ -25,7 +28,8 @@ public class SecurityWebUtilsUnitTest {
     @Test
     public void should_get_current_user_if_login_with_username_and_password() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
+        securityContext
+            .setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
         Optional<String> login = SecurityWebUtils.getCurrentUserLogin();
         assertThat(login).contains("admin");
@@ -55,7 +59,8 @@ public class SecurityWebUtilsUnitTest {
     @Test
     public void should_authenticated_if_login_normally() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
+        securityContext
+            .setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
         boolean isAuthenticated = SecurityWebUtils.isAuthenticated();
         assertThat(isAuthenticated).isTrue();
@@ -66,7 +71,8 @@ public class SecurityWebUtilsUnitTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ANONYMOUS));
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("anonymous", "anonymous", authorities));
+        securityContext.setAuthentication(
+            new UsernamePasswordAuthenticationToken("anonymous", "anonymous", authorities));
         SecurityContextHolder.setContext(securityContext);
         boolean isAuthenticated = SecurityWebUtils.isAuthenticated();
         assertThat(isAuthenticated).isFalse();
@@ -77,7 +83,8 @@ public class SecurityWebUtilsUnitTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("user", "user", authorities));
+        securityContext.setAuthentication(
+            new UsernamePasswordAuthenticationToken("user", "user", authorities));
         SecurityContextHolder.setContext(securityContext);
 
         assertThat(SecurityWebUtils.isCurrentUserInRole(AuthoritiesConstants.USER)).isTrue();
@@ -88,7 +95,8 @@ public class SecurityWebUtilsUnitTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("user", "user", authorities));
+        securityContext.setAuthentication(
+            new UsernamePasswordAuthenticationToken("user", "user", authorities));
         SecurityContextHolder.setContext(securityContext);
 
         assertThat(SecurityWebUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)).isFalse();

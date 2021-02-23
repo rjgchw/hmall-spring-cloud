@@ -8,13 +8,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.rjgchw.hmall.order.service.mapper.ProductMapper;
 import org.springframework.http.MediaType;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import org.rjgchw.hmall.common.util.UriUtil;
-import org.rjgchw.hmall.order.entity.Product;
 import org.rjgchw.hmall.order.repository.ProductRepository;
 import org.rjgchw.hmall.order.repository.search.ProductSearchRepository;
 import org.rjgchw.hmall.order.service.ProductQueryService;
@@ -55,13 +55,15 @@ public class ProductResource {
     private final JHipsterProperties jHipsterProperties;
     private final ProductQueryService productQueryService;
     private final ProductSearchRepository productSearchRepository;
+    private final ProductMapper productMapper;
 
-    public ProductResource(ProductRepository productRepository, ProductService productService, JHipsterProperties jHipsterProperties, ProductQueryService productQueryService, ProductSearchRepository productSearchRepository) {
+    public ProductResource(ProductRepository productRepository, ProductService productService, JHipsterProperties jHipsterProperties, ProductQueryService productQueryService, ProductSearchRepository productSearchRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.productService = productService;
         this.jHipsterProperties = jHipsterProperties;
         this.productQueryService = productQueryService;
         this.productSearchRepository = productSearchRepository;
+        this.productMapper = productMapper;
     }
 
     @Operation(
@@ -174,9 +176,10 @@ public class ProductResource {
     }
 
     @GetMapping("/_search/products/{query}")
-    public List<Product> search(@PathVariable String query) {
+    public List<ProductDTO> search(@PathVariable String query) {
         return StreamSupport
             .stream(productSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(productMapper::toDto)
             .collect(Collectors.toList());
     }
 }

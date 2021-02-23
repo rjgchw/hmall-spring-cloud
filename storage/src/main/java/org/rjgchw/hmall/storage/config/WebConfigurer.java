@@ -16,7 +16,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 /**
- * Configuration of web application with Servlet 3.0 APIs.
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:39
  */
 @Configuration
 public class WebConfigurer implements ServletContextInitializer {

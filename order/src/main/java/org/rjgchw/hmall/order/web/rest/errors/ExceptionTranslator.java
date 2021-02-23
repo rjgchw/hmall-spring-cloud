@@ -7,8 +7,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 /**
- * Controller advice to translate the server side exceptions to client-friendly json structures.
- * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:00
  */
 @ControllerAdvice
 public class ExceptionTranslator extends AbstractWebExceptionTranslator {

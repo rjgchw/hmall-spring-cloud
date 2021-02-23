@@ -6,6 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:01
+ */
 @Configuration
 @EnableFeignClients(basePackages = "org.rjgchw.hmall.order")
 public class FeignConfiguration {

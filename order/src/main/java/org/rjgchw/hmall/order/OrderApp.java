@@ -20,6 +20,11 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:03
+ */
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 public class OrderApp {
@@ -66,7 +71,8 @@ public class OrderApp {
 
     private static void logApplicationStartup(Environment env) {
         String protocol = "http";
-        if (env.getProperty("server.ssl.key-store") != null) {
+        String keyStoreKey = "server.ssl.key-store";
+        if (env.getProperty(keyStoreKey) != null) {
             protocol = "https";
         }
         String serverPort = env.getProperty("server.port");

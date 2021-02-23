@@ -1,5 +1,12 @@
 package org.rjgchw.hmall.common.web.rest.error;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -7,11 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests controller advice.
@@ -35,13 +37,14 @@ public class ExceptionTranslatorIT {
 
     @Test
     public void should_return_422_status_if_method_argument_not_valid() throws Exception {
-         mockMvc.perform(post("/api/exception-translator-test/method-argument").content("{}").contentType(MediaType.APPLICATION_JSON))
-             .andExpect(status().isUnprocessableEntity())
-             .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-             .andExpect(jsonPath("$.title").value("Validation Failed"))
-             .andExpect(jsonPath("$.errors.[0].resource").value("test"))
-             .andExpect(jsonPath("$.errors.[0].field").value("test"))
-             .andExpect(jsonPath("$.errors.[0].code").value("missing_field"));
+        mockMvc.perform(post("/api/exception-translator-test/method-argument").content("{}")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.title").value("Validation Failed"))
+            .andExpect(jsonPath("$.errors.[0].resource").value("test"))
+            .andExpect(jsonPath("$.errors.[0].field").value("test"))
+            .andExpect(jsonPath("$.errors.[0].code").value("missing_field"));
     }
 
     @Test

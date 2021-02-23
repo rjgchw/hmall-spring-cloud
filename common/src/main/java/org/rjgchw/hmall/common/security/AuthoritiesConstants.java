@@ -1,7 +1,8 @@
 package org.rjgchw.hmall.common.security;
 
 /**
- * Constants for Spring Security authorities.
+ * @author Huangw
+ * @date 2021-02-23 17:33
  */
 public final class AuthoritiesConstants {
 

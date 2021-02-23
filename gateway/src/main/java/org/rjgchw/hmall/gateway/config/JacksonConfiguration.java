@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.zalando.problem.ProblemModule;
 import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:17
+ */
 @Configuration
 public class JacksonConfiguration {
 
@@ -25,7 +30,7 @@ public class JacksonConfiguration {
         return new Jdk8Module();
     }
 
-    /*
+    /**
      * Module for serialization/deserialization of RFC7807 Problem.
      */
     @Bean
@@ -33,7 +38,7 @@ public class JacksonConfiguration {
         return new ProblemModule();
     }
 
-    /*
+    /**
      * Module for serialization/deserialization of ConstraintViolationProblem.
      */
     @Bean

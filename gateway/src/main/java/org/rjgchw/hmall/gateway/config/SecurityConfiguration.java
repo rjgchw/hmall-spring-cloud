@@ -1,6 +1,7 @@
 package org.rjgchw.hmall.gateway.config;
 
 import org.rjgchw.hmall.common.security.AuthoritiesConstants;
+import org.rjgchw.hmall.common.security.CommonSecurityUtils;
 import org.rjgchw.hmall.common.security.SecurityWebFluxUtils;
 import org.rjgchw.hmall.common.security.oauth2.AudienceValidator;
 import org.rjgchw.hmall.common.security.oauth2.JwtGrantedAuthorityConverter;
@@ -41,6 +42,11 @@ import java.util.Set;
 
 import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:38
+ */
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 @Import(SecurityProblemSupport.class)
@@ -137,7 +143,7 @@ public class SecurityConfiguration {
                                     if (authority instanceof OidcUserAuthority) {
                                         OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
                                         mappedAuthorities.addAll(
-                                            SecurityWebFluxUtils.extractAuthorityFromClaims(oidcUserAuthority.getUserInfo().getClaims())
+                                            CommonSecurityUtils.extractAuthorityFromClaims(oidcUserAuthority.getUserInfo().getClaims())
                                         );
                                     }
                                 }

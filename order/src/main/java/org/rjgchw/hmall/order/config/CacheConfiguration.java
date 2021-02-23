@@ -19,6 +19,11 @@ import javax.cache.expiry.CreatedExpiryPolicy;
 import javax.cache.expiry.Duration;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 16:59
+ */
 @Configuration
 @EnableCaching
 public class CacheConfiguration {

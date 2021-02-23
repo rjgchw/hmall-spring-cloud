@@ -6,11 +6,18 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:01
+ */
 @Configuration
 @ConfigurationProperties(prefix = "kafka")
 public class KafkaProperties {
 
     private String bootStrapServers = "localhost:9092";
+
+    private String serverKey = "bootstrap.servers";
 
     private Map<String, String> consumer = new HashMap<>();
 
@@ -26,8 +33,8 @@ public class KafkaProperties {
 
     public Map<String, Object> getConsumerProps() {
         Map<String, Object> properties = new HashMap<>(this.consumer);
-        if (!properties.containsKey("bootstrap.servers")) {
-            properties.put("bootstrap.servers", this.bootStrapServers);
+        if (!properties.containsKey(serverKey)) {
+            properties.put(serverKey, this.bootStrapServers);
         }
         return properties;
     }
@@ -38,8 +45,8 @@ public class KafkaProperties {
 
     public Map<String, Object> getProducerProps() {
         Map<String, Object> properties = new HashMap<>(this.producer);
-        if (!properties.containsKey("bootstrap.servers")) {
-            properties.put("bootstrap.servers", this.bootStrapServers);
+        if (!properties.containsKey(serverKey)) {
+            properties.put(serverKey, this.bootStrapServers);
         }
         return properties;
     }

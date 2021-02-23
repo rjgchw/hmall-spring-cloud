@@ -1,5 +1,13 @@
 package org.rjgchw.hmall.common.security.oauth2;
 
+import java.net.URI;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,7 +21,12 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
-import org.springframework.security.oauth2.core.*;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
@@ -22,22 +35,20 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
+/**
+ * @author Huangw
+ * @date 2021-02-23 17:33
+ */
 public class AuthorizationHeaderUtil {
 
     private final OAuth2AuthorizedClientService clientService;
     private final RestTemplateBuilder restTemplateBuilder;
     private final Logger log = LoggerFactory.getLogger(AuthorizationHeaderUtil.class);
 
-    public AuthorizationHeaderUtil(OAuth2AuthorizedClientService clientService, RestTemplateBuilder restTemplateBuilder) {
+    private final Pattern scopePattern = Pattern.compile("\\s");
+
+    public AuthorizationHeaderUtil(OAuth2AuthorizedClientService clientService,
+        RestTemplateBuilder restTemplateBuilder) {
         this.clientService = clientService;
         this.restTemplateBuilder = restTemplateBuilder;
     }
@@ -121,7 +132,7 @@ public class AuthorizationHeaderUtil {
     }
 
     private OAuth2AccessTokenResponse toOAuth2AccessTokenResponse(OAuthIdpTokenResponseDTO oAuthIdpResponse) {
-        Map<String, Object> additionalParameters = new HashMap<>();
+        Map<String, Object> additionalParameters = new HashMap<>(16);
         additionalParameters.put("id_token", oAuthIdpResponse.getIdToken());
         additionalParameters.put("not-before-policy", oAuthIdpResponse.getNotBefore());
         additionalParameters.put("refresh_expires_in", oAuthIdpResponse.getRefreshExpiresIn());
@@ -130,7 +141,8 @@ public class AuthorizationHeaderUtil {
             .withToken(oAuthIdpResponse.getAccessToken())
             .expiresIn(oAuthIdpResponse.getExpiresIn())
             .refreshToken(oAuthIdpResponse.getRefreshToken())
-            .scopes(Pattern.compile("\\s").splitAsStream(oAuthIdpResponse.getScope()).collect(Collectors.toSet()))
+            .scopes(
+                scopePattern.splitAsStream(oAuthIdpResponse.getScope()).collect(Collectors.toSet()))
             .tokenType(OAuth2AccessToken.TokenType.BEARER)
             .additionalParameters(additionalParameters)
             .build();

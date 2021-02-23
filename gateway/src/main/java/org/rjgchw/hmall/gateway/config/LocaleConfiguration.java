@@ -24,6 +24,11 @@ import java.time.Duration;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:36
+ */
 @Configuration
 @Import(WebFluxAutoConfiguration.class)
 public class LocaleConfiguration {

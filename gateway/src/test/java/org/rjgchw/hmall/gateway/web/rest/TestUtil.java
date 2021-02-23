@@ -1,5 +1,6 @@
 package org.rjgchw.hmall.gateway.web.rest;
 
+import org.rjgchw.hmall.common.security.CommonSecurityUtils;
 import org.rjgchw.hmall.common.security.SecurityWebFluxUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -21,7 +22,7 @@ public final class TestUtil {
         "oqqUrg";
 
     public static OAuth2AuthenticationToken authenticationToken(OidcIdToken idToken) {
-        Collection<GrantedAuthority> authorities = SecurityWebFluxUtils.extractAuthorityFromClaims(idToken.getClaims());
+        Collection<GrantedAuthority> authorities = CommonSecurityUtils.extractAuthorityFromClaims(idToken.getClaims());
         OidcUser user = new DefaultOidcUser(authorities, idToken);
         return new OAuth2AuthenticationToken(user, authorities, "oidc");
     }

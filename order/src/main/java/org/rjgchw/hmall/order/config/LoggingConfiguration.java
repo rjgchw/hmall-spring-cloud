@@ -17,7 +17,9 @@ import java.util.Map;
 import static tech.jhipster.config.logging.LoggingUtils.*;
 
 /**
- * Configures the console and Logstash log appenders from the app properties
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:02
  */
 @Configuration
 @RefreshScope

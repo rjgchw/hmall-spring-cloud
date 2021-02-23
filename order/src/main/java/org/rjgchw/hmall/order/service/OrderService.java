@@ -119,7 +119,8 @@ public class OrderService {
         sb.append(String.format("%02d", sourceType.getValue()));
         sb.append(String.format("%02d", payType.getValue()));
         String incrementStr = increment.toString();
-        if (incrementStr.length() <= 6) {
+        int incrementStrLen = 6;
+        if (incrementStr.length() <= incrementStrLen) {
             sb.append(String.format("%06d", increment));
         } else {
             sb.append(incrementStr);

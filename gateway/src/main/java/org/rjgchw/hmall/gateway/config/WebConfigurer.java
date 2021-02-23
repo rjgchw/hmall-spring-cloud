@@ -20,7 +20,9 @@ import org.zalando.problem.spring.webflux.advice.ProblemHandling;
 import tech.jhipster.config.JHipsterProperties;
 
 /**
- * Configuration of web application with Servlet 3.0 APIs.
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:39
  */
 @Configuration
 public class WebConfigurer implements WebFluxConfigurer {
@@ -51,20 +53,32 @@ public class WebConfigurer implements WebFluxConfigurer {
         return new CorsWebFilter(source);
     }
 
-    // TODO: remove when this is supported in spring-boot
+    /**
+     * TODO: remove when this is supported in spring-boot
+     * @return
+     */
     @Bean
     HandlerMethodArgumentResolver reactivePageableHandlerMethodArgumentResolver() {
         return new ReactivePageableHandlerMethodArgumentResolver();
     }
 
-    // TODO: remove when this is supported in spring-boot
+    /**
+     * TODO: remove when this is supported in spring-boot
+     * @return
+     */
     @Bean
     HandlerMethodArgumentResolver reactiveSortHandlerMethodArgumentResolver() {
         return new ReactiveSortHandlerMethodArgumentResolver();
     }
 
+    /**
+     * The handler must have precedence over WebFluxResponseStatusExceptionHandler and Spring Boot's ErrorWebExceptionHandler
+     * @param mapper
+     * @param problemHandling
+     * @return
+     */
     @Bean
-    @Order(-2) // The handler must have precedence over WebFluxResponseStatusExceptionHandler and Spring Boot's ErrorWebExceptionHandler
+    @Order(-2)
     public WebExceptionHandler problemExceptionHandler(ObjectMapper mapper, ProblemHandling problemHandling) {
         return new ProblemExceptionHandler(mapper, problemHandling);
     }

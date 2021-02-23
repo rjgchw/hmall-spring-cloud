@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.cloud.client.ServiceInstance;
 
 /**
- * View Model that stores a route managed by the Gateway.
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:38
  */
 public class RouteVO {
 
@@ -37,5 +39,14 @@ public class RouteVO {
 
     public void setServiceInstances(List<ServiceInstance> serviceInstances) {
         this.serviceInstances = serviceInstances;
+    }
+
+    @Override
+    public String toString() {
+        return "RouteVO{" +
+            "path='" + path + '\'' +
+            ", serviceId='" + serviceId + '\'' +
+            ", serviceInstances=" + serviceInstances +
+            '}';
     }
 }

@@ -15,6 +15,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:32
+ */
 @Configuration
 @EnableAsync
 @EnableScheduling

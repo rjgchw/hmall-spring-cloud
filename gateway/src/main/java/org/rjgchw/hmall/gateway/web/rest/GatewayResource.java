@@ -11,7 +11,9 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 import java.util.List;
 
 /**
- * REST controller for managing Gateway configuration.
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:35
  */
 @RestController
 public class GatewayResource {

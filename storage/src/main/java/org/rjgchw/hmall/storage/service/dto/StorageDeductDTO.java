@@ -46,4 +46,13 @@ public class StorageDeductDTO implements Serializable {
     public void setResult(Boolean result) {
         this.result = result;
     }
+
+    @Override
+    public String toString() {
+        return "StorageDeductDTO{" +
+            "productId=" + productId +
+            ", productQuantity=" + productQuantity +
+            ", result=" + result +
+            '}';
+    }
 }

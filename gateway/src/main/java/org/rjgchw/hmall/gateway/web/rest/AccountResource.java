@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * REST controller for managing the current user's account.
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:31
  */
 @RestController
 @RequestMapping("/api")
@@ -68,39 +70,50 @@ public class AccountResource {
     private static UserVO getUser(Map<String, Object> details) {
         UserVO user = new UserVO();
         // handle resource server JWT, where sub claim is email and uid is ID
-        if (details.get("uid") != null) {
-            user.setId((String) details.get("uid"));
-            user.setLogin((String) details.get("sub"));
+        String uidKey = "uid";
+        String subKey = "sub";
+        if (details.get(uidKey) != null) {
+            user.setId((String) details.get(uidKey));
+            user.setLogin((String) details.get(subKey));
         } else {
-            user.setId((String) details.get("sub"));
+            user.setId((String) details.get(subKey));
         }
-        if (details.get("preferred_username") != null) {
-            user.setLogin(((String) details.get("preferred_username")).toLowerCase());
+        String preferredUsernameKey = "preferred_username";
+        if (details.get(preferredUsernameKey) != null) {
+            user.setLogin(((String) details.get(preferredUsernameKey)).toLowerCase());
         } else if (user.getLogin() == null) {
             user.setLogin(user.getId());
         }
-        if (details.get("given_name") != null) {
-            user.setFirstName((String) details.get("given_name"));
+        String givenNameKey = "given_name";
+        if (details.get(givenNameKey) != null) {
+            user.setFirstName((String) details.get(givenNameKey));
         }
-        if (details.get("family_name") != null) {
-            user.setLastName((String) details.get("family_name"));
+        String familyNameKey = "family_name";
+        if (details.get(familyNameKey) != null) {
+            user.setLastName((String) details.get(familyNameKey));
         }
-        if (details.get("email_verified") != null) {
-            user.setActivated((Boolean) details.get("email_verified"));
+        String emailVerifiedKey = "email_verified";
+        if (details.get(emailVerifiedKey) != null) {
+            user.setActivated((Boolean) details.get(emailVerifiedKey));
         }
-        if (details.get("email") != null) {
-            user.setEmail(((String) details.get("email")).toLowerCase());
+        String emailKey = "email";
+        if (details.get(emailKey) != null) {
+            user.setEmail(((String) details.get(emailKey)).toLowerCase());
         } else {
-            user.setEmail((String) details.get("sub"));
+            user.setEmail((String) details.get(subKey));
         }
-        if (details.get("langKey") != null) {
-            user.setLangKey((String) details.get("langKey"));
-        } else if (details.get("locale") != null) {
+        String langKeyKey = "langKey";
+        String localeKey = "locale";
+        String underScoreKey = "_";
+        String joinerKey = "-";
+        if (details.get(langKeyKey) != null) {
+            user.setLangKey((String) details.get(langKeyKey));
+        } else if (details.get(localeKey) != null) {
             // trim off country code if it exists
-            String locale = (String) details.get("locale");
-            if (locale.contains("_")) {
+            String locale = (String) details.get(localeKey);
+            if (locale.contains(underScoreKey)) {
                 locale = locale.substring(0, locale.indexOf('_'));
-            } else if (locale.contains("-")) {
+            } else if (locale.contains(joinerKey)) {
                 locale = locale.substring(0, locale.indexOf('-'));
             }
             user.setLangKey(locale.toLowerCase());
@@ -108,8 +121,9 @@ public class AccountResource {
             // set langKey to default if not specified by IdP
             user.setLangKey(Constants.DEFAULT_LANGUAGE);
         }
-        if (details.get("picture") != null) {
-            user.setImageUrl((String) details.get("picture"));
+        String pictureKey = "picture";
+        if (details.get(pictureKey) != null) {
+            user.setImageUrl((String) details.get(pictureKey));
         }
         user.setActivated(true);
         return user;

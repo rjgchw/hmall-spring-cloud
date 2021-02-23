@@ -2,6 +2,12 @@ package org.rjgchw.hmall.common.security.oauth2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,15 +21,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 /**
- * Claim converter to add custom claims by retrieving the user from the userinfo endpoint.
+ * @author Huangw
+ * @date 2021-02-23 17:33
  */
 public class CustomClaimConverter implements Converter<Map<String, Object>, Map<String, Object>> {
 
@@ -75,12 +75,14 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
                 convertedClaims.put("preferred_username", user.get("preferred_username").asText());
                 convertedClaims.put("given_name", user.get("given_name").asText());
                 convertedClaims.put("family_name", user.get("family_name").asText());
-                if (user.get("groups") != null) {
+
+                String groupKey = "groups";
+                if (user.get(groupKey) != null) {
                     List<String> groups = StreamSupport
-                        .stream(user.get("groups").spliterator(), false)
+                        .stream(user.get(groupKey).spliterator(), false)
                         .map(JsonNode::asText)
                         .collect(Collectors.toList());
-                    convertedClaims.put("groups", groups);
+                    convertedClaims.put(groupKey, groups);
                 }
             }
         }

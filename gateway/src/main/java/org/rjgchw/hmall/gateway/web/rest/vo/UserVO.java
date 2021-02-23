@@ -4,7 +4,9 @@ import java.time.Instant;
 import java.util.Set;
 
 /**
- * A DTO representing a user, with his authorities.
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:26
  */
 public class UserVO {
 
@@ -20,7 +22,7 @@ public class UserVO {
 
     private String imageUrl;
 
-    private boolean activated = false;
+    private Boolean activated;
 
     private String langKey;
 
@@ -35,7 +37,7 @@ public class UserVO {
     private Set<String> authorities;
 
     public UserVO() {
-        // Empty constructor needed for Jackson.
+        this.activated = false;
     }
 
     public String getId() {
@@ -142,7 +144,6 @@ public class UserVO {
         this.authorities = authorities;
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "UserDTO{" +

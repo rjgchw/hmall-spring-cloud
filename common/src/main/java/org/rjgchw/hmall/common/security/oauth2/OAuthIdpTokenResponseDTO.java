@@ -1,10 +1,13 @@
 package org.rjgchw.hmall.common.security.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * @author Huangw
+ * @date 2021-02-23 17:16
+ */
 public class OAuthIdpTokenResponseDTO implements Serializable {
 
     @JsonProperty("token_type")
@@ -139,5 +142,23 @@ public class OAuthIdpTokenResponseDTO implements Serializable {
 
     public void setIdToken(String idToken) {
         this.idToken = idToken;
+    }
+
+    @Override
+    public String toString() {
+        return "OAuthIdpTokenResponseDTO{" +
+            "tokenType='" + tokenType + '\'' +
+            ", scope='" + scope + '\'' +
+            ", expiresIn=" + expiresIn +
+            ", extExpiresIn=" + extExpiresIn +
+            ", expiresOn=" + expiresOn +
+            ", notBefore=" + notBefore +
+            ", resource=" + resource +
+            ", accessToken='" + accessToken + '\'' +
+            ", refreshToken='" + refreshToken + '\'' +
+            ", idToken='" + idToken + '\'' +
+            ", sessionState='" + sessionState + '\'' +
+            ", refreshExpiresIn='" + refreshExpiresIn + '\'' +
+            '}';
     }
 }

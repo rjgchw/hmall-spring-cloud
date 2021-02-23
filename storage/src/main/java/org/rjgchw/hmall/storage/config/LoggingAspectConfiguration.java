@@ -7,6 +7,11 @@ import tech.jhipster.config.JHipsterConstants;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:37
+ */
 @Configuration
 @EnableAspectJAutoProxy
 public class LoggingAspectConfiguration {

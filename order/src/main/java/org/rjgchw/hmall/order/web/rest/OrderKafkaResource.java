@@ -20,6 +20,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:03
+ */
 @RestController
 @RequestMapping("/api/order-kafka")
 public class OrderKafkaResource {

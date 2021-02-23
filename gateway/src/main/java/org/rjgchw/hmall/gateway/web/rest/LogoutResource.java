@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * REST controller for managing global OIDC logout.
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:37
  */
 @RestController
 public class LogoutResource {
@@ -34,7 +36,7 @@ public class LogoutResource {
         return session.invalidate().then(
             this.registration.map(oidc -> oidc.getProviderDetails().getConfigurationMetadata().get("end_session_endpoint").toString())
                 .map(logoutUrl -> {
-                    Map<String, String> logoutDetails = new HashMap<>();
+                    Map<String, String> logoutDetails = new HashMap<>(16);
                     logoutDetails.put("logoutUrl", logoutUrl);
                     logoutDetails.put("idToken", idToken.getTokenValue());
                     return logoutDetails;

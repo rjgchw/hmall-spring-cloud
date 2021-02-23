@@ -1,11 +1,10 @@
 package org.rjgchw.hmall.common.util;
 
-import org.junit.jupiter.api.Test;
-
-import java.net.URI;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.net.URI;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Huangw

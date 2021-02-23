@@ -5,7 +5,9 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 
 /**
- * Spring Data Elasticsearch repository for the User entity.
+ *
+ * @author Huangw
+ * @date 2021-02-23 17:03
  */
 public interface ProductSearchRepository extends ElasticsearchRepository<Product, Long> {
 }

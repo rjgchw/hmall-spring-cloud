@@ -1,16 +1,15 @@
 package org.rjgchw.hmall.common.security;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import reactor.util.context.Context;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for the {@link SecurityWebFluxUtils} utility class.
@@ -62,7 +61,8 @@ public class SecurityWebFluxUtilsUnitTest {
         Context context = ReactiveSecurityContextHolder.withAuthentication(
             new UsernamePasswordAuthenticationToken("admin", "admin", authorities)
         );
-        Boolean isCurrentUserInRole = SecurityWebFluxUtils.isCurrentUserInRole(AuthoritiesConstants.USER)
+        Boolean isCurrentUserInRole = SecurityWebFluxUtils
+            .isCurrentUserInRole(AuthoritiesConstants.USER)
             .subscriberContext(context)
             .block();
         assertThat(isCurrentUserInRole).isTrue();
@@ -75,7 +75,8 @@ public class SecurityWebFluxUtilsUnitTest {
         Context context = ReactiveSecurityContextHolder.withAuthentication(
             new UsernamePasswordAuthenticationToken("admin", "admin", authorities)
         );
-        Boolean isCurrentUserInRole = SecurityWebFluxUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)
+        Boolean isCurrentUserInRole = SecurityWebFluxUtils
+            .isCurrentUserInRole(AuthoritiesConstants.ADMIN)
             .subscriberContext(context)
             .block();
         assertThat(isCurrentUserInRole).isFalse();

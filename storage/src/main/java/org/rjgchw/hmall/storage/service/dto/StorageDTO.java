@@ -67,4 +67,12 @@ public class StorageDTO {
         return id.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "StorageDTO{" +
+            "id=" + id +
+            ", productId=" + productId +
+            ", storage=" + storage +
+            '}';
+    }
 }
