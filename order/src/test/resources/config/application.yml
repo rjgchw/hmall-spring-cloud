@@ -15,6 +15,10 @@
 feign:
   sentinel:
     enabled: false
+
+service:
+  ribbon:
+    storage: localhost:8080
 spring:
   profiles:
     # Uncomment the following line to enable tests against production database type rather than H2, using Testcontainers
@@ -41,7 +45,6 @@ spring:
   jpa:
     database-platform: tech.jhipster.domain.util.FixedH2Dialect
     open-in-view: false
-    show-sql: false
     hibernate:
       ddl-auto: none
       naming:
@@ -87,10 +90,6 @@ spring:
 
 seata:
   enabled: false
-
-ribbon-service:
-  storage:
-    name: localhost:8080
 
 server:
   port: 10344

@@ -1,6 +1,8 @@
 package org.rjgchw.hmall.common.security;
 
 /**
+ * authorities constant.
+ *
  * @author Huangw
  * @date 2021-02-23 17:33
  */

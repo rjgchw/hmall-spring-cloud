@@ -36,6 +36,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * authorization header util.
+ *
  * @author Huangw
  * @date 2021-02-23 17:33
  */
@@ -48,21 +50,28 @@ public class AuthorizationHeaderUtil {
     private final Pattern scopePattern = Pattern.compile("\\s");
 
     public AuthorizationHeaderUtil(OAuth2AuthorizedClientService clientService,
-        RestTemplateBuilder restTemplateBuilder) {
+            RestTemplateBuilder restTemplateBuilder) {
         this.clientService = clientService;
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
+    /**
+     * get authorization header.
+     *
+     * @return authorization
+     */
     public Optional<String> getAuthorizationHeader() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof OAuth2AuthenticationToken) {
             OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
             String name = oauthToken.getName();
             String registrationId = oauthToken.getAuthorizedClientRegistrationId();
-            OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(registrationId, name);
+            OAuth2AuthorizedClient client =
+                    clientService.loadAuthorizedClient(registrationId, name);
 
             if (null == client) {
-                throw new OAuth2AuthorizationException(new OAuth2Error("access_denied", "The token is expired", null));
+                throw new OAuth2AuthorizationException(new OAuth2Error(
+                        "access_denied", "The token is expired", null));
             }
             OAuth2AccessToken accessToken = client.getAccessToken();
 
@@ -74,35 +83,43 @@ public class AuthorizationHeaderUtil {
                     accessTokenValue = refreshToken(client, oauthToken);
                     if (null == accessTokenValue) {
                         SecurityContextHolder.getContext().setAuthentication(null);
-                        throw new OAuth2AuthorizationException(new OAuth2Error("access_denied", "The token is expired", null));
+                        throw new OAuth2AuthorizationException(
+                                new OAuth2Error(
+                                        "access_denied",
+                                        "The token is expired",
+                                        null));
                     }
                 }
-                String authorizationHeaderValue = String.format("%s %s", tokenType, accessTokenValue);
+                String authorizationHeaderValue =
+                        String.format("%s %s", tokenType, accessTokenValue);
                 return Optional.of(authorizationHeaderValue);
             }
 
         } else if (authentication instanceof JwtAuthenticationToken) {
             JwtAuthenticationToken accessToken = (JwtAuthenticationToken) authentication;
             String tokenValue = accessToken.getToken().getTokenValue();
-            String authorizationHeaderValue = String.format("%s %s", OAuth2AccessToken.TokenType.BEARER.getValue(), tokenValue);
+            String authorizationHeaderValue = String.format("%s %s",
+                    OAuth2AccessToken.TokenType.BEARER.getValue(), tokenValue);
             return Optional.of(authorizationHeaderValue);
         }
         return Optional.empty();
     }
 
-    private String refreshToken(OAuth2AuthorizedClient client, OAuth2AuthenticationToken oauthToken) {
+    private String refreshToken(
+            OAuth2AuthorizedClient client, OAuth2AuthenticationToken oauthToken) {
         OAuth2AccessTokenResponse atr = refreshTokenClient(client);
         if (atr == null || atr.getAccessToken() == null) {
             log.info("Failed to refresh token for user");
             return null;
         }
 
-        OAuth2RefreshToken refreshToken = atr.getRefreshToken() != null ? atr.getRefreshToken() : client.getRefreshToken();
+        OAuth2RefreshToken refreshToken =
+                atr.getRefreshToken() != null ? atr.getRefreshToken() : client.getRefreshToken();
         OAuth2AuthorizedClient updatedClient = new OAuth2AuthorizedClient(
-            client.getClientRegistration(),
-            client.getPrincipalName(),
-            atr.getAccessToken(),
-            refreshToken
+                client.getClientRegistration(),
+                client.getPrincipalName(),
+                atr.getAccessToken(),
+                refreshToken
         );
 
         clientService.saveAuthorizedClient(updatedClient, oauthToken);
@@ -111,38 +128,45 @@ public class AuthorizationHeaderUtil {
 
     private OAuth2AccessTokenResponse refreshTokenClient(OAuth2AuthorizedClient currentClient) {
         MultiValueMap<String, String> formParameters = new LinkedMultiValueMap<>();
-        formParameters.add(OAuth2ParameterNames.GRANT_TYPE, AuthorizationGrantType.REFRESH_TOKEN.getValue());
-        formParameters.add(OAuth2ParameterNames.REFRESH_TOKEN, currentClient.getRefreshToken().getTokenValue());
-        formParameters.add(OAuth2ParameterNames.CLIENT_ID, currentClient.getClientRegistration().getClientId());
+        formParameters.add(OAuth2ParameterNames.GRANT_TYPE,
+                AuthorizationGrantType.REFRESH_TOKEN.getValue());
+        formParameters.add(OAuth2ParameterNames.REFRESH_TOKEN,
+                currentClient.getRefreshToken().getTokenValue());
+        formParameters.add(OAuth2ParameterNames.CLIENT_ID,
+                currentClient.getClientRegistration().getClientId());
         RequestEntity requestEntity = RequestEntity
-            .post(URI.create(currentClient.getClientRegistration().getProviderDetails().getTokenUri()))
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(formParameters);
+                .post(URI.create(currentClient.getClientRegistration().getProviderDetails()
+                        .getTokenUri()))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(formParameters);
         try {
             RestTemplate r = restTemplate(
-                currentClient.getClientRegistration().getClientId(),
-                currentClient.getClientRegistration().getClientSecret()
+                    currentClient.getClientRegistration().getClientId(),
+                    currentClient.getClientRegistration().getClientSecret()
             );
-            ResponseEntity<OAuthIdpTokenResponseDTO> responseEntity = r.exchange(requestEntity, OAuthIdpTokenResponseDTO.class);
-            return toOAuth2AccessTokenResponse(responseEntity.getBody());
+            ResponseEntity<OAuthIdpTokenResponseDTO> responseEntity =
+                    r.exchange(requestEntity, OAuthIdpTokenResponseDTO.class);
+            return toOauth2AccessTokenResponse(responseEntity.getBody());
         } catch (OAuth2AuthorizationException e) {
             log.error("Unable to refresh token", e);
             throw new OAuth2AuthenticationException(e.getError(), e);
         }
     }
 
-    private OAuth2AccessTokenResponse toOAuth2AccessTokenResponse(OAuthIdpTokenResponseDTO oAuthIdpResponse) {
+    private OAuth2AccessTokenResponse toOauth2AccessTokenResponse(
+            OAuthIdpTokenResponseDTO oauthIdpResponse) {
         Map<String, Object> additionalParameters = new HashMap<>(16);
-        additionalParameters.put("id_token", oAuthIdpResponse.getIdToken());
-        additionalParameters.put("not-before-policy", oAuthIdpResponse.getNotBefore());
-        additionalParameters.put("refresh_expires_in", oAuthIdpResponse.getRefreshExpiresIn());
-        additionalParameters.put("session_state", oAuthIdpResponse.getSessionState());
+        additionalParameters.put("id_token", oauthIdpResponse.getIdToken());
+        additionalParameters.put("not-before-policy", oauthIdpResponse.getNotBefore());
+        additionalParameters.put("refresh_expires_in", oauthIdpResponse.getRefreshExpiresIn());
+        additionalParameters.put("session_state", oauthIdpResponse.getSessionState());
         return OAuth2AccessTokenResponse
-            .withToken(oAuthIdpResponse.getAccessToken())
-            .expiresIn(oAuthIdpResponse.getExpiresIn())
-            .refreshToken(oAuthIdpResponse.getRefreshToken())
-            .scopes(
-                scopePattern.splitAsStream(oAuthIdpResponse.getScope()).collect(Collectors.toSet()))
+                .withToken(oauthIdpResponse.getAccessToken())
+                .expiresIn(oauthIdpResponse.getExpiresIn())
+                .refreshToken(oauthIdpResponse.getRefreshToken())
+                .scopes(
+                        scopePattern.splitAsStream(oauthIdpResponse.getScope())
+                                .collect(Collectors.toSet()))
             .tokenType(OAuth2AccessToken.TokenType.BEARER)
             .additionalParameters(additionalParameters)
             .build();
@@ -150,7 +174,9 @@ public class AuthorizationHeaderUtil {
 
     private RestTemplate restTemplate(String clientId, String clientSecret) {
         return restTemplateBuilder
-            .additionalMessageConverters(new FormHttpMessageConverter(), new OAuth2AccessTokenResponseHttpMessageConverter())
+                .additionalMessageConverters(
+                        new FormHttpMessageConverter(),
+                        new OAuth2AccessTokenResponseHttpMessageConverter())
             .errorHandler(new OAuth2ErrorResponseErrorHandler())
             .basicAuthentication(clientId, clientSecret)
             .build();

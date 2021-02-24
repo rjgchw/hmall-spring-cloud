@@ -1,4 +1,5 @@
 spring:
   cloud:
-    config:
-      enabled: false
+    nacos:
+      config:
+        enabled: false

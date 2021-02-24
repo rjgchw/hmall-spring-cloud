@@ -13,11 +13,19 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 /**
+ * common security util.
+ *
  * @author Huangw
  * @date 2021-02-23 17:44
  */
 public final class CommonSecurityUtils {
 
+    /**
+     * extract principal.
+     *
+     * @param authentication authentication info
+     * @return principal
+     */
     public static String extractPrincipal(Authentication authentication) {
         String preferredUsernameKey = "preferred_username";
         if (authentication == null) {

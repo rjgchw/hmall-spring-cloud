@@ -16,8 +16,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(classes = { OrderApp.class })
-@ContextConfiguration(classes = {TestSecurityConfiguration.class})
+@SpringBootTest(classes = { OrderApp.class, TestSecurityConfiguration.class})
 @ExtendWith(RedisTestContainerExtension.class)
 public @interface IntegrationTest {
 }

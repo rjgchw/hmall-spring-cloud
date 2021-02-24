@@ -22,6 +22,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
+ * custom claim converter.
+ *
  * @author Huangw
  * @date 2021-02-23 17:33
  */
@@ -29,7 +31,8 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
 
     private final BearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
 
-    private final MappedJwtClaimSetConverter delegate = MappedJwtClaimSetConverter.withDefaults(Collections.emptyMap());
+    private final MappedJwtClaimSetConverter delegate =
+            MappedJwtClaimSetConverter.withDefaults(Collections.emptyMap());
 
     private final RestTemplate restTemplate;
 
@@ -47,9 +50,11 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
         Map<String, Object> convertedClaims = this.delegate.convert(claims);
         if (RequestContextHolder.getRequestAttributes() != null) {
             // Retrieve and set the token
-            String token = bearerTokenResolver.resolve(
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()
-            );
+            String token =
+                    bearerTokenResolver.resolve(
+                            ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                                    .getRequest()
+                    );
             HttpHeaders headers = new HttpHeaders() {
                 {
                     set("Authorization", "Bearer " + token);

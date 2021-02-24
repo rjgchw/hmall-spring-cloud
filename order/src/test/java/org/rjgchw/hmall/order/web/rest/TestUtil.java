@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.rjgchw.hmall.common.security.CommonSecurityUtils;
 import org.rjgchw.hmall.common.security.SecurityWebUtils;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
@@ -167,7 +168,7 @@ public final class TestUtil {
         "oqqUrg";
 
     public static OAuth2AuthenticationToken authenticationToken(OidcIdToken idToken) {
-        Collection<GrantedAuthority> authorities = SecurityWebUtils.extractAuthorityFromClaims(idToken.getClaims());
+        Collection<GrantedAuthority> authorities = CommonSecurityUtils.extractAuthorityFromClaims(idToken.getClaims());
         OidcUser user = new DefaultOidcUser(authorities, idToken);
         return new OAuth2AuthenticationToken(user, authorities, "oidc");
     }
