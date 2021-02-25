@@ -54,3 +54,13 @@ docker-compose -f docker/docker-compose.yml up -d
   
 ## 测试配置
 * [pact 配置](doc/pact.md)
+
+## TODO list
+* []集成 sonar
+* []docker一键启动服务
+* []使用github action进行 ci
+* []集成k8s
+* []gatling
+* []cucumber
+* []基于消息队列的契约测试
+* []swagger path 问题
