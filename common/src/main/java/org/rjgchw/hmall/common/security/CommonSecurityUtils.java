@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
  */
 public final class CommonSecurityUtils {
 
+    private CommonSecurityUtils() {}
+
     /**
      * extract principal.
      *

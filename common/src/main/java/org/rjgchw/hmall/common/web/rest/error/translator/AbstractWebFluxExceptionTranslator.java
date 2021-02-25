@@ -32,7 +32,7 @@ import tech.jhipster.web.util.HeaderUtil;
 public abstract class AbstractWebFluxExceptionTranslator
     extends AbstractExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
 
-    public AbstractWebFluxExceptionTranslator(Environment env) {
+    protected AbstractWebFluxExceptionTranslator(Environment env) {
         super(env);
     }
 

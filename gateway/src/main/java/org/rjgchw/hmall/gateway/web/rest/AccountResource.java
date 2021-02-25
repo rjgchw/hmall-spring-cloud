@@ -2,8 +2,6 @@ package org.rjgchw.hmall.gateway.web.rest;
 
 import org.rjgchw.hmall.common.config.Constants;
 import org.rjgchw.hmall.gateway.web.rest.vo.UserVO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -34,8 +32,6 @@ public class AccountResource {
             super(message);
         }
     }
-
-    private final Logger log = LoggerFactory.getLogger(AccountResource.class);
 
     /**
      * {@code GET  /account} : get the current user.

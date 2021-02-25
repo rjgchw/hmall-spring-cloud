@@ -41,7 +41,7 @@ public abstract class AbstractExceptionTranslator {
 
     protected final Environment env;
 
-    public AbstractExceptionTranslator(Environment env) {
+    protected AbstractExceptionTranslator(Environment env) {
         this.env = env;
     }
 
@@ -85,12 +85,12 @@ public abstract class AbstractExceptionTranslator {
     }
 
     protected Problem handleConcurrencyFailure(ConcurrencyFailureException ex) {
+        String messageKey = ex.getMessage() != null ? ex.getMessage() : "Concurrency Failure";
         return Problem.builder()
-                .withStatus(Status.CONFLICT)
-                .withTitle("Concurrency Failure")
-                .with(MESSAGE_KEY,
-                        ex.getMessage() != null ? ex.getMessage() : "Concurrency Failure")
-                .build();
+            .withStatus(Status.CONFLICT)
+            .withTitle("Concurrency Failure")
+            .with(MESSAGE_KEY, messageKey)
+            .build();
     }
 
     protected Problem handleAccessDenied() {

@@ -29,7 +29,7 @@ import static org.springframework.security.test.web.reactive.server.SecurityMock
 @AutoConfigureWebTestClient
 @WithMockUser(value = TEST_USER_LOGIN)
 @SpringBootTest(classes = {GatewayApp.class, TestSecurityConfiguration.class})
-public class AccountResourceIT {
+class AccountResourceIT {
 
     static final String TEST_USER_LOGIN = "test";
 
@@ -49,7 +49,7 @@ public class AccountResourceIT {
     }
 
     @Test
-    public void testGetExistingAccount() {
+    void testGetExistingAccount() {
         webTestClient
             .mutateWith(mockAuthentication(TestUtil.authenticationToken(idToken)))
             .mutateWith(csrf())
@@ -65,7 +65,7 @@ public class AccountResourceIT {
     }
 
     @Test
-    public void testGetUnknownAccount() {
+    void testGetUnknownAccount() {
         webTestClient.get().uri("/api/account")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()

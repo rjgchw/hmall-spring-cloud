@@ -14,13 +14,13 @@ import org.springframework.security.oauth2.jwt.Jwt;
 /**
  * Test class for the {@link AudienceValidator} utility class.
  */
-public class AudienceValidatorTest {
+class AudienceValidatorTest {
 
     private final AudienceValidator validator = new AudienceValidator(
         Arrays.asList("api://default"));
 
     @Test
-    public void should_has_error_if_audience_invalid() {
+    void should_has_error_if_audience_invalid() {
         Map<String, String> claims = new HashMap<>();
         claims.put("aud", "bar");
         Jwt badJwt = mock(Jwt.class);
@@ -29,7 +29,7 @@ public class AudienceValidatorTest {
     }
 
     @Test
-    public void should_not_has_error_if_audience_valid() {
+    void should_not_has_error_if_audience_valid() {
         Map<String, String> claims = new HashMap<>();
         claims.put("aud", "api://default");
         Jwt jwt = mock(Jwt.class);

@@ -22,21 +22,19 @@ Sonar is used to analyse code quality. You can start a local Sonar server (acces
 docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
-
 Then, run a Sonar analysis:
 
 ```shell
-./mvnw -Drevision=1.0.0.RELEASE -Pprod clean verify sonar:sonar
+./mvnw -Drevision=1.0.0.RELEASE -Pprod clean verify sonar:sonar -Dsonar.host.url=http://localhost:9001
 ```
 
 If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
 
 ```shell
-./mvnw -Drevision=1.0.0.SANPSHOT initialize sonar:sonar
+./mvnw -Drevision=1.0.0.SANPSHOT initialize sonar:sonar -Dsonar.host.url=http://localhost:9001
 ```
 
-##  开发环境
+## 开发环境
 生成镜像
 ```shell
 ./mvnw -Drevision=1.0.0.RELEASE -Pprod verify jib:dockerBuild
@@ -56,7 +54,7 @@ docker-compose -f docker/docker-compose.yml up -d
 * [pact 配置](doc/pact.md)
 
 ## TODO list
-* []集成 sonar
+*[x] 集成 sonar
 * []docker一键启动服务
 * []使用github action进行 ci
 * []集成k8s

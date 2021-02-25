@@ -35,14 +35,14 @@ import tech.jhipster.web.util.HeaderUtil;
 public abstract class AbstractWebExceptionTranslator
     extends AbstractExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
 
-    public AbstractWebExceptionTranslator(Environment env) {
+    protected AbstractWebExceptionTranslator(Environment env) {
         super(env);
     }
 
     @Override
     public ResponseEntity<Problem> handleMessageNotReadableException(
         HttpMessageNotReadableException exception, NativeWebRequest request) {
-        String message = null;
+        String message;
         if (exception.getRootCause() instanceof InvalidFormatException) {
             message = "Body should be a JSON object";
         } else if (exception.getRootCause() instanceof JsonParseException) {
