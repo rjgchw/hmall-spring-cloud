@@ -34,6 +34,16 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>tech.jhipster</groupId>
+                <artifactId>jhipster-framework</artifactId>
+                <version>${jhipster-dependencies.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
                 <!-- Inherited version from Spring Boot can't be used because of regressions -->

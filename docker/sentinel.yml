@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   sentinel:
-    image: sentinel-dashboard:1.8.0
+    image: sentinel-dashboard:1.8.1
     container_name: sentinel-dashboard
     environment:
       JAVA_OPTS: "-Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject.name=sentinel-dashboard -Djava.security.egd=file:/dev/./urandom -Dcsp.sentinel.api.port=8719"

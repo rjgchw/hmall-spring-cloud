@@ -56,7 +56,7 @@ docker-compose -f docker/docker-compose.yml up -d
 ## TODO list
 *[x] 集成 sonar
 * []docker一键启动服务
-* []使用github action进行 ci
+* []使用 jenkins 进行 ci
 * []集成k8s
 * []gatling
 * []cucumber

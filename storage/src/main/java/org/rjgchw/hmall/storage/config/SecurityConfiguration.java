@@ -4,7 +4,6 @@ import org.rjgchw.hmall.common.security.AuthoritiesConstants;
 import org.rjgchw.hmall.common.security.SpringSecurityAuditorAware;
 import org.rjgchw.hmall.common.security.oauth2.AudienceValidator;
 import org.rjgchw.hmall.common.security.oauth2.AuthorizationHeaderUtil;
-import org.rjgchw.hmall.common.security.oauth2.CustomClaimConverter;
 import org.rjgchw.hmall.common.security.oauth2.JwtGrantedAuthorityConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -97,7 +96,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    JwtDecoder jwtDecoder(ClientRegistrationRepository clientRegistrationRepository, RestTemplateBuilder restTemplateBuilder) {
+    JwtDecoder jwtDecoder() {
         NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder) JwtDecoders.fromOidcIssuerLocation(issuerUri);
 
         OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(jHipsterProperties.getSecurity().getOauth2().getAudience());
@@ -105,9 +104,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(withIssuer, audienceValidator);
 
         jwtDecoder.setJwtValidator(withAudience);
-        jwtDecoder.setClaimSetConverter(
-            new CustomClaimConverter(clientRegistrationRepository.findByRegistrationId("oidc"), restTemplateBuilder.build())
-        );
 
         return jwtDecoder;
     }

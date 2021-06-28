@@ -143,22 +143,4 @@ public class OAuthIdpTokenResponseDTO implements Serializable {
     public void setIdToken(String idToken) {
         this.idToken = idToken;
     }
-
-    @Override
-    public String toString() {
-        return "OAuthIdpTokenResponseDTO{" +
-            "tokenType='" + tokenType + '\'' +
-            ", scope='" + scope + '\'' +
-            ", expiresIn=" + expiresIn +
-            ", extExpiresIn=" + extExpiresIn +
-            ", expiresOn=" + expiresOn +
-            ", notBefore=" + notBefore +
-            ", resource=" + resource +
-            ", accessToken='" + accessToken + '\'' +
-            ", refreshToken='" + refreshToken + '\'' +
-            ", idToken='" + idToken + '\'' +
-            ", sessionState='" + sessionState + '\'' +
-            ", refreshExpiresIn='" + refreshExpiresIn + '\'' +
-            '}';
-    }
 }

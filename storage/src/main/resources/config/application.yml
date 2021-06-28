@@ -13,12 +13,6 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-
-
-ribbon:
-  ConnectTimeout: 5000
-  ReadTimeout: 5000
-
 feign:
   sentinel:
     enabled: true
@@ -34,6 +28,8 @@ management:
     health:
       show-details: when_authorized
       roles: 'ROLE_ADMIN'
+      probes:
+        enabled: true
     jhimetrics:
       enabled: true
   info:
@@ -45,8 +41,6 @@ management:
         include: livenessState
       readiness:
         include: readinessState,datasource
-    probes:
-      enabled: true
     mail:
       enabled: false # When using the MailService, configure an SMTP server and set this to true
   metrics:
@@ -82,7 +76,6 @@ spring:
   cloud:
     nacos:
       discovery:
-        enabled: true
         # 需要跟其他服务 group 相同
         group: hmall
   jmx:
@@ -141,6 +134,7 @@ spring:
           oidc:
             client-id: internal
             client-secret: internal
+            scope: openid,profile,email
 
 seata:
   enabled: true
@@ -180,7 +174,8 @@ jhipster:
   mail:
     from: storage@localhost
   api-docs:
-    default-include-pattern: /api/.*
+    default-include-pattern: ${server.servlet.context-path:}/api/.*
+    management-include-pattern: ${server.servlet.context-path:}/management/.*
     title: storage API
     description: storage API documentation
     version: 0.0.1
@@ -191,6 +186,7 @@ jhipster:
     license: unlicensed
     license-url:
   security:
+    content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:"
     oauth2:
       audience:
         - account

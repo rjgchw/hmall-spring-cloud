@@ -13,6 +13,7 @@ import reactor.core.publisher.Hooks;
 @Configuration
 @Profile("!" + JHipsterConstants.SPRING_PROFILE_PRODUCTION)
 public class ReactorConfiguration {
+
     public ReactorConfiguration() {
         Hooks.onOperatorDebug();
     }

@@ -26,12 +26,6 @@ management:
       enabled: false
 
 spring:
-  profiles:
-    active: dev
-    include:
-      - api-docs
-      # Uncomment to activate TLS for the dev profile
-      #- tls
   cloud:
     nacos:
       discovery:
@@ -42,7 +36,7 @@ spring:
   devtools:
     restart:
       enabled: true
-      additional-exclude: static/**
+      additional-exclude: static/**,.h2.server.properties
     livereload:
       enabled: false # we use Webpack dev server + BrowserSync for livereload
   jackson:
@@ -50,18 +44,18 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/h_order?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    url: jdbc:h2:file:./target/h2db/db/order;DB_CLOSE_DELAY=-1
     username: root
-    password: 6yhn^YHN
+    password:
     hikari:
       poolName: Hikari
       auto-commit: false
-      data-source-properties:
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        useServerPrepStmts: true
+  h2:
+    console:
+      # disable spring boot built-in h2-console since we start it manually with correct configuration
+      enabled: false
   jpa:
+    database-platform: tech.jhipster.domain.util.FixedH2Dialect
   data:
   elasticsearch:
     rest:
@@ -113,7 +107,7 @@ jhipster:
   # CORS is disabled by default on microservices, as you should access them through a gateway.
   # If you want to enable it, please uncomment the configuration below.
   # cors:
-  #   allowed-origins: "*"
+  #   allowed-origins: "http://localhost:9000"
   #   allowed-methods: "*"
   #   allowed-headers: "*"
   #   exposed-headers: "Authorization,Link,X-Total-Count"

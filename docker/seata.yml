@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   seata:
-    image: seataio/seata-server:1.4.1
+    image: seataio/seata-server:1.4.2
     hostname: seata-server
     ports:
       - 127.0.0.1:8091:8091
